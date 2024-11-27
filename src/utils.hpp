@@ -8,26 +8,40 @@
 #include <RtcDS1302.h>
 #include <ThreeWire.h>
 
-// Pin defines
-#define SS_PIN 10
-#define RST_PIN 9
-#define GREEN_PIN 6
-#define RED_PIN 5
-#define BLUE_PIN 7
-#define BUZZER_PIN 8
+// Pin defines for ESP
+#define SCK_PIN 18
+#define MISO_PIN 19
+#define MOSI_PIN 23
+#define SS_PIN 5
+#define RST_PIN 15
+
+#define GREEN_PIN 4 // RGB LED Green
+#define RED_PIN 16   // RGB LED Red
+#define BLUE_PIN 2   // RGB LED Blue
+
+#define BUZZER_PIN 34 // Buzzer
+
 #define NOTE_C4 261
 #define NOTE_E4 329
 #define NOTE_G4 392
 #define NOTE_C5 523
 #define NOTE_E5 659
 #define NOTE_G5 784
-#define MAX_UIDS 10
-#define ADMIN_UID "53F7CA0E"
 
-// Joystick pins
-#define JOYSTICK_SW_PIN A0
-#define JOYSTICK_URX_PIN A2
-#define JOYSTICK_URY_PIN A1
+#define MAX_UIDS 10
+
+#define JOYSTICK_SW_PIN 27  // Joystick Switch
+#define JOYSTICK_URX_PIN 12 // Joystick URX
+#define JOYSTICK_URY_PIN 14 // Joystick URY
+
+#define RTC_CLK_PIN 33 // RTC CLK
+#define RTC_DAT_PIN 32 // RTC DAT
+#define RTC_RST_PIN 35 // RTC RST
+
+#define LCD_SDA_PIN 25 // LCD SDA
+#define LCD_SCL_PIN 26 // LCD SCL
+
+#define ADMIN_UID "53F7CA0E"
 
 // User struct
 struct user

@@ -11,7 +11,7 @@ const char *reminders[MAX_UIDS];
 const char *names[MAX_UIDS];
 int uidCount = 0;
 int currentEmployeeIndex = 0;
-ThreeWire myWire(4, 3, 2);
+ThreeWire myWire(RTC_DAT_PIN, RTC_CLK_PIN, RTC_RST_PIN);
 RtcDS1302<ThreeWire> Rtc(myWire);
 
 // Function to calculate the number of days in a month
