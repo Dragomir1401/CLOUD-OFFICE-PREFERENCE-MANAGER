@@ -24,8 +24,14 @@ void adminLogged()
   int joyX = analogRead(JOYSTICK_URY_PIN);
   int joyY = analogRead(JOYSTICK_URX_PIN);
 
+  // print the joystick values
+  Serial.print("X: ");
+  Serial.print(joyX);
+  Serial.print(" Y: ");
+  Serial.println(joyY);
+
   // Check if the joystick is moved
-  if (joyX < 200 && (millis() - lastDebounceTime > navigationDelay))
+  if (joyX < 500 && (millis() - lastDebounceTime > navigationDelay))
   {
     if (menuLevel == 0)
     {
@@ -47,7 +53,7 @@ void adminLogged()
     // Update the debounce time
     lastDebounceTime = millis();
   }
-  else if (joyX > 800 && (millis() - lastDebounceTime > navigationDelay))
+  else if (joyX > 3500 && (millis() - lastDebounceTime > navigationDelay))
   {
     if (menuLevel == 0)
     {
@@ -71,7 +77,7 @@ void adminLogged()
   }
 
   // Check if the joystick is pressed
-  if (joyY < 200 && (millis() - lastDebounceTime > debounceDelay))
+  if (joyY < 500 && (millis() - lastDebounceTime > debounceDelay))
   {
     if (menuLevel == 0)
     {
@@ -104,7 +110,7 @@ void adminLogged()
     // Update the debounce time
     lastDebounceTime = millis();
   }
-  else if (joyY > 800 && (millis() - lastDebounceTime > debounceDelay))
+  else if (joyY > 3500 && (millis() - lastDebounceTime > debounceDelay))
   {
     if (menuLevel == 2)
     {
@@ -225,294 +231,220 @@ void adminLogged()
   }
 }
 
-// // Setup function to initialize the system
-// void setup()
-// {
-//   // Start serial communication at 9600 baud.
-//   Serial.begin(9600);
-
-//   // Initiate I2C bus
-//   Wire.begin(LCD_SDA_PIN, LCD_SCL_PIN);
-
-//   // Initiate SPI bus
-//   SPI.begin();
-
-//   // Initiate MFRC522
-//   mfrc522.PCD_Init();
-
-//   // Initiate RTC
-//   Rtc.Begin();
-
-//   // Initiate LCD
-//   lcd.init();
-
-//   // Turn on the backlight
-//   lcd.backlight();
-
-//   // Set the pins for the LEDs and buzzer
-//   pinMode(GREEN_PIN, OUTPUT);
-//   pinMode(RED_PIN, OUTPUT);
-//   pinMode(BLUE_PIN, OUTPUT);
-//   pinMode(BUZZER_PIN, OUTPUT);
-
-//   // Ensure buzzer is off initially
-//   digitalWrite(BUZZER_PIN, HIGH);
-
-//   // Turn off all LEDs initially
-//   turnOffLEDs();
-
-//   // Print a message to the serial monitor
-//   Serial.println("Approximate your card to the reader...");
-
-//   // Set the correct date and time
-//   setDateTime();
-
-//   // Initialize joystick pins
-//   pinMode(JOYSTICK_URX_PIN, INPUT);
-//   pinMode(JOYSTICK_URY_PIN, INPUT);
-//   pinMode(JOYSTICK_SW_PIN, INPUT);
-
-//   // Set the reminders and names for employees
-//   reminders[0] = "Message manager for planning";
-//   names[0] = "Popescu Marius";
-//   reminders[1] = "Bugfix feature/IPD17-add-library";
-//   names[1] = "Gheorghe Hagi";
-//   reminders[2] = "Call HR for employment contract";
-//   names[2] = "Lionel Messi";
-//   reminders[3] = "Respond to product team emails";
-//   names[3] = "Nadia Marin";
-// }
-
-
-// // Main loop function
-// void loop()
-// {
-//   // Check if admin is logged in
-//   if (adminFlag)
-//   {
-//     adminLogged();
-//   }
-
-//   // Look for new cards
-//   if (mfrc522.PICC_IsNewCardPresent())
-//   {
-//     // Select one of the cards
-//     if (mfrc522.PICC_ReadCardSerial())
-//     {
-//       // Print the UID of the card
-//       Serial.print("Card UID:");
-//       String readUID = convertUID(mfrc522);
-//       Serial.println(readUID);
-
-//       // Check if the card is the admin card
-//       if (readUID == ADMIN_UID)
-//       {
-//         // If admin was not logged in, grant access
-//         if (!adminFlag)
-//         {
-//           Serial.println("Admin Access Granted");
-//           lcd.clear();
-//           lcd.print("Admin Access");
-//           lcd.setCursor(0, 1);
-//           lcd.print("Granted");
-//           adminAccessMelody();
-//           adminFlag = true;
-//           delay(2000);
-//         }
-//         // If admin was logged in, exit
-//         else
-//         {
-//           Serial.println("Admin Exited");
-//           lcd.clear();
-//           lcd.print("Admin Exited");
-//           adminGoodbyeMelody();
-//           adminFlag = false;
-//           delay(2000);
-//         }
-
-//         // Turn off LEDs after admin access
-//         turnOffLEDs();
-//         return;
-//       }
-
-//       // Don't allow other users to scan if admin is logged in
-//       if (adminFlag)
-//       {
-//         return;
-//       }
-
-//       // Compare the read UID with the stored UID
-//       if (isAuthorizedUID(readUID))
-//       {
-//         // Convert the UID to an index
-//         int index = uidToIndex(readUID);
-
-//         // Check if the user is logged in
-//         if (!authorizedUsers[index].logged)
-//         {
-//           // Log the time of access
-//           RtcDateTime now = Rtc.GetDateTime();
-//           String nowString = timeToString(now);
-//           lastAccess[index] = nowString;
-//           Serial.println(lastAccess[index]);
-//           authorizedUsers[index].logged = true;
-//           logTimes[index] = dateToInt(now);
-
-//           // Display the access granted message
-//           Serial.println("Access Granted");
-//           lcd.clear();
-//           lcd.print("Access Granted");
-//           lcd.setCursor(0, 1);
-//           lcd.print(nowString);
-//           accessGrantedMelody();
-//           delay(1000);
-
-//           // Display the welcome message
-//           lcd.clear();
-//           lcd.print("Welcome");
-//           Serial.println("Welcome");
-//           lcd.setCursor(0, 1);
-//           lcd.print(names[uidToIndexMap(readUID)]);
-//           Serial.println(names[uidToIndexMap(readUID)]);
-//           delay(2000);
-
-//           // Display the reminder message
-//           lcd.clear();
-//           lcd.print("Reminder");
-//           Serial.println("Reminder");
-//           delay(2000);
-
-//           // Display the reminder message
-//           printStringOnLCD(reminders[uidToIndexMap(readUID)]);
-//           Serial.println(reminders[uidToIndexMap(readUID)]);
-//           delay(2000);
-//         }
-//         else
-//         {
-//           // Log the time of exit
-//           RtcDateTime now = Rtc.GetDateTime();
-//           String nowString = timeToString(now);
-//           Serial.println(nowString);
-//           authorizedUsers[index].logged = false;
-
-//           // Display the log out messages
-//           Serial.println("Logging out...");
-//           lcd.clear();
-//           lcd.print("Log out at ");
-//           lcd.setCursor(0, 1);
-//           lcd.print(nowString);
-//           goodbyeMelody();
-//           delay(2000);
-//           displayExitTime(now, index);
-//         }
-//       }
-//       else
-//       {
-//         // Display the access denied message
-//         Serial.println("Access Denied");
-//         lcd.clear();
-//         lcd.print("Access Denied");
-//         accessDeniedMelody();
-//       }
-//       // Turn off LEDs after access
-//       turnOffLEDs();
-//     }
-//   }
-
-//   if (adminFlag)
-//   {
-//     // If admin is logged in, don't print idle message
-//     return;
-//   }
-
-//   // Print idle message
-//   printIdle();
-// }
-
-// void setup()
-// {
-//   delay(5000);
-//   Serial.begin(9600);
-//   Serial.println("Starting RFID initialization...");
-
-//   // Initialize SPI
-//   Serial.println("Initializing SPI...");
-//   SPI.begin(SCK_PIN, MISO_PIN, MOSI_PIN, SS_PIN);
-//   Serial.println("SPI initialized.");
-
-//   // Initialize RFID
-//   Serial.println("Initializing RFID reader...");
-//   mfrc522.PCD_Init();
-
-//   // Check the version of the RFID module
-//   byte version = mfrc522.PCD_ReadRegister(mfrc522.VersionReg);
-//   Serial.print("RFID Version: 0x");
-//   Serial.println(version, HEX);
-
-//   mfrc522.PCD_WriteRegister(mfrc522.CommandReg, 0x55); // Write a test value
-//   byte readValue = mfrc522.PCD_ReadRegister(mfrc522.CommandReg);
-//   Serial.print("Read back value: 0x");
-//   Serial.println(readValue, HEX);
-
-//   // Check if the module is responding
-//   if (version == 0x00 || version == 0xFF)
-//   {
-//     Serial.println("ERROR: RFID module not responding.");
-//     Serial.println("Check wiring and power connections.");
-//     while (true)
-//       ; // Stop execution
-//   }
-
-//   // RFID successfully initialized
-//   Serial.println("RFID initialized successfully.");
-//   Serial.println("Place your card on the RFID reader...");
-// }
-
-// void loop()
-// {
-//   // Look for new cards
-//   if (!mfrc522.PICC_IsNewCardPresent()) {
-//     Serial.println("No card detected");
-//     return;
-//   }
-
-//   // Select one of the cards
-//   if (!mfrc522.PICC_ReadCardSerial()) {
-//     Serial.println("Error reading card");
-//     return;
-//   }
-
-//   // Print card UID
-//   Serial.print("Card UID: ");
-//   for (byte i = 0; i < mfrc522.uid.size; i++)
-//   {
-//     Serial.print(mfrc522.uid.uidByte[i] < 0x10 ? "0" : "");
-//     Serial.print(mfrc522.uid.uidByte[i], HEX);
-//     Serial.print(" ");
-//   }
-//   Serial.println();
-
-//   // Halt card
-//   mfrc522.PICC_HaltA();
-// }
-
-void setup()
+void setupLEDControl()
 {
-  delay(4000);
-  Serial.begin(9600);
-  SPI.begin(SCK_PIN, MISO_PIN, MOSI_PIN, SS_PIN);
-  pinMode(SS_PIN, OUTPUT);
-  digitalWrite(SS_PIN, HIGH);
-
-  // Test SPI communication
-  digitalWrite(SS_PIN, LOW);
-  byte response = SPI.transfer(0x55); // Send a test byte
-  digitalWrite(SS_PIN, HIGH);
-
-  Serial.print("SPI Response: 0x");
-  Serial.println(response, HEX);
+  // Setup LEDC channel
+  ledcSetup(0, 5000, 8);       // channel 0, 5 kHz frequency, 8-bit resolution
+  ledcAttachPin(RED_PIN, 0);   // Attach RED_PIN to LEDC channel 0
+  ledcSetup(1, 5000, 8);       // channel 1, 5 kHz frequency, 8-bit resolution
+  ledcAttachPin(GREEN_PIN, 1); // Attach GREEN_PIN to LEDC channel 1
+  ledcSetup(2, 5000, 8);       // channel 2, 5 kHz frequency, 8-bit resolution
+  ledcAttachPin(BLUE_PIN, 2);  // Attach BLUE_PIN to LEDC channel 2
 }
 
+// Setup function to initialize the system
+void setup()
+{
+  // Start serial communication at 9600 baud.
+  Serial.begin(115200);
+
+  // Initiate I2C bus
+  Wire.begin(LCD_SDA_PIN, LCD_SCL_PIN);
+
+  // Initiate SPI bus
+  SPI.begin();
+
+  // Initiate MFRC522
+  mfrc522.PCD_Init();
+
+  // Initiate RTC
+  Rtc.Begin();
+
+  // Initiate LCD
+  lcd.init();
+
+  // Turn on the backlight
+  lcd.backlight();
+
+  // Set the pins for the LEDs and buzzer
+  pinMode(GREEN_PIN, OUTPUT);
+  pinMode(RED_PIN, OUTPUT);
+  pinMode(BLUE_PIN, OUTPUT);
+  pinMode(BUZZER_PIN, OUTPUT);
+
+  // Setup the LED control
+  setupLEDControl();
+
+  // Ensure buzzer is off initially
+  digitalWrite(BUZZER_PIN, HIGH);
+
+  // Turn off all LEDs initially
+  turnOffLEDs();
+
+  // Print a message to the serial monitor
+  Serial.println("Approximate your card to the reader...");
+
+  // Set the correct date and time
+  setDateTime();
+
+  // Initialize joystick pins
+  pinMode(JOYSTICK_URX_PIN, INPUT);
+  pinMode(JOYSTICK_URY_PIN, INPUT);
+  pinMode(JOYSTICK_SW_PIN, INPUT);
+
+  // Set the reminders and names for employees
+  reminders[0] = "Message manager for planning";
+  names[0] = "Popescu Marius";
+  reminders[1] = "Bugfix feature/IPD17-add-library";
+  names[1] = "Gheorghe Hagi";
+  reminders[2] = "Call HR for employment contract";
+  names[2] = "Lionel Messi";
+  reminders[3] = "Respond to product team emails";
+  names[3] = "Nadia Marin";
+}
+
+
+// Main loop function
 void loop()
 {
+  // Check if admin is logged in
+  if (adminFlag)
+  {
+    adminLogged();
+  }
+
+  // Look for new cards
+  if (mfrc522.PICC_IsNewCardPresent())
+  {
+    // Select one of the cards
+    if (mfrc522.PICC_ReadCardSerial())
+    {
+      // Print the UID of the card
+      Serial.print("Card UID:");
+      String readUID = convertUID(mfrc522);
+      Serial.println(readUID);
+
+      // Check if the card is the admin card
+      if (readUID == ADMIN_UID)
+      {
+        // If admin was not logged in, grant access
+        if (!adminFlag)
+        {
+          Serial.println("Admin Access Granted");
+          lcd.clear();
+          lcd.print("Admin Access");
+          lcd.setCursor(0, 1);
+          lcd.print("Granted");
+          adminAccessMelody();
+          adminFlag = true;
+          delay(2000);
+        }
+        // If admin was logged in, exit
+        else
+        {
+          Serial.println("Admin Exited");
+          lcd.clear();
+          lcd.print("Admin Exited");
+          adminGoodbyeMelody();
+          adminFlag = false;
+          delay(2000);
+        }
+
+        // Turn off LEDs after admin access
+        turnOffLEDs();
+        return;
+      }
+
+      // Don't allow other users to scan if admin is logged in
+      if (adminFlag)
+      {
+        return;
+      }
+
+      // Compare the read UID with the stored UID
+      if (isAuthorizedUID(readUID))
+      {
+        // Convert the UID to an index
+        int index = uidToIndex(readUID);
+
+        // Check if the user is logged in
+        if (!authorizedUsers[index].logged)
+        {
+          // Log the time of access
+          RtcDateTime now = Rtc.GetDateTime();
+          String nowString = timeToString(now);
+          lastAccess[index] = nowString;
+          Serial.println(lastAccess[index]);
+          authorizedUsers[index].logged = true;
+          logTimes[index] = dateToInt(now);
+
+          // Display the access granted message
+          Serial.println("Access Granted");
+          lcd.clear();
+          lcd.print("Access Granted");
+          lcd.setCursor(0, 1);
+          lcd.print(nowString);
+          accessGrantedMelody();
+          delay(1000);
+
+          // Display the welcome message
+          lcd.clear();
+          lcd.print("Welcome");
+          Serial.println("Welcome");
+          lcd.setCursor(0, 1);
+          lcd.print(names[uidToIndexMap(readUID)]);
+          Serial.println(names[uidToIndexMap(readUID)]);
+          delay(2000);
+
+          // Display the reminder message
+          lcd.clear();
+          lcd.print("Reminder");
+          Serial.println("Reminder");
+          delay(2000);
+
+          // Display the reminder message
+          printStringOnLCD(reminders[uidToIndexMap(readUID)]);
+          Serial.println(reminders[uidToIndexMap(readUID)]);
+          delay(2000);
+        }
+        else
+        {
+          // Log the time of exit
+          RtcDateTime now = Rtc.GetDateTime();
+          String nowString = timeToString(now);
+          Serial.println(nowString);
+          authorizedUsers[index].logged = false;
+
+          // Display the log out messages
+          Serial.println("Logging out...");
+          lcd.clear();
+          lcd.print("Log out at ");
+          lcd.setCursor(0, 1);
+          lcd.print(nowString);
+          goodbyeMelody();
+          delay(2000);
+          displayExitTime(now, index);
+        }
+      }
+      else
+      {
+        // Display the access denied message
+        Serial.println("Access Denied");
+        lcd.clear();
+        lcd.print("Access Denied");
+        accessDeniedMelody();
+      }
+      // Turn off LEDs after access
+      turnOffLEDs();
+    }
+  }
+
+  if (adminFlag)
+  {
+    // If admin is logged in, don't print idle message
+    return;
+  }
+
+  // Print idle message
+  printIdle();
 }

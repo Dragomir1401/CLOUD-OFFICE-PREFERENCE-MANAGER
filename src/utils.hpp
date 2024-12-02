@@ -12,14 +12,14 @@
 #define SCK_PIN 18
 #define MISO_PIN 19
 #define MOSI_PIN 23
-#define SS_PIN 5
-#define RST_PIN 15
+#define SS_PIN 21
+#define RST_PIN 22
 
-#define GREEN_PIN 4 // RGB LED Green
-#define RED_PIN 16   // RGB LED Red
-#define BLUE_PIN 2   // RGB LED Blue
+#define RED_PIN 17   // RGB LED Red
+#define GREEN_PIN 16 // RGB LED Green
+#define BLUE_PIN 15   // RGB LED Blue
 
-#define BUZZER_PIN 34 // Buzzer
+#define BUZZER_PIN 5 // Buzzer
 
 #define NOTE_C4 261
 #define NOTE_E4 329
@@ -40,6 +40,8 @@
 
 #define LCD_SDA_PIN 25 // LCD SDA
 #define LCD_SCL_PIN 26 // LCD SCL
+
+#define TEMPERATURE_PIN 13 // Temperature sensor
 
 #define ADMIN_UID "53F7CA0E"
 
