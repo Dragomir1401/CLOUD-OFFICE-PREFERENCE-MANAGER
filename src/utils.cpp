@@ -144,7 +144,7 @@ void addCardAccess()
   {
     // Check if the joystick goes to exit
     int joyY = analogRead(JOYSTICK_URX_PIN);
-    if (joyY > 800)
+    if (joyY > UPPER_JOYSTICK_THRESHOLD)
     {
       // Exit add card mode
       lcd.clear();
@@ -219,7 +219,7 @@ void removeCardAccess()
   {
     // Check if the joystick goes to exit
     int joyY = analogRead(JOYSTICK_URX_PIN);
-    if (joyY > 800)
+    if (joyY > UPPER_JOYSTICK_THRESHOLD)
     {
       // Exit remove card mode
       lcd.clear();
@@ -286,7 +286,7 @@ void showTotalNumber()
   while (true)
   {
     int joyY = analogRead(JOYSTICK_URX_PIN);
-    if (joyY > 800)
+    if (joyY > UPPER_JOYSTICK_THRESHOLD)
     {
       // Exit total number mode
       lcd.clear();
@@ -491,143 +491,123 @@ bool isAuthorizedUID(String uid)
 // Function to turn off all LEDs
 void turnOffLEDs()
 {
+  Serial.print("Setting GPIO pin: ");
+  Serial.println(GREEN_PIN);
   digitalWrite(GREEN_PIN, LOW);
+  Serial.print("Setting GPIO pin: ");
+  Serial.println(RED_PIN);
   digitalWrite(RED_PIN, LOW);
+  Serial.print("Setting GPIO pin: ");
+  Serial.println(BLUE_PIN);
   digitalWrite(BLUE_PIN, LOW);
+}
+
+void turnOffLedsAndBuzzer()
+{
+  // Turn off all LEDs
+  turnOffLEDs();
+
+  // Turn off the buzzer
+  digitalWrite(BUZZER_PIN, HIGH);
+  Serial.println("Setting GPIO pin: ");
+  Serial.println(BUZZER_PIN);
+}
+
+void playMelody(int note, int duration, int delayP)
+{
+  tone(BUZZER_PIN, note, duration);
+  delay(delayP);
 }
 
 // Function to play the goodbye melody
 void goodbyeMelody()
 {
   // Ensure buzzer and LEDs is off initially
-  digitalWrite(BUZZER_PIN, LOW);
-  turnOffLEDs();
+  turnOffLedsAndBuzzer();
 
   // Turn the LED blue
   digitalWrite(BLUE_PIN, HIGH);
 
   // Play the melody
-  tone(BUZZER_PIN, NOTE_G5, 200);
-  delay(250);
-  tone(BUZZER_PIN, NOTE_E5, 200);
-  delay(250);
-  tone(BUZZER_PIN, NOTE_C5, 200);
-  delay(250);
+  playMelody(NOTE_G5, 200, 250);
+  playMelody(NOTE_E5, 200, 250);
+  playMelody(NOTE_C5, 200, 250);
 
-  // Stop any tone
-  noTone(BUZZER_PIN);
+  turnOffLedsAndBuzzer();
+}
 
-  // Turn off LED after melody
-  digitalWrite(BLUE_PIN, LOW);
-
-  // Explicitly turn off buzzer after use
-  digitalWrite(BUZZER_PIN, HIGH);
+void turnLedYellow()
+{
+  digitalWrite(RED_PIN, HIGH);   // Fully turn on the red LED
+  digitalWrite(GREEN_PIN, HIGH); // Fully turn on the green LED
+  digitalWrite(BLUE_PIN, HIGH);   // Turn off the blue LED
 }
 
 // Function to play the admin goodbye melody
 void adminGoodbyeMelody()
 {
-  // Ensure buzzer is off initially
-  digitalWrite(BUZZER_PIN, LOW);
-
   // Turn the LED blue
-  turnOffLEDs();
+  turnOffLedsAndBuzzer();
 
   // Turn the LED yellow
-  analogWrite(RED_PIN, 255);
-  analogWrite(GREEN_PIN, 55);
-  analogWrite(BLUE_PIN, 0);
+  turnLedYellow();
 
   // Play the melody
-  tone(BUZZER_PIN, NOTE_C5, 200);
-  delay(250);
-  tone(BUZZER_PIN, NOTE_G5, 200);
-  delay(250);
-  tone(BUZZER_PIN, NOTE_E5, 200);
-  delay(250);
+  playMelody(NOTE_C5, 200, 250);
+  playMelody(NOTE_G5, 200, 250);
+  playMelody(NOTE_E5, 200, 250);
 
-  // Stop any tone
-  noTone(BUZZER_PIN);
-
-  // Turn off LED after melody
-  turnOffLEDs();
-
-  // Explicitly turn off buzzer after use
-  digitalWrite(BUZZER_PIN, HIGH);
+  turnOffLedsAndBuzzer();
 }
+
 
 // Function to play the admin access melody
 void adminAccessMelody()
 {
-  // Ensure buzzer is off initially
-  digitalWrite(BUZZER_PIN, LOW);
+  // Turn off all LEDs
+  turnOffLedsAndBuzzer();
 
   // Turn the LED yellow
-  turnOffLEDs();
-
-  // Turn the LED yellow
-  analogWrite(RED_PIN, 255);
-  analogWrite(GREEN_PIN, 55);
-  analogWrite(BLUE_PIN, 0);
+  turnLedYellow();
 
   // Play the melody
-  tone(BUZZER_PIN, NOTE_E5, 250);
-  delay(350);
-  tone(BUZZER_PIN, NOTE_C5, 250);
-  delay(350);
+  playMelody(NOTE_G5, 250, 350);
+  playMelody(NOTE_E5, 250, 350);
 
-  // Stop any tone
-  noTone(BUZZER_PIN);
-
-  // Turn off LED after melody
-  turnOffLEDs();
-
-  // Explicitly turn off buzzer after use
-  digitalWrite(BUZZER_PIN, HIGH);
+  // Stop leds and buzzer
+  turnOffLedsAndBuzzer();
 }
 
 // Function to play the access granted melody
 void accessGrantedMelody()
 {
   // Ensure buzzer is off initially
-  digitalWrite(BUZZER_PIN, LOW);
-  turnOffLEDs();
+  turnOffLedsAndBuzzer();
   digitalWrite(GREEN_PIN, HIGH); // Turn green LED on
+  Serial.println("Setting GPIO pin: ");
+  Serial.println(GREEN_PIN);
 
-  tone(BUZZER_PIN, NOTE_C5, 250); // C5
-  delay(350);
-  tone(BUZZER_PIN, NOTE_E5, 250); // E5
-  delay(350);
+  // Play the melody
+  playMelody(NOTE_G5, 250, 350);
+  playMelody(NOTE_E5, 250, 350);
 
-  noTone(BUZZER_PIN);             // Stop any tone
-  digitalWrite(GREEN_PIN, LOW);   // Turn off LED after melody
-  digitalWrite(BUZZER_PIN, HIGH); // Explicitly turn off buzzer after use
+  turnOffLedsAndBuzzer();
 }
 
 // Function to play the access denied melody
 void accessDeniedMelody()
 {
-  // Ensure buzzer is off initially
-  digitalWrite(BUZZER_PIN, LOW);
-
   // Turn the LED red
-  turnOffLEDs();
+  turnOffLedsAndBuzzer();
 
   // Turn the LED red
   digitalWrite(RED_PIN, HIGH);
+  Serial.println("Setting GPIO pin: ");
+  Serial.println(RED_PIN);
 
   // Play the melody
-  tone(BUZZER_PIN, NOTE_G4, 150);
-  delay(150);
-  tone(BUZZER_PIN, NOTE_C4, 150);
-  delay(150);
+  playMelody(NOTE_G4, 150, 150);
+  playMelody(NOTE_C4, 150, 150);
 
-  // Stop any tone
-  noTone(BUZZER_PIN);
-
-  // Turn off LED after melody
-  digitalWrite(RED_PIN, LOW);
-
-  // Explicitly turn off buzzer after use
-  digitalWrite(BUZZER_PIN, HIGH);
+  turnOffLedsAndBuzzer();
 }

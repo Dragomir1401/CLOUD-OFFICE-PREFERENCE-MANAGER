@@ -45,6 +45,9 @@
 
 #define ADMIN_UID "53F7CA0E"
 
+#define LOWER_JOYSTICK_THRESHOLD 500
+#define UPPER_JOYSTICK_THRESHOLD 3500
+
 // User struct
 struct user
 {

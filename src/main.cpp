@@ -31,7 +31,7 @@ void adminLogged()
   Serial.println(joyY);
 
   // Check if the joystick is moved
-  if (joyX < 500 && (millis() - lastDebounceTime > navigationDelay))
+  if (joyX < LOWER_JOYSTICK_THRESHOLD && (millis() - lastDebounceTime > navigationDelay))
   {
     if (menuLevel == 0)
     {
@@ -53,7 +53,7 @@ void adminLogged()
     // Update the debounce time
     lastDebounceTime = millis();
   }
-  else if (joyX > 3500 && (millis() - lastDebounceTime > navigationDelay))
+  else if (joyX > UPPER_JOYSTICK_THRESHOLD && (millis() - lastDebounceTime > navigationDelay))
   {
     if (menuLevel == 0)
     {
@@ -77,7 +77,7 @@ void adminLogged()
   }
 
   // Check if the joystick is pressed
-  if (joyY < 500 && (millis() - lastDebounceTime > debounceDelay))
+  if (joyY < LOWER_JOYSTICK_THRESHOLD && (millis() - lastDebounceTime > debounceDelay))
   {
     if (menuLevel == 0)
     {
@@ -110,7 +110,7 @@ void adminLogged()
     // Update the debounce time
     lastDebounceTime = millis();
   }
-  else if (joyY > 3500 && (millis() - lastDebounceTime > debounceDelay))
+  else if (joyY > UPPER_JOYSTICK_THRESHOLD && (millis() - lastDebounceTime > debounceDelay))
   {
     if (menuLevel == 2)
     {
@@ -259,6 +259,20 @@ void setup()
 
   // Initiate RTC
   Rtc.Begin();
+
+  RtcDateTime now = Rtc.GetDateTime();
+  Serial.print("Current RTC Date: ");
+  Serial.print(now.Year(), DEC);
+  Serial.print('/');
+  Serial.print(now.Month(), DEC);
+  Serial.print('/');
+  Serial.print(now.Day(), DEC);
+  Serial.print(" Time: ");
+  Serial.print(now.Hour(), DEC);
+  Serial.print(':');
+  Serial.print(now.Minute(), DEC);
+  Serial.print(':');
+  Serial.println(now.Second(), DEC);
 
   // Initiate LCD
   lcd.init();
