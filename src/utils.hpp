@@ -34,9 +34,9 @@
 #define JOYSTICK_URX_PIN 12 // Joystick URX
 #define JOYSTICK_URY_PIN 14 // Joystick URY
 
-#define RTC_CLK_PIN 33 // RTC CLK
-#define RTC_DAT_PIN 32 // RTC DAT
-#define RTC_RST_PIN 35 // RTC RST
+#define RTC_CLK_PIN 33
+#define RTC_DAT_PIN 16
+#define RTC_RST_PIN 15
 
 #define LCD_SDA_PIN 25 // LCD SDA
 #define LCD_SCL_PIN 26 // LCD SCL
@@ -93,5 +93,6 @@ void adminGoodbyeMelody();
 void adminAccessMelody();
 void accessGrantedMelody();
 void accessDeniedMelody();
+void setupLEDControl();
 
 #endif // UTILS_HPP

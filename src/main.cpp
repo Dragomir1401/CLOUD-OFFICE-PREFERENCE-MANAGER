@@ -13,11 +13,8 @@ void adminLogged()
 {
   // Index to iter through the index
   static int detailIndex = 0;
-  // Time to debounce the joystick
   static unsigned long lastDebounceTime = 0;
-  // Delay debouncer to prevent multiple readings
   const unsigned long debounceDelay = 300;
-  // 1-second delay between changes
   const unsigned long navigationDelay = 1000;
 
   // Read the joystick values
@@ -225,16 +222,6 @@ void adminLogged()
   }
 }
 
-void setupLEDControl()
-{
-  // Setup LEDC channel
-  ledcSetup(0, 5000, 8);       // channel 0, 5 kHz frequency, 8-bit resolution
-  ledcAttachPin(RED_PIN, 0);   // Attach RED_PIN to LEDC channel 0
-  ledcSetup(1, 5000, 8);       // channel 1, 5 kHz frequency, 8-bit resolution
-  ledcAttachPin(GREEN_PIN, 1); // Attach GREEN_PIN to LEDC channel 1
-  ledcSetup(2, 5000, 8);       // channel 2, 5 kHz frequency, 8-bit resolution
-  ledcAttachPin(BLUE_PIN, 2);  // Attach BLUE_PIN to LEDC channel 2
-}
 
 // Setup function to initialize the system
 void setup()

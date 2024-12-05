@@ -1,5 +1,17 @@
 #include <utils.hpp>
 
+// Function to setup the LED control
+void setupLEDControl()
+{
+    // Setup LEDC channel
+    ledcSetup(0, 5000, 8);       // channel 0, 5 kHz frequency, 8-bit resolution
+    ledcAttachPin(RED_PIN, 0);   // Attach RED_PIN to LEDC channel 0
+    ledcSetup(1, 5000, 8);       // channel 1, 5 kHz frequency, 8-bit resolution
+    ledcAttachPin(GREEN_PIN, 1); // Attach GREEN_PIN to LEDC channel 1
+    ledcSetup(2, 5000, 8);       // channel 2, 5 kHz frequency, 8-bit resolution
+    ledcAttachPin(BLUE_PIN, 2);  // Attach BLUE_PIN to LEDC channel 2
+}
+
 // Function to turn off all LEDs
 void turnOffLEDs()
 {
