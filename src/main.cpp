@@ -24,12 +24,6 @@ void adminLogged()
   int joyX = analogRead(JOYSTICK_URY_PIN);
   int joyY = analogRead(JOYSTICK_URX_PIN);
 
-  // print the joystick values
-  Serial.print("X: ");
-  Serial.print(joyX);
-  Serial.print(" Y: ");
-  Serial.println(joyY);
-
   // Check if the joystick is moved
   if (joyX < LOWER_JOYSTICK_THRESHOLD && (millis() - lastDebounceTime > navigationDelay))
   {

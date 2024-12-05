@@ -16,8 +16,8 @@
 #define RST_PIN 22
 
 #define RED_PIN 17   // RGB LED Red
-#define GREEN_PIN 16 // RGB LED Green
-#define BLUE_PIN 15   // RGB LED Blue
+#define GREEN_PIN 4 // RGB LED Green
+#define BLUE_PIN 2   // RGB LED Blue
 
 #define BUZZER_PIN 5 // Buzzer
 
