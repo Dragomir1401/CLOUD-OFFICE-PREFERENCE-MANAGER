@@ -9,6 +9,8 @@
 #include <ThreeWire.h>
 #include<Adafruit_Sensor.h>
 #include <DHT.h>
+#include <WiFi.h>
+#include <HTTPClient.h>
 
 // Pin defines for ESP
 #define SCK_PIN 18
@@ -32,9 +34,9 @@
 
 #define MAX_UIDS 10
 
-#define JOYSTICK_SW_PIN 27  // Joystick Switch
-#define JOYSTICK_URX_PIN 12 // Joystick URX
-#define JOYSTICK_URY_PIN 14 // Joystick URY
+#define JOYSTICK_SW_PIN 34  // Joystick Switch
+#define JOYSTICK_URX_PIN 32 // Joystick URX
+#define JOYSTICK_URY_PIN 35 // Joystick URY
 
 #define RTC_CLK_PIN 33
 #define RTC_DAT_PIN 16
@@ -51,8 +53,8 @@
 #define DHTPIN 13     // Pin connected to the DHT11 sensor
 #define DHTTYPE DHT11 // Define the type of DHT sensor
 
-    // User struct
-    struct user
+// User struct
+struct user
 {
     String uid;
     bool logged;
@@ -100,5 +102,7 @@ void accessDeniedMelody();
 void setupLEDControl();
 void get_temperature_humidity(float &temperature, float &humidity);
 void print_temperature_humidity(float temperature, float humidity);
+void sendEmployeeData(String name, String uid, String time, float temperature, float humidity, String reminder);
+void connectToWiFi();
 
 #endif // UTILS_HPP

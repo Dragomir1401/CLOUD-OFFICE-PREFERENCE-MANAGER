@@ -269,7 +269,10 @@ void setup()
   setDateTime();
 
   // Initialize the DHT sensor
-  dht.begin(); 
+  dht.begin();
+
+  // Connect to WiFi
+  connectToWiFi();
 
   // Initialize joystick pins
   pinMode(JOYSTICK_URX_PIN, INPUT);
@@ -354,9 +357,14 @@ void loop()
         // Check if the user is logged in
         if (!authorizedUsers[index].logged)
         {
-          // Log the time of access
           RtcDateTime now = Rtc.GetDateTime();
           String nowString = timeToString(now);
+          float temperature = 0, humidity = 0;
+          get_temperature_humidity(temperature, humidity);
+
+          sendEmployeeData(names[uidToIndexMap(readUID)], readUID, nowString, temperature, humidity, reminders[uidToIndexMap(readUID)]);
+
+          // Log the time of access
           lastAccess[index] = nowString;
           Serial.println(lastAccess[index]);
           authorizedUsers[index].logged = true;
@@ -390,10 +398,6 @@ void loop()
           printStringOnLCD(reminders[uidToIndexMap(readUID)]);
           Serial.println(reminders[uidToIndexMap(readUID)]);
           delay(2000);
-
-          // Get the current temperature and humidity
-          float temperature = 0, humidity = 0;
-          get_temperature_humidity(temperature, humidity);
 
           // Display the temperature and humidity
           print_temperature_humidity(temperature, humidity);
