@@ -25,9 +25,7 @@ void connectToWiFi()
     Serial.println(WiFi.localIP());
     Serial.println("Connected!");
 
-    testServerConnectivity();
 }
-
 
 void sendEmployeeData(String name, String uid, String time, float temperature, float humidity, String reminder)
 {

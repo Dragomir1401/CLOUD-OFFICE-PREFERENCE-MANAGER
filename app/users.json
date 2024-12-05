@@ -1,0 +1,24 @@
+{
+    "users": [
+        {
+            "id": "E37A082F",
+            "name": "John Doe",
+            "access": false,
+            "preferences": {
+                "temperature": "15",
+                "humidity": "10"
+            },
+            "reminder": "Fa schimb"
+        },
+        {
+            "id": "E3E40B2F",
+            "name": "Jane Smith",
+            "access": false,
+            "preferences": {
+                "temperature": 22,
+                "humidity": 30
+            },
+            "reminder": "Reminder not set"
+        }
+    ]
+}
