@@ -7,6 +7,8 @@
 #include <Wire.h>
 #include <RtcDS1302.h>
 #include <ThreeWire.h>
+#include<Adafruit_Sensor.h>
+#include <DHT.h>
 
 // Pin defines for ESP
 #define SCK_PIN 18
@@ -41,15 +43,16 @@
 #define LCD_SDA_PIN 25 // LCD SDA
 #define LCD_SCL_PIN 26 // LCD SCL
 
-#define TEMPERATURE_PIN 13 // Temperature sensor
-
 #define ADMIN_UID "53F7CA0E"
 
 #define LOWER_JOYSTICK_THRESHOLD 500
 #define UPPER_JOYSTICK_THRESHOLD 3500
 
-// User struct
-struct user
+#define DHTPIN 13     // Pin connected to the DHT11 sensor
+#define DHTTYPE DHT11 // Define the type of DHT sensor
+
+    // User struct
+    struct user
 {
     String uid;
     bool logged;
@@ -68,6 +71,7 @@ extern int uidCount;
 extern int currentEmployeeIndex;
 extern ThreeWire myWire;
 extern RtcDS1302<ThreeWire> Rtc;
+extern DHT dht;
 
 // Function declarations
 int daysInMonth(int month, int year);
@@ -94,5 +98,7 @@ void adminAccessMelody();
 void accessGrantedMelody();
 void accessDeniedMelody();
 void setupLEDControl();
+void get_temperature_humidity(float &temperature, float &humidity);
+void print_temperature_humidity(float temperature, float humidity);
 
 #endif // UTILS_HPP

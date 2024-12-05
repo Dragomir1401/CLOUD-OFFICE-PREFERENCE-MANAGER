@@ -241,20 +241,6 @@ void setup()
   // Initiate RTC
   Rtc.Begin();
 
-  RtcDateTime now = Rtc.GetDateTime();
-  Serial.print("Current RTC Date: ");
-  Serial.print(now.Year(), DEC);
-  Serial.print('/');
-  Serial.print(now.Month(), DEC);
-  Serial.print('/');
-  Serial.print(now.Day(), DEC);
-  Serial.print(" Time: ");
-  Serial.print(now.Hour(), DEC);
-  Serial.print(':');
-  Serial.print(now.Minute(), DEC);
-  Serial.print(':');
-  Serial.println(now.Second(), DEC);
-
   // Initiate LCD
   lcd.init();
 
@@ -281,6 +267,9 @@ void setup()
 
   // Set the correct date and time
   setDateTime();
+
+  // Initialize the DHT sensor
+  dht.begin(); 
 
   // Initialize joystick pins
   pinMode(JOYSTICK_URX_PIN, INPUT);
@@ -401,6 +390,16 @@ void loop()
           printStringOnLCD(reminders[uidToIndexMap(readUID)]);
           Serial.println(reminders[uidToIndexMap(readUID)]);
           delay(2000);
+
+          // Get the current temperature and humidity
+          float temperature = 0, humidity = 0;
+          get_temperature_humidity(temperature, humidity);
+
+          // Display the temperature and humidity
+          print_temperature_humidity(temperature, humidity);
+
+          // Delay for 2 seconds
+          delay(3000);
         }
         else
         {

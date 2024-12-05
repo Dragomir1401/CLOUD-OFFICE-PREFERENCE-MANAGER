@@ -13,3 +13,4 @@ int uidCount = 0;
 int currentEmployeeIndex = 0;
 ThreeWire myWire(RTC_DAT_PIN, RTC_CLK_PIN, RTC_RST_PIN);
 RtcDS1302<ThreeWire> Rtc(myWire);
+DHT dht(DHTPIN, DHTTYPE);

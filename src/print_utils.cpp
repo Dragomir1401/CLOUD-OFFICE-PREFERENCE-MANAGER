@@ -89,3 +89,16 @@ void printIdle()
         }
     }
 }
+
+void print_temperature_humidity(float temperature, float humidity)
+{
+    // Print the temperature and humidity
+    lcd.clear();
+    lcd.print("Temperature: ");
+    lcd.print(temperature);
+    lcd.print("C");
+    lcd.setCursor(0, 1);
+    lcd.print("Humidity: ");
+    lcd.print(humidity);
+    lcd.print("%");
+}
