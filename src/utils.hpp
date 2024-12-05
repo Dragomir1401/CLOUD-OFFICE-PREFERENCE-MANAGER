@@ -67,8 +67,8 @@ extern user authorizedUsers[MAX_UIDS];
 extern int logTimes[MAX_UIDS];
 extern int lastTimeSpent[MAX_UIDS];
 extern String lastAccess[MAX_UIDS];
-extern const char *reminders[MAX_UIDS];
-extern const char *names[MAX_UIDS];
+extern char reminders[MAX_UIDS][100]; // Assuming a maximum of 100 characters for each reminder
+extern char names[MAX_UIDS][100];     // Assuming a maximum of 100 characters for each name
 extern int uidCount;
 extern int currentEmployeeIndex;
 extern ThreeWire myWire;
@@ -102,7 +102,8 @@ void accessDeniedMelody();
 void setupLEDControl();
 void get_temperature_humidity(float &temperature, float &humidity);
 void print_temperature_humidity(float temperature, float humidity);
-void sendEmployeeData(String name, String uid, String time, float temperature, float humidity, String reminder);
+void sendEmployeeData(char name[], String uid, String time, float temperature, float humidity, char reminder[]);
 void connectToWiFi();
+void getEmployeeNamesAndReminders(char reminders[MAX_UIDS][100], char names[MAX_UIDS][100], int &userCount);
 
 #endif // UTILS_HPP

@@ -88,9 +88,10 @@ def set_reminder():
     else:
         return jsonify({"status": "failure", "message": "User not found!"}), 404
     
-@app.route('/get_users', methods=['GET'])
-def get_users():
-    return jsonify(users)
+@app.route('/get_users_names_reminders', methods=['GET'])
+def get_users_names_reminders():
+    # Return a list of dictionaries with the user's name and reminder
+    return jsonify([{"name": u['name'], "reminder": u['reminder']} for u in users])
 
 @app.route('/add_user', methods=['POST'])
 def add_user():

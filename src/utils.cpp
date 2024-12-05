@@ -7,8 +7,8 @@ user authorizedUsers[MAX_UIDS];
 int logTimes[MAX_UIDS];
 int lastTimeSpent[MAX_UIDS];
 String lastAccess[MAX_UIDS];
-const char *reminders[MAX_UIDS];
-const char *names[MAX_UIDS];
+char reminders[MAX_UIDS][100];  // Assuming a maximum of 100 characters for each reminder
+char names[MAX_UIDS][100];      // Assuming a maximum of 100 characters for each name
 int uidCount = 0;
 int currentEmployeeIndex = 0;
 ThreeWire myWire(RTC_DAT_PIN, RTC_CLK_PIN, RTC_RST_PIN);

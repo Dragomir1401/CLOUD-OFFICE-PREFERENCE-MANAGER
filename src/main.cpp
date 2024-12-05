@@ -280,14 +280,7 @@ void setup()
   pinMode(JOYSTICK_SW_PIN, INPUT);
 
   // Set the reminders and names for employees
-  reminders[0] = "Message manager for planning";
-  names[0] = "Popescu Marius";
-  reminders[1] = "Bugfix feature/IPD17-add-library";
-  names[1] = "Gheorghe Hagi";
-  reminders[2] = "Call HR for employment contract";
-  names[2] = "Lionel Messi";
-  reminders[3] = "Respond to product team emails";
-  names[3] = "Nadia Marin";
+  getEmployeeNamesAndReminders (reminders, names, uidCount);
 }
 
 

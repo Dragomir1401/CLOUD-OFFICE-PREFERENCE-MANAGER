@@ -140,7 +140,8 @@ void removeCardAccess()
                 authorizedUsers[i] = authorizedUsers[i + 1];
                 logTimes[i] = logTimes[i + 1];
                 lastTimeSpent[i] = lastTimeSpent[i + 1];
-                reminders[i] = reminders[i + 1];
+                strcpy(names[i], names[i + 1]);
+                strcpy(reminders[i], reminders[i + 1]);
             }
             uidCount--;
 
