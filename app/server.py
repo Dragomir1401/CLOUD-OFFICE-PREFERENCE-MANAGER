@@ -87,6 +87,63 @@ def set_reminder():
         return jsonify({"status": "success", "message": "Reminder set successfully!"})
     else:
         return jsonify({"status": "failure", "message": "User not found!"}), 404
+    
+@app.route('/get_users', methods=['GET'])
+def get_users():
+    return jsonify(users)
+
+@app.route('/add_user', methods=['POST'])
+def add_user():
+    # Check if user already exists
+    data = request.get_json()
+    user_id = data.get('id')
+    
+    # If user exists return 409 Conflict
+    if any(u['id'] == user_id for u in users):
+        return jsonify({"status": "failure", "message": "User already exists!"}), 409
+    
+    # Add the new user
+    users.append(data)
+    save_users()
+    
+    return jsonify({"status": "success", "message": "User added successfully!"})
+
+@app.route('/remove_access', methods=['POST'])
+def remove_access():
+    data = request.get_json()
+    user_id = data.get('id')
+    
+    # Check if user exists
+    user = next((u for u in users if u['id'] == user_id), None)
+    if user:
+        user['access'] = False
+        save_users()
+        return jsonify({"status": "success", "message": "Access removed successfully!"})
+    else:
+        return jsonify({"status": "failure", "message": "User not found!"}), 404
+    
+@app.route('/add_access', methods=['POST'])
+def add_access():
+    data = request.get_json()
+    user_id = data.get('id')
+    
+    # Check if user exists
+    user = next((u for u in users if u['id'] == user_id), None)
+    if user:
+        user['access'] = True
+        save_users()
+        return jsonify({"status": "success", "message": "Access granted successfully!"})
+    else:
+        return jsonify({"status": "failure", "message": "User not found!"}), 404
+    
+@app.route('/check_access/<int:user_id>', methods=['GET'])
+def check_access(user_id):
+    user = next((u for u in users if u['id'] == user_id), None)
+    if user:
+        return jsonify({"access": user['access']})
+    else:
+        return jsonify({"status": "failure", "message": "User not found!"}), 404
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
