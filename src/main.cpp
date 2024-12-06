@@ -355,7 +355,7 @@ void loop()
           float temperature = 0, humidity = 0;
           get_temperature_humidity(temperature, humidity);
 
-          sendEmployeeData(users_db[uidToIndex(readUID)].name, readUID, nowString, temperature, humidity, users_db[uidToIndex(readUID)].reminder);
+          sendEmployeeData(users_db[uidToIndex(readUID)].name, readUID, nowString, temperature, humidity, users_db[uidToIndex(readUID)].reminder, 0);
 
           // Log the time of access
           Serial.println(users_db[index].lastLogTime);
@@ -404,6 +404,9 @@ void loop()
           String nowString = timeToString(now);
           Serial.println(nowString);
           users_db[index].logged = false;
+          float temperature = 0, humidity = 0;
+          get_temperature_humidity(temperature, humidity);
+          sendEmployeeData(users_db[uidToIndex(readUID)].name, readUID, nowString, temperature, humidity, users_db[uidToIndex(readUID)].reminder, 1);
 
           // Display the log out messages
           Serial.println("Logging out...");

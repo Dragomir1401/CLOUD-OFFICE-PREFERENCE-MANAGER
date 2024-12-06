@@ -4,7 +4,8 @@
 const char *ssid = "Tenda_E21800";
 const char *password = "evenneed145";
 const char *serverURL = "http://192.168.0.165:5000";
-const char *serverURLLogEmployees = "http://192.168.0.165:5000/log_employee";
+const char *serverURLLogInEmployees = "http://192.168.0.165:5000/login_employee";
+const char *serverURLLogOutEmployees = "http://192.168.0.165:5000/logout_employee";
 const char *serverURLAllUsersDetails = "http://192.168.0.165:5000/get_all_users_details";
 const char *serverURLUserGetNameById = "http://192.168.0.165:5000/get_user_name/";
 const char *serverURLUserGetReminderById = "http://192.168.0.165:5000/get_user_reminder/";
@@ -32,12 +33,16 @@ void connectToWiFi()
 
 }
 
-void sendEmployeeData(String name, String uid, String time, float temperature, float humidity, String reminder)
+void sendEmployeeData(String name, String uid, String time, float temperature, float humidity, String reminder, bool inOut)
 {
     if (WiFi.status() == WL_CONNECTED)
     {
         HTTPClient http;
-        http.begin(serverURLLogEmployees);
+        if (!inOut) {
+            http.begin(serverURLLogInEmployees);
+        } else {
+            http.begin(serverURLLogOutEmployees);
+        }
         http.addHeader("Content-Type", "application/json");
 
         // Include the time field in the JSON payload

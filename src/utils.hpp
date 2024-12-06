@@ -101,7 +101,7 @@ void accessDeniedMelody();
 void setupLEDControl();
 void get_temperature_humidity(float &temperature, float &humidity);
 void print_temperature_humidity(float temperature, float humidity);
-void sendEmployeeData(String name, String uid, String time, float temperature, float humidity, String reminder);
+void sendEmployeeData(String name, String uid, String time, float temperature, float humidity, String reminder, bool inOut);
 void connectToWiFi();
 void fillAllUsersDetails(user users_db[]);
 String get_user_name_by_id(String id);

@@ -39,10 +39,22 @@ def records_page():
     # Pass the logs to the records page
     return render_template('records.html', logs=logs)
 
-@app.route('/log_employee', methods=['POST'])
+@app.route('/login_employee', methods=['POST'])
 def log_employee():
     # Parse the JSON data sent by the ESP32
     data = request.get_json()
+    data['type'] = 'login'
+
+    # Store the incoming log in the logs list
+    logs.append(data)
+
+    return jsonify({"status": "success"})
+
+@app.route('/logout_employee', methods=['POST'])
+def logout_employee():
+    # Parse the JSON data sent by the ESP32
+    data = request.get_json()
+    data['type'] = 'logout'
 
     # Store the incoming log in the logs list
     logs.append(data)

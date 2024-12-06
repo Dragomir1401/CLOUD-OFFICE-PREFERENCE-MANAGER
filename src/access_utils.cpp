@@ -20,7 +20,6 @@ int uidToIndex(String uid)
 {
     for (int i = 0; i < uidCount; i++)
     {
-        Serial.println("Comparing: " + users_db[i].uid + " with: " + uid);
         if (users_db[i].uid == uid)
         {
             Serial.println("User with id: " + uid + " found at index: " + i);
