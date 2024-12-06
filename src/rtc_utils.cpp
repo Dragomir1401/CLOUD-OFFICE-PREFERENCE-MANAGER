@@ -129,14 +129,14 @@ void displayExitTime(RtcDateTime now, int index)
 {
     // Get the current time
     int seconds = dateToInt(now);
-    int spentTime = seconds - logTimes[index];
+    int spentTime = seconds - users_db[index].lastLogTime;
 
     // Convert the spent time to a string
     String spentTimeString = formatSpentTime(spentTime);
-    float difference = calculateTimeSpentPercentage(lastTimeSpent[index], spentTime);
+    float difference = calculateTimeSpentPercentage(users_db[index].lastTimeSpent, spentTime);
 
     // Set last time spent to the current time spent
-    lastTimeSpent[index] = spentTime;
+    users_db[index].lastTimeSpent = spentTime;
 
     // Print the spent time
     lcd.clear();

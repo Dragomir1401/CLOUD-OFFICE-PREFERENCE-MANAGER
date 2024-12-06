@@ -20,7 +20,7 @@ int uidToIndex(String uid)
 {
     for (int i = 0; i < uidCount; i++)
     {
-        if (authorizedUsers[i].uid == uid)
+        if (users_db[i].uid == uid)
         {
             return i;
         }
@@ -77,11 +77,13 @@ void addCardAccess()
         }
 
         // Add the new card to the list
-        authorizedUsers[uidCount].uid = newUID;
-        authorizedUsers[uidCount].logged = false;
-        logTimes[uidCount] = 0;
-        lastTimeSpent[uidCount] = 0;
-        lastAccess[uidCount] = "No Access";
+        users_db[uidCount].uid = newUID;
+        users_db[uidCount].logged = false;
+        users_db[uidCount].hasAccess = true;
+        users_db[uidCount].lastLogTime = 0;
+        users_db[uidCount].lastTimeSpent = 0;
+        users_db[uidCount].name = get_user_name_by_id(newUID);
+        users_db[uidCount].reminder = get_user_reminder_by_id(newUID);
         uidCount++;
 
         // Print the card added message
@@ -134,16 +136,8 @@ void removeCardAccess()
         int index = uidToIndex(removeUID);
         if (index >= 0)
         {
-            // Remove the card from the list for shifting
-            for (int i = index; i < uidCount - 1; i++)
-            {
-                authorizedUsers[i] = authorizedUsers[i + 1];
-                logTimes[i] = logTimes[i + 1];
-                lastTimeSpent[i] = lastTimeSpent[i + 1];
-                strcpy(names[i], names[i + 1]);
-                strcpy(reminders[i], reminders[i + 1]);
-            }
-            uidCount--;
+            // Just set the user as having access to false
+            users_db[index].hasAccess = false;
 
             // Print the card removed message
             lcd.clear();
@@ -169,37 +163,13 @@ void removeCardAccess()
     }
 }
 
-// Function to map an UID to an index based on card users
-int uidToIndexMap(String uid)
-{
-    if (uid == "E3E40B2F")
-    {
-        return 0;
-    }
-    else if (uid == "E37A082F")
-    {
-        return 1;
-    }
-    else if (uid == "42487441")
-    {
-        return 2;
-    }
-    else if (uid == "53F7CA0E")
-    {
-        return 3;
-    }
-    else
-    {
-        return -1;
-    }
-}
 
 // Function to check if a UID is authorized
 bool isAuthorizedUID(String uid)
 {
     for (int i = 0; i < uidCount; i++)
     {
-        if (authorizedUsers[i].uid == uid)
+        if (users_db[i].uid == uid && users_db[i].hasAccess)
         {
             return true;
         }

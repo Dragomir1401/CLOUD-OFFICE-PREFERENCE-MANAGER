@@ -169,7 +169,7 @@ void adminLogged()
     {
       // Show employee name from list
       lcd.clear();
-      lcd.print(names[uidToIndexMap(authorizedUsers[currentEmployeeIndex].uid)]);
+      lcd.print(users_db[currentEmployeeIndex].name);
       lcd.setCursor(3, 1);
       lcd.print("--page ");
       lcd.print(currentEmployeeIndex + 1);
@@ -183,31 +183,31 @@ void adminLogged()
       {
       case 0:
         lcd.print("UID: ");
-        lcd.print(authorizedUsers[currentEmployeeIndex].uid);
+        lcd.print(users_db[currentEmployeeIndex].uid);
         break;
 
       case 1:
         lcd.print("Logged: ");
-        lcd.print(authorizedUsers[currentEmployeeIndex].logged ? "Yes" : "No");
+        lcd.print(users_db[currentEmployeeIndex].logged ? "Yes" : "No");
         break;
 
       case 2:
         lcd.print("Reminder:");
         lcd.setCursor(0, 1);
-        lcd.print(reminders[currentEmployeeIndex]);
+        lcd.print(users_db[currentEmployeeIndex].reminder);
         break;
 
       case 3:
         lcd.print("Last access:");
         lcd.setCursor(0, 1);
-        lcd.print(lastAccess[currentEmployeeIndex]);
+        lcd.print(users_db[currentEmployeeIndex].lastLogTime);
         break;
 
       case 4:
       {
         lcd.print("Last time spent:");
         lcd.setCursor(0, 1);
-        String spentTimeString = formatSpentTime(lastTimeSpent[currentEmployeeIndex]);
+        String spentTimeString = formatSpentTime(users_db[currentEmployeeIndex].lastTimeSpent);
         lcd.print(spentTimeString);
         break;
       }
@@ -280,7 +280,7 @@ void setup()
   pinMode(JOYSTICK_SW_PIN, INPUT);
 
   // Set the reminders and names for employees
-  getEmployeeNamesAndReminders(reminders, names, uidCount);
+  fillAllUsersDetails(users_db);
 }
 
 
@@ -348,20 +348,19 @@ void loop()
         int index = uidToIndex(readUID);
 
         // Check if the user is logged in
-        if (!authorizedUsers[index].logged)
+        if (!users_db[index].logged)
         {
           RtcDateTime now = Rtc.GetDateTime();
           String nowString = timeToString(now);
           float temperature = 0, humidity = 0;
           get_temperature_humidity(temperature, humidity);
 
-          sendEmployeeData(names[uidToIndexMap(readUID)], readUID, nowString, temperature, humidity, reminders[uidToIndexMap(readUID)]);
+          sendEmployeeData(users_db[uidToIndex(readUID)].name, readUID, nowString, temperature, humidity, users_db[uidToIndex(readUID)].reminder);
 
           // Log the time of access
-          lastAccess[index] = nowString;
-          Serial.println(lastAccess[index]);
-          authorizedUsers[index].logged = true;
-          logTimes[index] = dateToInt(now);
+          Serial.println(users_db[index].lastLogTime);
+          users_db[index].logged = true;
+          users_db[index].lastLogTime = dateToInt(now);
 
           // Display the access granted message
           Serial.println("Access Granted");
@@ -377,8 +376,8 @@ void loop()
           lcd.print("Welcome");
           Serial.println("Welcome");
           lcd.setCursor(0, 1);
-          lcd.print(names[uidToIndexMap(readUID)]);
-          Serial.println(names[uidToIndexMap(readUID)]);
+          lcd.print(users_db[uidToIndex(readUID)].name);
+          Serial.println(users_db[uidToIndex(readUID)].name);
           delay(2000);
 
           // Display the reminder message
@@ -388,8 +387,8 @@ void loop()
           delay(2000);
 
           // Display the reminder message
-          printStringOnLCD(reminders[uidToIndexMap(readUID)]);
-          Serial.println(reminders[uidToIndexMap(readUID)]);
+          printStringOnLCD(users_db[uidToIndex(readUID)].reminder);
+          Serial.println(users_db[uidToIndex(readUID)].reminder);
           delay(2000);
 
           // Display the temperature and humidity
@@ -404,7 +403,7 @@ void loop()
           RtcDateTime now = Rtc.GetDateTime();
           String nowString = timeToString(now);
           Serial.println(nowString);
-          authorizedUsers[index].logged = false;
+          users_db[index].logged = false;
 
           // Display the log out messages
           Serial.println("Logging out...");

@@ -93,6 +93,18 @@ def get_users_names_reminders():
     # Return a list of dictionaries with the user's name and reminder
     return jsonify([{"name": u['name'], "reminder": u['reminder']} for u in users])
 
+@app.route('/get_all_users_details', methods=['GET'])
+def get_all_users_details():
+    return jsonify(users)
+
+@app.route('/get_user_details/<int:user_id>', methods=['GET'])
+def get_user_details(user_id):
+    user = next((u for u in users if u['id'] == user_id), None)
+    if user:
+        return jsonify(user)
+    else:
+        return jsonify({"status": "failure", "message": "User not found!"}), 404
+
 @app.route('/add_user', methods=['POST'])
 def add_user():
     # Check if user already exists
@@ -145,6 +157,22 @@ def check_access(user_id):
     else:
         return jsonify({"status": "failure", "message": "User not found!"}), 404
     
+@app.route('/get_user_name/<int:user_id>', methods=['GET'])
+def get_user_name(user_id):
+    user = next((u for u in users if u['id'] == user_id), None)
+    if user:
+        return jsonify({"name": user['name']})
+    else:
+        return jsonify({"status": "failure", "message": "User not found!"}), 404
+    
+@app.route('/get_user_reminder/<int:user_id>', methods=['GET'])
+def get_reminder(user_id):
+    user = next((u for u in users if u['id'] == user_id), None)
+    if user:
+        return jsonify({"reminder": user['reminder']})
+    else:
+        return jsonify({"status": "failure", "message": "User not found!"}), 404
+    
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)

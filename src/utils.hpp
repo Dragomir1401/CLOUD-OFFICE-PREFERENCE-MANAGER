@@ -57,18 +57,18 @@
 struct user
 {
     String uid;
+    String reminder;
+    String name;
+    int lastLogTime;
+    bool hasAccess;
+    int lastTimeSpent;
     bool logged;
 };
 
 // Extern declarations for global variables
 extern MFRC522 mfrc522;
 extern LiquidCrystal_I2C lcd;
-extern user authorizedUsers[MAX_UIDS];
-extern int logTimes[MAX_UIDS];
-extern int lastTimeSpent[MAX_UIDS];
-extern String lastAccess[MAX_UIDS];
-extern char reminders[MAX_UIDS][100]; // Assuming a maximum of 100 characters for each reminder
-extern char names[MAX_UIDS][100];     // Assuming a maximum of 100 characters for each name
+extern user users_db[MAX_UIDS];
 extern int uidCount;
 extern int currentEmployeeIndex;
 extern ThreeWire myWire;
@@ -91,7 +91,6 @@ void setDateTime();
 void displayExitTime(RtcDateTime now, int index);
 void printIdle();
 String timeToString(const RtcDateTime &dt);
-int uidToIndexMap(String uid);
 bool isAuthorizedUID(String uid);
 void turnOffLEDs();
 void goodbyeMelody();
@@ -102,8 +101,11 @@ void accessDeniedMelody();
 void setupLEDControl();
 void get_temperature_humidity(float &temperature, float &humidity);
 void print_temperature_humidity(float temperature, float humidity);
-void sendEmployeeData(char name[], String uid, String time, float temperature, float humidity, char reminder[]);
+void sendEmployeeData(String name, String uid, String time, float temperature, float humidity, String reminder);
 void connectToWiFi();
-void getEmployeeNamesAndReminders(char reminders[MAX_UIDS][100], char names[MAX_UIDS][100], int &userCount);
+void fillAllUsersDetails(user users_db[]);
+String get_user_name_by_id(String id);
+String get_user_reminder_by_id(String id);
+void printStringOnLCD(String message);
 
 #endif // UTILS_HPP

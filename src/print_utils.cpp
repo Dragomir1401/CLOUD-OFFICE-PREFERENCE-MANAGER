@@ -29,6 +29,11 @@ void printStringOnLCD(const char *message)
     }
 }
 
+void printStringOnLCD(String message)
+{
+    printStringOnLCD(message.c_str());
+}
+
 // Function to show the total number of users
 void showTotalNumber()
 {
@@ -79,7 +84,7 @@ void printIdle()
             int loggedUsersCount = 0;
             for (int i = 0; i < uidCount; i++)
             {
-                if (authorizedUsers[i].logged)
+                if (users_db[i].logged)
                 {
                     loggedUsersCount++;
                 }
