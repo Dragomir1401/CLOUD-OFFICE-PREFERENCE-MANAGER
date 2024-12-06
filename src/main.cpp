@@ -280,7 +280,7 @@ void setup()
   pinMode(JOYSTICK_SW_PIN, INPUT);
 
   // Set the reminders and names for employees
-  getEmployeeNamesAndReminders (reminders, names, uidCount);
+  getEmployeeNamesAndReminders(reminders, names, uidCount);
 }
 
 
