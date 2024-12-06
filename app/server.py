@@ -160,6 +160,20 @@ def check_access():
     else:
         return jsonify({"status": "failure", "message": "User not found!"}), 404
     
+@app.route('/set_access/', methods=['POST'])
+def set_access():
+    data = request.get_json()
+    user_id = data.get('id')
+    access = data.get('access')
+    
+    user = next((u for u in users if u['id'] == user_id), None)
+    if user:
+        user['access'] = access
+        save_users()
+        return jsonify({"status": "success", "message": "Access updated successfully!"})
+    else:
+        return jsonify({"status": "failure", "message": "User not found!"}), 404
+    
 @app.route('/get_user_name/', methods=['POST'])
 def get_user_name():
     data = request.get_json()

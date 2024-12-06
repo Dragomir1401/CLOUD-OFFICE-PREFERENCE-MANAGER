@@ -86,6 +86,9 @@ void addCardAccess()
         users_db[uidCount].reminder = get_user_reminder_by_id(newUID);
         uidCount++;
 
+        // Do a call to set the access to true
+        set_access(newUID, true);
+
         // Print the card added message
         lcd.clear();
         lcd.print("Card Added:");
@@ -138,6 +141,9 @@ void removeCardAccess()
         {
             // Just set the user as having access to false
             users_db[index].hasAccess = false;
+
+            // Do a call to set the access to false
+            set_access(removeUID, false);
 
             // Print the card removed message
             lcd.clear();

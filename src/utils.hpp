@@ -107,5 +107,6 @@ void fillAllUsersDetails(user users_db[]);
 String get_user_name_by_id(String id);
 String get_user_reminder_by_id(String id);
 void printStringOnLCD(String message);
+void set_access(String id, bool access);
 
 #endif // UTILS_HPP

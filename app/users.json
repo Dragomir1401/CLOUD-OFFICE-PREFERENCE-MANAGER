@@ -3,7 +3,7 @@
         {
             "id": "E37A082F",
             "name": "John Doe",
-            "access": false,
+            "access": true,
             "preferences": {
                 "temperature": "15",
                 "humidity": "10"

@@ -8,6 +8,7 @@ const char *serverURLLogEmployees = "http://192.168.0.165:5000/log_employee";
 const char *serverURLAllUsersDetails = "http://192.168.0.165:5000/get_all_users_details";
 const char *serverURLUserGetNameById = "http://192.168.0.165:5000/get_user_name/";
 const char *serverURLUserGetReminderById = "http://192.168.0.165:5000/get_user_reminder/";
+const char *serverURLUserSetAccess = "http://192.168.0.165:5000/set_access/";
 
 void connectToWiFi()
 {
@@ -246,4 +247,57 @@ String get_user_reminder_by_id(String id)
     }
 
     return "";
+}
+
+void set_access(String id, bool access)
+{
+    if (WiFi.status() == WL_CONNECTED)
+    {
+        HTTPClient http;
+        http.begin(serverURLUserSetAccess); // Server URL
+        http.addHeader("Content-Type", "application/json");
+
+        // Create a JSON payload
+        StaticJsonDocument<200> doc;
+        doc["id"] = id;
+        doc["access"] = access;
+        String requestBody;
+        serializeJson(doc, requestBody);
+
+        // Send POST request
+        int httpResponseCode = http.POST(requestBody);
+
+        if (httpResponseCode > 0)
+        {
+            Serial.println("Data received successfully!");
+
+            // Get the response payload
+            String payload = http.getString();
+            StaticJsonDocument<1024> responseDoc;
+            DeserializationError error = deserializeJson(responseDoc, payload);
+
+            if (error)
+            {
+                Serial.print("JSON parsing failed: ");
+                Serial.println(error.f_str());
+                http.end();
+                return;
+            }
+
+            // Parse the response for the reminder
+            const char *reminder = responseDoc["reminder"];
+            http.end(); // Close the connection
+        }
+        else
+        {
+            Serial.print("Error receiving data: ");
+            Serial.println(httpResponseCode);
+        }
+
+        http.end(); // Close the connection
+    }
+    else
+    {
+        Serial.println("WiFi not connected!");
+    }
 }
