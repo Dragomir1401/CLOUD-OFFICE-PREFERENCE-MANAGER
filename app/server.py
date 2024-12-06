@@ -149,24 +149,33 @@ def add_access():
     else:
         return jsonify({"status": "failure", "message": "User not found!"}), 404
     
-@app.route('/check_access/<int:user_id>', methods=['GET'])
-def check_access(user_id):
+@app.route('/check_access/', methods=['POST'])
+def check_access():
+    data = request.get_json()
+    user_id = data.get('id')
+    
     user = next((u for u in users if u['id'] == user_id), None)
     if user:
         return jsonify({"access": user['access']})
     else:
         return jsonify({"status": "failure", "message": "User not found!"}), 404
     
-@app.route('/get_user_name/<int:user_id>', methods=['GET'])
-def get_user_name(user_id):
+@app.route('/get_user_name/', methods=['POST'])
+def get_user_name():
+    data = request.get_json()
+    user_id = data.get('id')
+    
     user = next((u for u in users if u['id'] == user_id), None)
     if user:
         return jsonify({"name": user['name']})
     else:
         return jsonify({"status": "failure", "message": "User not found!"}), 404
     
-@app.route('/get_user_reminder/<int:user_id>', methods=['GET'])
-def get_reminder(user_id):
+@app.route('/get_user_reminder/', methods=['POST'])
+def get_reminder():
+    data = request.get_json()
+    user_id = data.get('id')
+    
     user = next((u for u in users if u['id'] == user_id), None)
     if user:
         return jsonify({"reminder": user['reminder']})

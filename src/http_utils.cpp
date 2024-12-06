@@ -136,26 +136,32 @@ void fillAllUsersDetails(user users_db[]) {
     }
 }
 
+// Function to get user name by ID using a POST request
 String get_user_name_by_id(String id)
 {
-    // Do a call to /get_user_name/<uid> to get the user name
     if (WiFi.status() == WL_CONNECTED)
     {
         HTTPClient http;
-        http.begin(serverURLUserGetNameById + id); // Server URL
+        http.begin(serverURLUserGetNameById); // Server URL
         http.addHeader("Content-Type", "application/json");
 
-        int httpResponseCode = http.GET();
+        // Create a JSON payload
+        StaticJsonDocument<200> doc;
+        doc["id"] = id;
+        String requestBody;
+        serializeJson(doc, requestBody);
+
+        // Send POST request
+        int httpResponseCode = http.POST(requestBody);
+
         if (httpResponseCode > 0)
         {
             Serial.println("Data received successfully!");
 
-            // Create a buffer to hold the response
+            // Get the response payload
             String payload = http.getString();
-
-            // Parse the JSON response using ArduinoJson
-            StaticJsonDocument<1024> doc;
-            DeserializationError error = deserializeJson(doc, payload);
+            StaticJsonDocument<1024> responseDoc;
+            DeserializationError error = deserializeJson(responseDoc, payload);
 
             if (error)
             {
@@ -165,8 +171,9 @@ String get_user_name_by_id(String id)
                 return "";
             }
 
-            // Parse the JSON array into names and reminders
-            const char *name = doc["name"];
+            // Parse the response for the name
+            const char *name = responseDoc["name"];
+            http.end(); // Close the connection
             return String(name);
         }
         else
@@ -175,7 +182,7 @@ String get_user_name_by_id(String id)
             Serial.println(httpResponseCode);
         }
 
-        http.end(); // Close the HTTP connection
+        http.end(); // Close the connection
     }
     else
     {
@@ -185,26 +192,32 @@ String get_user_name_by_id(String id)
     return "";
 }
 
+// Function to get user reminder by ID using a POST request
 String get_user_reminder_by_id(String id)
 {
-    // Do a call to /get_user_reminder/<uid> to get the user reminder
     if (WiFi.status() == WL_CONNECTED)
     {
         HTTPClient http;
-        http.begin(serverURLUserGetReminderById + id); // Server URL
+        http.begin(serverURLUserGetReminderById); // Server URL
         http.addHeader("Content-Type", "application/json");
 
-        int httpResponseCode = http.GET();
+        // Create a JSON payload
+        StaticJsonDocument<200> doc;
+        doc["id"] = id;
+        String requestBody;
+        serializeJson(doc, requestBody);
+
+        // Send POST request
+        int httpResponseCode = http.POST(requestBody);
+
         if (httpResponseCode > 0)
         {
             Serial.println("Data received successfully!");
 
-            // Create a buffer to hold the response
+            // Get the response payload
             String payload = http.getString();
-
-            // Parse the JSON response using ArduinoJson
-            StaticJsonDocument<1024> doc;
-            DeserializationError error = deserializeJson(doc, payload);
+            StaticJsonDocument<1024> responseDoc;
+            DeserializationError error = deserializeJson(responseDoc, payload);
 
             if (error)
             {
@@ -214,8 +227,9 @@ String get_user_reminder_by_id(String id)
                 return "";
             }
 
-            // Parse the JSON array into names and reminders
-            const char *reminder = doc["reminder"];
+            // Parse the response for the reminder
+            const char *reminder = responseDoc["reminder"];
+            http.end(); // Close the connection
             return String(reminder);
         }
         else
@@ -224,7 +238,7 @@ String get_user_reminder_by_id(String id)
             Serial.println(httpResponseCode);
         }
 
-        http.end(); // Close the HTTP connection
+        http.end(); // Close the connection
     }
     else
     {
