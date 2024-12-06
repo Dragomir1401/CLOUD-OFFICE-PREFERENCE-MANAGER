@@ -13,7 +13,7 @@
         {
             "id": "E3E40B2F",
             "name": "Jane Smith",
-            "access": false,
+            "access": true,
             "preferences": {
                 "temperature": 22,
                 "humidity": 30

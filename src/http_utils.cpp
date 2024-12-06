@@ -111,16 +111,29 @@ void fillAllUsersDetails(user users_db[]) {
             {
                 const char *name = user["name"];
                 const char *reminder = user["reminder"];
-                const char *uid = user["uid"];
-                const char *access = user["access"];
+                const char *uid = user["id"];
+                bool access = user["access"];
+
+                // print user details
+                Serial.print("Received user details: ");
+                Serial.print("Name: ");
+                Serial.println(name);
+                Serial.print("Reminder: ");
+                Serial.println(reminder);
+                Serial.print("UID: ");
+                Serial.println(uid);
+                Serial.print("Access: ");
+                Serial.println(access);
+                
                 users_db[i].name = String(name);
                 users_db[i].reminder = String(reminder);
                 users_db[i].uid = String(uid);
-                users_db[i].hasAccess = (strcmp(access, "true") == 0);
+                users_db[i].hasAccess = access;
                 users_db[i].logged = false;
                 users_db[i].lastTimeSpent = 0;
                 users_db[i].lastLogTime = 0;
                 i++;
+                uidCount++;
             }
         }
         else

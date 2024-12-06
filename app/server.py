@@ -95,7 +95,8 @@ def get_users_names_reminders():
 
 @app.route('/get_all_users_details', methods=['GET'])
 def get_all_users_details():
-    return jsonify(users)
+    # Return a json with {"users" : users}
+    return jsonify({"users": users})
 
 @app.route('/get_user_details/<int:user_id>', methods=['GET'])
 def get_user_details(user_id):

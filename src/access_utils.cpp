@@ -20,8 +20,10 @@ int uidToIndex(String uid)
 {
     for (int i = 0; i < uidCount; i++)
     {
+        Serial.println("Comparing: " + users_db[i].uid + " with: " + uid);
         if (users_db[i].uid == uid)
         {
+            Serial.println("User with id: " + uid + " found at index: " + i);
             return i;
         }
     }
@@ -175,8 +177,9 @@ bool isAuthorizedUID(String uid)
 {
     for (int i = 0; i < uidCount; i++)
     {
-        if (users_db[i].uid == uid && users_db[i].hasAccess)
+        if (users_db[i].uid == uid && users_db[i].hasAccess == true)
         {
+            Serial.println("User with id: " + uid + " has access");
             return true;
         }
     }
