@@ -1,15 +1,52 @@
 #include "utils.hpp"
 #include <ArduinoJson.h>
+#include <ESPmDNS.h>
 
+String lan_ip = "";
+
+// Function to find the server's IP dynamically using mDNS
+String findServerIP(const char *hostname)
+{
+    IPAddress serverIP;
+    if (!WiFi.hostByName("flaskserver.local", serverIP))
+    {
+        Serial.println("DNS resolution failed!");
+    }
+    else
+    {
+        Serial.print("Resolved IP: ");
+        Serial.println(serverIP.toString());
+    }
+    Serial.println("mDNS responder started!");
+
+    Serial.print("Resolving hostname: ");
+    Serial.println(hostname);
+
+    // Wait for the hostname to resolve
+    serverIP = MDNS.queryHost(hostname);
+    if (serverIP)
+    {
+        Serial.print("Resolved IP address: ");
+        Serial.println(serverIP.toString());
+        return serverIP.toString();
+    }
+    else
+    {
+        Serial.println("Failed to resolve hostname!");
+        return "";
+    }
+}
+
+String ip = "192.168.0.144";
 const char *ssid = "Tenda_E21800";
 const char *password = "evenneed145";
-const char *serverURL = "http://192.168.0.165:5000";
-const char *serverURLLogInEmployees = "http://192.168.0.165:5000/login_employee";
-const char *serverURLLogOutEmployees = "http://192.168.0.165:5000/logout_employee";
-const char *serverURLAllUsersDetails = "http://192.168.0.165:5000/get_all_users_details";
-const char *serverURLUserGetNameById = "http://192.168.0.165:5000/get_user_name/";
-const char *serverURLUserGetReminderById = "http://192.168.0.165:5000/get_user_reminder/";
-const char *serverURLUserSetAccess = "http://192.168.0.165:5000/set_access/";
+String serverURL = "http://" + ip + ":5000/login_employee";
+String serverURLLogInEmployees = "http://" + ip + ":5000/login_employee";
+String serverURLLogOutEmployees = "http://" + ip + ":5000/logout_employee";
+String serverURLAllUsersDetails = "http://" + ip + ":5000/get_all_users_details";
+String serverURLUserGetNameById = "http://" + ip + ":5000/get_user_name/";
+String serverURLUserGetReminderById = "http://" + ip + ":5000/get_user_reminder/";
+String serverURLUserSetAccess = "http://" + ip + ":5000/set_access/";
 
 void connectToWiFi()
 {
@@ -26,6 +63,7 @@ void connectToWiFi()
         delay(500);
         Serial.print(".");
     }
+    lan_ip = WiFi.localIP().toString();
     Serial.println("\nConnected to WiFi!");
     Serial.print("ESP32 IP Address: ");
     Serial.println(WiFi.localIP());
@@ -81,6 +119,7 @@ void sendEmployeeData(String name, String uid, String time, float temperature, f
 
 // Function to fetch employee names and reminders from the server
 void fillAllUsersDetails(user users_db[]) {
+    Serial.println("Fetching all users details from " + serverURLAllUsersDetails);
     // Do a request to /get_all_users_details to get all the users details to fill the users_db array
     // data comes as "users": [] json array
     if (WiFi.status() == WL_CONNECTED)

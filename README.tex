@@ -1,0 +1,114 @@
+\documentclass[a4paper,12pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\begin{document}
+
+% Title Page
+\begin{titlepage}
+    \centering
+    \vspace*{1.5cm}
+    
+    {\Huge \textbf{Smart office preferences manager}} \\[1.5cm]
+    
+    {\Large \textbf{PRIOT Project}} \\[2.5cm]
+    
+    \textbf{Author:} \\[0.5cm]
+    {\Large Dragomir Andrei-Mihai 343C1} \\[2.5cm]
+    
+    \textbf{Description:} \\[0.5cm]
+    \parbox{0.8\textwidth}{
+        Documentation for the design and implementation of a smart in office logger,
+        an IoT system for managing employee access and monitoring environmental conditions. The system integrates hardware components such as RFID, sensors, and an ESP32 microcontroller, and communicates with a server for centralized data visualization and management.
+    }
+    
+    \vfill
+    {\Large \textbf{\today}} \\[1.5cm]
+\end{titlepage}
+
+% Table of Contents Page
+\newpage
+\tableofcontents
+\newpage
+
+% Chapters Start
+\chapter{Introduction}
+
+This documentation describes the implementation of an IoT system for managing employee access and monitoring the environment (temperature and humidity). The project combines a sensor network with an ESP32 hub that communicates with a central server to store and visualize data.
+
+Employees receive alerts when the temperature or humidity is not optimal for their inputted preferences. The system also logs access events, allowing administrators to monitor employee activity: logins, logouts, access attempts, time spent in the office, etc.
+
+\section{Key Objectives}
+\begin{itemize}
+    \item Manage employee access through an RFID system.
+    \item Monitor the environment using a DHT11 sensor.
+    \item Visualize collected data via an interactive web interface.
+\end{itemize}
+
+% Architecture Chapter
+\chapter{Architecture}
+
+\section{Overview}
+This project architecture is designed to achieve modularity and scalability by separating the ESP32 microcontroller logic from the backend server and frontend interface. It uses a combination of hardware, communication protocols, and software layers to deliver the functionality.
+
+\subsection{Backend (Flask Server)}
+The backend is implemented using Python and Flask. It serves as the central hub for processing data received from the ESP32, managing user preferences, and rendering the web-based interface for administrators and employees. Key components include:
+\begin{itemize}
+    \item \textbf{server.py}: The Flask application that handles HTTP requests and serves dynamic HTML pages.
+    \item \textbf{templates/}: Contains HTML files used by Flask for dynamic content rendering (e.g., \texttt{preferences.html}, \texttt{records.html}).
+    \item \textbf{static/}: Stores frontend assets such as:
+        \begin{itemize}
+            \item \textbf{CSS}: Styling for the interface (e.g., \texttt{style.css}).
+            \item \textbf{JavaScript}: Frontend logic and interactivity (e.g., \texttt{script.js}).
+        \end{itemize}
+    \item \textbf{users.json}: A lightweight storage file for user data and preferences.
+\end{itemize}
+
+\subsection{ESP32 Firmware (C++)}
+The ESP32 firmware, written in C++, handles the hardware peripherals and communicates with the Flask server. It is organized into several files within the \texttt{src/} directory:
+\begin{itemize} 
+    \item \textbf{main.cpp}: The entry point for the ESP32 firmware, initializing all components and managing the main logic loop.
+    \item \textbf{access\_utils.cpp}: Handles RFID-based access control and logs employee activities such as logins and logouts.
+    \item \textbf{http\_utils.cpp}: Manages HTTP communication between the ESP32 and the Flask server for data exchange.
+    \item \textbf{led\_buzz\_utils.cpp}: Controls visual and auditory feedback through RGB LEDs and a buzzer.
+    \item \textbf{temp\_utils.cpp}: Captures and processes temperature and humidity data using the DHT11 sensor.
+    \item \textbf{rtc\_utils.cpp}: Provides accurate timestamps using the RTC module.
+    \item \textbf{print\_utils.cpp} and \textbf{utils.hpp}: Utility functions for logging, debugging, and reusability.
+\end{itemize}
+
+\newpage
+
+\section{Hardware and Network Schema}
+The system uses an ESP32 microcontroller to interact with peripherals and communicate with the backend server over Wi-Fi. The topology is represented as follows:
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{img/schema.png}
+    \caption{Hardware Schema}
+\end{figure}
+
+\subsection{Hardware and Protocols}
+
+The PRIOT system is designed to integrate various hardware components with the ESP32 microcontroller, which serves as the central hub for communication and control. The following describes the key components and their connections:
+
+\begin{itemize}
+    \item \textbf{RFID Reader (SPI Protocol):} The RFID module communicates with the ESP32 using the high-speed SPI protocol. It is used for user authentication and access control. Admins and users interact with the system by scanning their RFID tags or cards.
+
+    \item \textbf{LCD Screen (I2C Protocol):} The LCD display is connected to the ESP32 via the I2C protocol. It provides a user interface for displaying system status, access logs, and environmental data locally.
+
+    \item \textbf{Flask Server (HTTP over Wi-Fi):} The ESP32 communicates with the Flask server using the HTTP protocol over Wi-Fi. This connection is used to send collected data (e.g., RFID access logs and environmental readings) and receive configurations or updates from the server.
+
+    \item \textbf{RGB LED (PWM):} The RGB LED is connected to the ESP32 through GPIO pins configured for PWM (Pulse Width Modulation). It provides visual feedback for operations such as successful logins, errors, or status updates.
+
+    \item \textbf{Buzzer (GPIO):} The buzzer is directly connected to a GPIO pin on the ESP32. It provides auditory feedback for system events, such as login success, login failure, or alerts.
+
+    \item \textbf{DHT11 Sensor (GPIO):} The DHT11 sensor is linked to the ESP32 through a GPIO pin. It captures environmental data, specifically temperature and humidity, which is logged during user interactions.
+
+    \item \textbf{RTC Module (Three-Wire Protocol):} The Real-Time Clock (RTC) module connects to the ESP32 using a three-wire protocol, providing accurate timestamps for logging access events and environmental data.
+
+\end{itemize}
+
+This hardware configuration ensures good communication and reliable data exchange between the various components, with the ESP32 acting as the central coordinator.
+
+\end{document}

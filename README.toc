@@ -1,0 +1,8 @@
+\contentsline {chapter}{\numberline {1}Introduction}{2}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Key Objectives}{2}{section.1.1}%
+\contentsline {chapter}{\numberline {2}Architecture}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Overview}{3}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Backend (Flask Server)}{3}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}ESP32 Firmware (C++)}{4}{subsection.2.1.2}%
+\contentsline {section}{\numberline {2.2}Hardware and Network Schema}{5}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Hardware and Protocols}{5}{subsection.2.2.1}%
