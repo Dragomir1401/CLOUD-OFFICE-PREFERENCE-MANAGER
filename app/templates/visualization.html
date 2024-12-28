@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Visualization</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center">Data Visualization</h1>
+
+    <!-- Row for Preferences and Time Series -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="chart-container">
+                <h3>User Preferences (Temperature & Humidity)</h3>
+                <canvas id="userPreferencesChart"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="chart-container">
+                <h3>Temperature and Humidity Over Time</h3>
+                <canvas id="timeSeriesChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row for All Hours Graph and Top Visitors -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="chart-container">
+                <h3>All Hours Graph</h3>
+                <canvas id="allHoursChart"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="chart-container">
+                <h3>Top Visitors</h3>
+                <canvas id="topVisitorsChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Data for User Preferences
+    const userNames = {{ user_names | tojson }};
+    const userTemperatures = {{ user_temperatures | tojson }};
+    const userHumidities = {{ user_humidities | tojson }};
+
+    new Chart(document.getElementById('userPreferencesChart'), {
+        type: 'bar',
+        data: {
+            labels: userNames,
+            datasets: [
+                {
+                    label: 'Preferred Temperature (°C)',
+                    data: userTemperatures,
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Preferred Humidity (%)',
+                    data: userHumidities,
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+    // Data for Time Series (Temperature and Humidity)
+    const timeLabels = {{ times | tojson }};
+    const temperatureData = {{ temperatures | tojson }};
+    const humidityData = {{ humidities | tojson }};
+
+    new Chart(document.getElementById('timeSeriesChart'), {
+        type: 'line',
+        data: {
+            labels: timeLabels,
+            datasets: [
+                {
+                    label: 'Temperature (°C)',
+                    data: temperatureData,
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    fill: false
+                },
+                {
+                    label: 'Humidity (%)',
+                    data: humidityData,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+    // Data for All Hours Graph
+    const allHoursLabels = {{ crowded_times_labels | tojson }};
+    const allHoursData = {{ crowded_times_data | tojson }};
+
+    new Chart(document.getElementById('allHoursChart'), {
+        type: 'line',
+        data: {
+            labels: allHoursLabels,
+            datasets: [{
+                label: 'Entries by Hour',
+                data: allHoursData,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                fill: false
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+    // Data for Top Visitors
+    const topVisitorsLabels = {{ top_visitors_labels | tojson }};
+    const topVisitorsData = {{ top_visitors_data | tojson }};
+
+    new Chart(document.getElementById('topVisitorsChart'), {
+        type: 'bar',
+        data: {
+            labels: topVisitorsLabels,
+            datasets: [{
+                label: 'Entries Count',
+                data: topVisitorsData,
+                backgroundColor: 'rgba(153, 102, 255, 0.5)',
+                borderColor: 'rgba(153, 102, 255, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+</script>
+</body>
+</html>

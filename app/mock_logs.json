@@ -1,0 +1,272 @@
+[
+    {
+        "name": "Mariano Doe",
+        "uid": "K91D082F",
+        "time": "12/28/2024 09:15:15",
+        "temperature": 19.5,
+        "humidity": 42.0,
+        "reminder": "End morning tasks",
+        "type": "login"
+    },
+    {
+        "name": "Johnny Bravo",
+        "uid": "B34A082F",
+        "time": "12/28/2024 09:20:15",
+        "temperature": 21.5,
+        "humidity": 50.0,
+        "reminder": "Talk with manager",
+        "type": "login"
+    },
+    {
+        "name": "Cole Smith",
+        "uid": "A21A082F",
+        "time": "12/28/2024 09:23:15",
+        "temperature": 22.5,
+        "humidity": 53.0,
+        "reminder": "Visit the client",
+        "type": "login"
+    },
+    {
+        "name": "Logan Cale",
+        "uid": "9KD12FA2",
+        "time": "12/28/2024 09:29:15",
+        "temperature": 21.9,
+        "humidity": 51.3,
+        "reminder": "Prepare the presentation",
+        "type": "login"
+    },
+    {
+        "name": "Cole Smith",
+        "uid": "A21A082F",
+        "time": "12/28/2024 09:44:15",
+        "temperature": 22.1,
+        "humidity": 48.0,
+        "reminder": "Visit the client",
+        "type": "logout"
+    },
+    {
+        "name": "Jane Abbot",
+        "uid": "DALA40B2F",
+        "time": "12/28/2024 10:45:32",
+        "temperature": 22.1,
+        "humidity": 47.5,
+        "reminder": "Message from HR",
+        "type": "login"
+    },
+    {
+        "name": "Logan Cale",
+        "uid": "9KD12FA2",
+        "time": "12/28/2024 10:49:15",
+        "temperature": 21.9,
+        "humidity": 51.8,
+        "reminder": "Prepare the presentation",
+        "type": "logout"
+    },
+    {
+        "name": "Mary Henriette",
+        "uid": "50E5BF14",
+        "time": "12/28/2024 12:30:45",
+        "temperature": 22.8,
+        "humidity": 49.0,
+        "reminder": "Special migration",
+        "type": "login"
+    },
+    {
+        "name": "Alex Johnson",
+        "uid": "5TEQBF04",
+        "time": "12/28/2024 13:20:10",
+        "temperature": 22.0,
+        "humidity": 48.0,
+        "reminder": "Go to the office of the manager",
+        "type": "login"
+    },
+    {
+        "name": "Mary Henriette",
+        "uid": "50EABG14",
+        "time": "12/28/2024 13:30:45",
+        "temperature": 22.8,
+        "humidity": 49.0,
+        "reminder": "Special migration",
+        "type": "logout"
+    },
+    {
+        "name": "Mariano Doe",
+        "uid": "K91D082F",
+        "time": "12/28/2024 13:22:15",
+        "temperature": 19.5,
+        "humidity": 42.0,
+        "reminder": "End morning tasks",
+        "type": "logout"
+    },
+    {
+        "name": "George Lucas",
+        "uid": "9K5E5BF1",
+        "time": "12/28/2024 13:55:00",
+        "temperature": 23.1,
+        "humidity": 46.8,
+        "reminder": "Finish the documentation",
+        "type": "login"
+    },
+    {
+        "name": "Mary Henriette",
+        "uid": "50EABG14",
+        "time": "12/28/2024 14:01:45",
+        "temperature": 21.8,
+        "humidity": 47.0,
+        "reminder": "Special migration",
+        "type": "login"
+    },
+    {
+        "name": "Karla Queen",
+        "uid": "72E5BF14",
+        "time": "12/28/2024 14:05:30",
+        "temperature": 19.9,
+        "humidity": 50.5,
+        "reminder": "Look for the new project",
+        "type": "login"
+    },
+    {
+        "name": "Andrew Brown",
+        "uid": "65E5BF14",
+        "time": "12/28/2024 15:05:30",
+        "temperature": 20.9,
+        "humidity": 53.5,
+        "reminder": "End Jira tasks",
+        "type": "login"
+    },
+     {
+        "name": "Boris Afonin",
+        "uid": "75H5BF14",
+        "time": "12/28/2024 15:30:30",
+        "temperature": 23.9,
+        "humidity": 43.5,
+        "reminder": "Send dashboard to the manager",
+        "type": "login"
+    },
+    {
+        "name": "Mariano Doe",
+        "uid": "K91D082F",
+        "time": "12/28/2024 15:32:15",
+        "temperature": 24,
+        "humidity": 42.0,
+        "reminder": "End morning tasks",
+        "type": "login"
+    },
+    {
+        "name": "Johnny Bravo",
+        "uid": "B34A082F",
+        "time": "12/28/2024 16:10:15",
+        "temperature": 21.5,
+        "humidity": 50.0,
+        "reminder": "Talk with manager",
+        "type": "logout"
+    },
+    {
+        "name": "Jane Abbot",
+        "uid": "DALA40B2F",
+        "time": "12/28/2024 16:45:32",
+        "temperature": 22.1,
+        "humidity": 47.5,
+        "reminder": "Message from HR",
+        "type": "logout"
+    },
+    {
+        "name": "Mary Henriette",
+        "uid": "50E5BF14",
+        "time": "12/28/2024 17:30:45",
+        "temperature": 22.8,
+        "humidity": 49.0,
+        "reminder": "Special migration",
+        "type": "logout"
+    },
+    {
+        "name": "Alex Johnson",
+        "uid": "5TEQBF04",
+        "time": "12/28/2024 18:20:10",
+        "temperature": 22.0,
+        "humidity": 48.0,
+        "reminder": "Go to the office of the manager",
+        "type": "logout"
+    },
+    {
+        "name": "George Lucas",
+        "uid": "9K5E5BF1",
+        "time": "12/28/2024 18:55:00",
+        "temperature": 23.1,
+        "humidity": 46.8,
+        "reminder": "Finish the documentation",
+        "type": "logout"
+    },
+    {
+        "name": "Mary Henriette",
+        "uid": "51EABA44",
+        "time": "12/28/2024 18:58:45",
+        "temperature": 23.8,
+        "humidity": 43.3,
+        "reminder": "Close the security door",
+        "type": "login"
+    },
+    {
+        "name": "Karla Queen",
+        "uid": "72E5BF14",
+        "time": "12/28/2024 19:05:30",
+        "temperature": 19.9,
+        "humidity": 50.5,
+        "reminder": "Look for the new project",
+        "type": "logout"
+    },
+    {
+        "name": "Andrew Brown",
+        "uid": "65E5BF14",
+        "time": "12/28/2024 20:05:30",
+        "temperature": 20.9,
+        "humidity": 53.5,
+        "reminder": "End Jira tasks",
+        "type": "logout"
+    },
+    {
+        "name": "Mary Henriette",
+        "uid": "51EABA44",
+        "time": "12/28/2024 20:18:45",
+        "temperature": 20.8,
+        "humidity": 43.3,
+        "reminder": "Close the security door",
+        "type": "logout"
+    },
+    {
+        "name": "Mariano Doe",
+        "uid": "K91D082F",
+        "time": "12/28/2024 20:22:15",
+        "temperature": 21.5,
+        "humidity": 42.0,
+        "reminder": "End morning tasks",
+        "type": "logout"
+    },
+    {
+        "name": "Andrew Brown",
+        "uid": "65E5BF14",
+        "time": "12/28/2024 20:25:30",
+        "temperature": 19.9,
+        "humidity": 43.5,
+        "reminder": "Grab the car keys",
+        "type": "login"
+    },
+    {
+        "name": "Boris Afonin",
+        "uid": "75H5BF14",
+        "time": "12/28/2024 20:30:30",
+        "temperature": 23.9,
+        "humidity": 39.5,
+        "reminder": "Send dashboard to the manager",
+        "type": "logout"
+    },
+    {
+        "name": "Andrew Brown",
+        "uid": "65E5BF14",
+        "time": "12/28/2024 20:35:30",
+        "temperature": 16.9,
+        "humidity": 23.5,
+        "reminder": "Grab the car keys",
+        "type": "logout"
+    }
+]

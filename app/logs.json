@@ -1,0 +1,20 @@
+[
+    {
+        "name": "Mary Johnson",
+        "uid": "50E5BF14",
+        "time": "12/28/2024 14:26:15",
+        "temperature": 23.4,
+        "humidity": 59.0,
+        "reminder": "Reminder not set",
+        "type": "login"
+    },
+    {
+        "name": "Mary Johnson",
+        "uid": "50E5BF14",
+        "time": "12/28/2024 14:26:28",
+        "temperature": 23.8,
+        "humidity": 59.0,
+        "reminder": "Reminder not set",
+        "type": "logout"
+    }
+]

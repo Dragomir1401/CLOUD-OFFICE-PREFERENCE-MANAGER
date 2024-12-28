@@ -1,5 +1,11 @@
 import json
 from flask import Flask, render_template, request, jsonify
+from collections import Counter
+import matplotlib.pyplot as plt
+from datetime import datetime
+import io
+import os
+import base64
 
 app = Flask(__name__)
 
@@ -9,7 +15,7 @@ def load_users():
         data = json.load(f)
     return data['users']
 
-# Save users to the JSON file (to persist changes)
+# Save users to the JSON file
 def save_users():
     with open('users.json', 'w') as f:
         json.dump({"users": users}, f, indent=4)
@@ -17,8 +23,16 @@ def save_users():
 # Store users in a global variable (for simplicity)
 users = load_users()
 
+# Load mock logs at the start of the server
+def load_mock_logs():
+    mock_logs_path = os.path.join(os.path.dirname(__file__), 'mock_logs.json')
+    if os.path.exists(mock_logs_path):
+        with open(mock_logs_path, 'r') as f:
+            return json.load(f)
+    return []
+
 # Temporary list to store employee logs
-logs = []
+logs = load_mock_logs()
 
 @app.route('/')
 def menu():
@@ -38,6 +52,50 @@ def preferences_page():
 def records_page():
     # Pass the logs to the records page
     return render_template('records.html', logs=logs)
+
+@app.route('/visualization')
+def visualization_page():
+    from collections import Counter
+
+    # Parse and sort logs by time
+    sorted_logs = sorted(logs, key=lambda log: datetime.strptime(log['time'], "%m/%d/%Y %H:%M:%S"))
+
+    # Extract times, temperatures, and humidities
+    times = [log['time'] for log in sorted_logs if 'time' in log]
+    temperatures = [log['temperature'] for log in sorted_logs if 'temperature' in log]
+    humidities = [log['humidity'] for log in sorted_logs if 'humidity' in log]
+
+    # User Preferences
+    user_names = [user['name'] for user in users]
+    user_temperatures = [user['preferences']['temperature'] for user in users]
+    user_humidities = [user['preferences']['humidity'] for user in users]
+
+    # All Hours Graph
+    crowded_times = [log['time'].split(':')[0] for log in logs if 'time' in log]
+    crowded_times_count = Counter(crowded_times)
+
+    crowded_times_labels = list(crowded_times_count.keys())
+    crowded_times_data = list(crowded_times_count.values())
+
+    # Top Visitors
+    top_visitors_count = Counter([log['name'] for log in logs if 'name' in log])
+    top_visitors_labels = list(top_visitors_count.keys())
+    top_visitors_data = list(top_visitors_count.values())
+
+    return render_template(
+        'visualization.html',
+        user_names=user_names,
+        user_temperatures=user_temperatures,
+        user_humidities=user_humidities,
+        times=times,
+        temperatures=temperatures,
+        humidities=humidities,
+        crowded_times_labels=crowded_times_labels,
+        crowded_times_data=crowded_times_data,
+        top_visitors_labels=top_visitors_labels,
+        top_visitors_data=top_visitors_data
+    )
+
 
 @app.route('/login_employee', methods=['POST'])
 def log_employee():
