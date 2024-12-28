@@ -3,10 +3,10 @@
         {
             "id": "E37A082F",
             "name": "John Doe",
-            "access": false,
+            "access": true,
             "preferences": {
-                "temperature": "15",
-                "humidity": "10"
+                "temperature": 21,
+                "humidity": 20
             },
             "reminder": "Fa schimb"
         },
@@ -15,8 +15,18 @@
             "name": "Jane Smith",
             "access": true,
             "preferences": {
-                "temperature": 22,
-                "humidity": 30
+                "temperature": 24,
+                "humidity": 35
+            },
+            "reminder": "Reminder not set"
+        },
+        {
+            "id": "50E5BF14",
+            "name": "Mary Johnson",
+            "access": true,
+            "preferences": {
+                "temperature": 18,
+                "humidity": 15
             },
             "reminder": "Reminder not set"
         }

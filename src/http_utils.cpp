@@ -37,9 +37,9 @@ String findServerIP(const char *hostname)
     }
 }
 
-String ip = "172.20.10.10";
-const char *ssid = "Dumitru Stefania";
-const char *password = "stefietare";
+String ip = "192.168.0.134";
+const char *ssid = "ANDREI";
+const char *password = "gomoescu";
 String serverURL = "http://" + ip + ":5000/login_employee";
 String serverURLLogInEmployees = "http://" + ip + ":5000/login_employee";
 String serverURLLogOutEmployees = "http://" + ip + ":5000/logout_employee";
