@@ -110,5 +110,7 @@ void printStringOnLCD(String message);
 void set_access(String id, bool access);
 void fetchUserPreferences(String uid, float &temperature, float &humidity);
 void showSettingPreferences(float currentTemp, float currentHumid, float preferedTemp, float preferedHumid);
+void turnOffLedsAndBuzzer();
+void playMelody(int note, int duration, int delayP);
 
 #endif // UTILS_HPP

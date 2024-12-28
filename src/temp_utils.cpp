@@ -58,6 +58,31 @@ void showSettingPreferences(float currentTemp, float currentHumid, float prefere
     diffTemp = roundf(diffTemp * 10) / 10;
     diffHumid = roundf(diffHumid * 10) / 10;
 
+    float epsilon = 0.01;
+
+    if (currentTemp - preferedTemp > epsilon || currentHumid - preferedHumid > epsilon) {
+        lcd.clear();
+        lcd.print("Preferences are");
+        lcd.setCursor(0, 1);
+        lcd.print("not met");
+
+        // Turn the LED red
+        turnOffLedsAndBuzzer();
+
+        // Turn the LED red
+        analogWrite(RED_PIN, 255);
+
+        // Play the melody
+        playMelody(NOTE_C4, 150, 150);
+        playMelody(NOTE_G4, 150, 150);
+
+        delay(2000);
+
+        turnOffLedsAndBuzzer();
+    }
+
+    lcd.clear();
+
     if (currentTemp < preferedTemp)
     {
         lcd.print("+ T with: ");
