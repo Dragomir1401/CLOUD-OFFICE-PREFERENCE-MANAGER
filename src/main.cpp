@@ -357,6 +357,9 @@ void loop()
 
           sendEmployeeData(users_db[uidToIndex(readUID)].name, readUID, nowString, temperature, humidity, users_db[uidToIndex(readUID)].reminder, 0);
 
+          float preferedTemp = 0, preferedHumid = 0;
+          fetchUserPreferences(readUID, preferedTemp, preferedHumid);
+
           // Log the time of access
           Serial.println(users_db[index].lastLogTime);
           users_db[index].logged = true;
@@ -378,24 +381,21 @@ void loop()
           lcd.setCursor(0, 1);
           lcd.print(users_db[uidToIndex(readUID)].name);
           Serial.println(users_db[uidToIndex(readUID)].name);
-          delay(2000);
+          delay(1500);
+
+          showSettingPreferences(temperature, humidity, preferedTemp, preferedHumid);
+          delay(1500);
 
           // Display the reminder message
           lcd.clear();
           lcd.print("Reminder");
           Serial.println("Reminder");
-          delay(2000);
+          delay(1500);
 
           // Display the reminder message
           printStringOnLCD(users_db[uidToIndex(readUID)].reminder);
           Serial.println(users_db[uidToIndex(readUID)].reminder);
-          delay(2000);
-
-          // Display the temperature and humidity
-          print_temperature_humidity(temperature, humidity);
-
-          // Delay for 2 seconds
-          delay(3000);
+          delay(1500);
         }
         else
         {

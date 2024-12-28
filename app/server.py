@@ -209,6 +209,17 @@ def get_reminder():
     else:
         return jsonify({"status": "failure", "message": "User not found!"}), 404
     
+@app.route('/get_user_preferences/', methods=['POST'])
+def get_preferences():
+    data = request.get_json()
+    user_id = data.get('id')
+    
+    user = next((u for u in users if u['id'] == user_id), None)
+    if user:
+        return jsonify({"preferences": user['preferences']})
+    else:
+        return jsonify({"status": "failure", "message": "User not found!"}), 404
+    
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True)

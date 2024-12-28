@@ -108,5 +108,7 @@ String get_user_name_by_id(String id);
 String get_user_reminder_by_id(String id);
 void printStringOnLCD(String message);
 void set_access(String id, bool access);
+void fetchUserPreferences(String uid, float &temperature, float &humidity);
+void showSettingPreferences(float currentTemp, float currentHumid, float preferedTemp, float preferedHumid);
 
 #endif // UTILS_HPP

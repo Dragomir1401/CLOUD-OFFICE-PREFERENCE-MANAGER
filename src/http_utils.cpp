@@ -47,6 +47,7 @@ String serverURLAllUsersDetails = "http://" + ip + ":5000/get_all_users_details"
 String serverURLUserGetNameById = "http://" + ip + ":5000/get_user_name/";
 String serverURLUserGetReminderById = "http://" + ip + ":5000/get_user_reminder/";
 String serverURLUserSetAccess = "http://" + ip + ":5000/set_access/";
+String serverURLUserGetUserPreferences = "http://" + ip + ":5000/get_user_preferences/";
 
 void connectToWiFi()
 {
@@ -116,6 +117,61 @@ void sendEmployeeData(String name, String uid, String time, float temperature, f
         Serial.println("WiFi not connected!");
     }
 }
+
+
+void fetchUserPreferences(String uid, float &temperature, float &humidity) {
+    // Call a POST to /get_user_preferences/ with the uid as the payload
+    // The response will be a JSON object with the user's preferences
+    if (WiFi.status() == WL_CONNECTED)
+    {
+        HTTPClient http;
+        http.begin(serverURLUserGetUserPreferences);
+        http.addHeader("Content-Type", "application/json");
+
+        // Create a JSON payload
+        StaticJsonDocument<200> doc;
+        doc["id"] = uid;
+        String requestBody;
+        serializeJson(doc, requestBody);
+
+        // Send POST request
+        int httpResponseCode = http.POST(requestBody);
+
+        if (httpResponseCode > 0)
+        {
+            Serial.println("Data received successfully!");
+
+            // Get the response payload
+            String payload = http.getString();
+            StaticJsonDocument<1024> responseDoc;
+            DeserializationError error = deserializeJson(responseDoc, payload);
+
+            if (error)
+            {
+                Serial.print("JSON parsing failed: ");
+                Serial.println(error.f_str());
+                http.end();
+                return;
+            }
+
+            // Parse the response for the preferences: temperature, humidity
+            temperature = responseDoc["preferences"]["temperature"];
+            humidity = responseDoc["preferences"]["humidity"];
+        }
+        else
+        {
+            Serial.print("Error receiving data: ");
+            Serial.println(httpResponseCode);
+        }
+
+        http.end();
+    }
+    else
+    {
+        Serial.println("WiFi not connected!");
+    }
+}
+
 
 // Function to fetch employee names and reminders from the server
 void fillAllUsersDetails(user users_db[]) {
