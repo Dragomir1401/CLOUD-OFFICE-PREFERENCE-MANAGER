@@ -6,3 +6,17 @@
 \contentsline {subsection}{\numberline {2.1.2}ESP32 Firmware (C++)}{4}{subsection.2.1.2}%
 \contentsline {section}{\numberline {2.2}Hardware and Network Schema}{5}{section.2.2}%
 \contentsline {subsection}{\numberline {2.2.1}Hardware and Protocols}{5}{subsection.2.2.1}%
+\contentsline {chapter}{\numberline {3}Implementation}{7}{chapter.3}%
+\contentsline {section}{\numberline {3.1}ESP32 Firmware}{7}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Server Backend}{7}{section.3.2}%
+\contentsline {section}{\numberline {3.3}API interactions}{7}{section.3.3}%
+\contentsline {chapter}{\numberline {4}Visualization and Data Processing}{8}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Web Interface}{8}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Data Processing}{8}{section.4.2}%
+\contentsline {section}{\numberline {4.3}User Preferences}{8}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Graphics}{8}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Alerts}{8}{section.4.5}%
+\contentsline {chapter}{\numberline {5}Security}{9}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Access Control}{9}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Protocols}{9}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Data Encryption}{9}{section.5.3}%

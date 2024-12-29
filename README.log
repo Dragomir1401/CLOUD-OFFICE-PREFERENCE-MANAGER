@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  14 DEC 2024 17:24
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  29 DEC 2024 14:33
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -232,7 +232,7 @@ Chapter 2.
 [3
 
 ] [4]
-<img/schema.png, id=69, 730.98094pt x 405.01312pt>
+<img/schema.png, id=139, 730.98094pt x 405.01312pt>
 File: img/schema.png Graphic file (type png)
 <use img/schema.png>
 Package pdftex.def Info: img/schema.png  used on input line 87.
@@ -242,26 +242,38 @@ Overfull \hbox (3.65222pt too wide) in paragraph at lines 108--109
 []\OT1/cmr/bx/n/12 RTC Mod-ule (Three-Wire Pro-to-col): \OT1/cmr/m/n/12 The Real-Time Clock (RTC)
  []
 
-[6] (README.aux)
+[6]
+Chapter 3.
+[7
+
+]
+Chapter 4.
+[8
+
+]
+Chapter 5.
+[9
+
+] (README.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
 Package rerunfilecheck Info: File `README.out' has not changed.
-(rerunfilecheck)             Checksum: AD35D2B717528297B631BD8B86CD6C2F;1158.
+(rerunfilecheck)             Checksum: FCF6BAECF5607F139FD6AF6DD4D3D99F;2902.
  ) 
 Here is how much of TeX's memory you used:
- 8443 strings out of 474486
- 133404 string characters out of 5743754
- 1930542 words of memory out of 5000000
- 30633 multiletter control sequences out of 15000+600000
+ 8474 strings out of 474486
+ 133746 string characters out of 5743754
+ 1933542 words of memory out of 5000000
+ 30647 multiletter control sequences out of 15000+600000
  563435 words of font info for 54 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,6n,79p,394b,504s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on README.pdf (7 pages, 291025 bytes).
+Output written on README.pdf (10 pages, 303761 bytes).
 PDF statistics:
- 110 PDF objects out of 1000 (max. 8388607)
- 17 named destinations out of 1000 (max. 500000)
- 70 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 195 PDF objects out of 1000 (max. 8388607)
+ 34 named destinations out of 1000 (max. 500000)
+ 182 words of extra memory for PDF output out of 10000 (max. 10000000)
 
