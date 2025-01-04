@@ -62,6 +62,32 @@ void turnLedYellow()
     analogWrite(GREEN_PIN, 100);
 }
 
+void turnLedWhite()
+{
+    // Turn off all LEDs
+    turnOffLEDs();
+
+    // Turn the LED white
+    analogWrite(RED_PIN, 215);
+    analogWrite(GREEN_PIN, 86);
+    analogWrite(BLUE_PIN, 155);
+}
+
+void updateReceived()
+{
+    // Turn off all LEDs
+    turnLedWhite();
+
+    // Play the melody differently
+    playMelody(NOTE_G5, 200, 250);
+    playMelody(NOTE_C5, 200, 250);
+    playMelody(NOTE_E5, 200, 250);
+    playMelody(NOTE_C5, 200, 250);
+    playMelody(NOTE_G5, 200, 250);
+
+    turnOffLedsAndBuzzer();
+}
+
 // Function to play the admin goodbye melody
 void adminGoodbyeMelody()
 {

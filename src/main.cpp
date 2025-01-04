@@ -287,6 +287,8 @@ void setup()
 // Main loop function
 void loop()
 {
+  server.handleClient();
+  
   // Check if admin is logged in
   if (adminFlag)
   {

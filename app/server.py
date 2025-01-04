@@ -6,6 +6,9 @@ from datetime import datetime
 import io
 import os
 import base64
+import requests
+
+esp_ip_address = '192.168.0.180'
 
 app = Flask(__name__)
 
@@ -134,6 +137,14 @@ def update_preferences():
         user['reminder'] = data.get('reminder', user['reminder'])
         
         save_users()  # Save the changes to the file
+        
+        # send to esp an event signaling the update
+        requests.post(f'http://{esp_ip_address}/event', json={"type": "update",
+                                                              "name": user['name'],
+                                                              "access": user['access'],
+                                                              "reminder": user['reminder'],
+                                                              "preferences": user['preferences']})
+            
         
         return jsonify({"status": "success", "message": "User preferences updated!"})
     else:

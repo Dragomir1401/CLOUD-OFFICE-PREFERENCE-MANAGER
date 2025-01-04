@@ -5,10 +5,10 @@
             "name": "John Doe",
             "access": true,
             "preferences": {
-                "temperature": 21,
-                "humidity": 20
+                "temperature": "21",
+                "humidity": "34"
             },
-            "reminder": "Fa schimb"
+            "reminder": "Salut"
         },
         {
             "id": "E3E40B2F",

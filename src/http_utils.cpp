@@ -2,8 +2,6 @@
 #include <ArduinoJson.h>
 #include <ESPmDNS.h>
 
-String lan_ip = "";
-
 // Function to find the server's IP dynamically using mDNS
 String findServerIP(const char *hostname)
 {
@@ -49,6 +47,78 @@ String serverURLUserGetReminderById = "http://" + ip + ":5000/get_user_reminder/
 String serverURLUserSetAccess = "http://" + ip + ":5000/set_access/";
 String serverURLUserGetUserPreferences = "http://" + ip + ":5000/get_user_preferences/";
 
+void handleUpdateAction(bool access, String temp, String hum, String reminder, String name)
+{
+    updateReceived();
+
+    lcd.clear();
+    lcd.print("Name: ");
+    lcd.setCursor(0, 1);
+    lcd.print(name);
+    delay(2000);
+
+    // Print on lcd the update one screen at a time
+    lcd.clear();
+    lcd.print("Access: ");
+    lcd.setCursor(0, 1);
+    lcd.print(access);
+    delay(2000);
+
+    lcd.clear();
+    lcd.print("Preferences: ");
+    lcd.setCursor(0, 1);
+    lcd.print("T: ");
+    lcd.print(temp);
+    lcd.print(" H: ");
+    lcd.print(hum);
+    delay(2000);
+
+    lcd.clear();
+    lcd.print("Reminder: ");
+    lcd.setCursor(0, 1);
+    lcd.print(reminder);
+    delay(2000);
+}
+
+void handleUpdate()
+{
+    if (server.hasArg("plain"))
+    {
+        String payload = server.arg("plain");
+        Serial.println("Received update: " + payload);
+
+        // Parse the JSON payload
+        StaticJsonDocument<256> doc;
+        DeserializationError error = deserializeJson(doc, payload);
+
+        if (error)
+        {
+            Serial.print("JSON parsing failed: ");
+            Serial.println(error.f_str());
+            server.send(400, "text/plain", "Invalid JSON");
+            return;
+        }
+
+        // Extract type and message
+        const char *type = doc["type"];
+        bool access = doc["access"];
+        const char *name = doc["name"];
+        const char *temp = doc["preferences"]["temperature"];
+        const char *hum = doc["preferences"]["humidity"];
+        const char *reminder = doc["reminder"];
+
+        // Handle the update
+        handleUpdateAction(access, String(temp), String(hum), String(reminder), String(name));
+
+        // Respond to the server
+        server.send(200, "text/plain", "Update received");
+    }
+    else
+    {
+        server.send(400, "text/plain", "No payload received");
+    }
+}
+
 void connectToWiFi()
 {
     WiFi.begin(ssid, password);
@@ -70,6 +140,12 @@ void connectToWiFi()
     Serial.println(WiFi.localIP());
     Serial.println("Connected!");
 
+    // Define HTTP POST endpoint
+    server.on("/event", HTTP_POST, handleUpdate);
+
+    // Start the server
+    server.begin();
+    Serial.println("HTTP server started");
 }
 
 void sendEmployeeData(String name, String uid, String time, float temperature, float humidity, String reminder, bool inOut)
@@ -171,7 +247,6 @@ void fetchUserPreferences(String uid, float &temperature, float &humidity) {
         Serial.println("WiFi not connected!");
     }
 }
-
 
 // Function to fetch employee names and reminders from the server
 void fillAllUsersDetails(user users_db[]) {

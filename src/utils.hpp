@@ -11,6 +11,7 @@
 #include <DHT.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
+#include <WebServer.h>
 
 // Pin defines for ESP
 #define SCK_PIN 18
@@ -75,6 +76,8 @@ extern int currentEmployeeIndex;
 extern ThreeWire myWire;
 extern RtcDS1302<ThreeWire> Rtc;
 extern DHT dht;
+extern String lan_ip;
+extern WebServer server;
 
 // Function declarations
 int daysInMonth(int month, int year);
@@ -114,5 +117,7 @@ void showSettingPreferences(float currentTemp, float currentHumid, float prefere
 void turnOffLedsAndBuzzer();
 void playMelody(int note, int duration, int delayP);
 String intToDate(int seconds);
+void updateReceived();
+void turnLedWhite();
 
 #endif // UTILS_HPP
