@@ -36,16 +36,18 @@ String findServerIP(const char *hostname)
 }
 
 String ip = "192.168.0.134";
+const uint16_t port = 5000;
 const char *ssid = "ANDREI";
 const char *password = "gomoescu";
-String serverURL = "http://" + ip + ":5000/login_employee";
-String serverURLLogInEmployees = "http://" + ip + ":5000/login_employee";
-String serverURLLogOutEmployees = "http://" + ip + ":5000/logout_employee";
-String serverURLAllUsersDetails = "http://" + ip + ":5000/get_all_users_details";
-String serverURLUserGetNameById = "http://" + ip + ":5000/get_user_name/";
-String serverURLUserGetReminderById = "http://" + ip + ":5000/get_user_reminder/";
-String serverURLUserSetAccess = "http://" + ip + ":5000/set_access/";
-String serverURLUserGetUserPreferences = "http://" + ip + ":5000/get_user_preferences/";
+String httpsIp = "https://" + ip;
+String serverURL = httpsIp + ":5000/login_employee";
+String serverURLLogInEmployees = httpsIp + ":5000/login_employee";
+String serverURLLogOutEmployees = httpsIp + ":5000/logout_employee";
+String serverURLAllUsersDetails = httpsIp + ":5000/get_all_users_details";
+String serverURLUserGetNameById = httpsIp + ":5000/get_user_name/";
+String serverURLUserGetReminderById = httpsIp + ":5000/get_user_reminder/";
+String serverURLUserSetAccess = httpsIp + ":5000/set_access/";
+String serverURLUserGetUserPreferences = httpsIp + ":5000/get_user_preferences/";
 
 void handleUpdateAction(bool access, String temp, String hum, String reminder, String name)
 {
@@ -121,31 +123,56 @@ void handleUpdate()
 
 void connectToWiFi()
 {
+    Serial.println("Connecting to WiFi...");
+
+    // Start WiFi connection
     WiFi.begin(ssid, password);
-    Serial.print("Connecting to WiFi");
-    while (WiFi.status() != WL_CONNECTED)
+
+    // Timeout mechanism to avoid infinite loop
+    unsigned long startAttemptTime = millis();
+    const unsigned long wifiTimeout = 15000; // 15 seconds timeout
+
+    // Keep checking the connection status with timeout
+    while (WiFi.status() != WL_CONNECTED && millis() - startAttemptTime < wifiTimeout)
     {
         delay(500);
         Serial.print(".");
     }
 
-    while (WiFi.status() != WL_CONNECTED)
+    // Check if connection was successful
+    if (WiFi.status() == WL_CONNECTED)
     {
-        delay(500);
-        Serial.print(".");
+        Serial.println("\nConnected to WiFi!");
+        Serial.print("ESP32 IP Address: ");
+        Serial.println(WiFi.localIP());
+
+        // Configure HTTPS client
+        client.setInsecure(); // Use setCACert for production
+
+        // Test HTTPS connection
+        if (client.connect(ip.c_str(), port))
+        {
+            Serial.println("Connected to HTTPS server!");
+        }
+        else
+        {
+            Serial.println("Failed to connect to HTTPS server.");
+        }
+
+        // Define HTTP POST endpoint for updates
+        server.on("/event", HTTP_POST, handleUpdate);
+
+        // Start the local HTTP server
+        server.begin();
+        Serial.println("HTTP server started");
     }
-    lan_ip = WiFi.localIP().toString();
-    Serial.println("\nConnected to WiFi!");
-    Serial.print("ESP32 IP Address: ");
-    Serial.println(WiFi.localIP());
-    Serial.println("Connected!");
-
-    // Define HTTP POST endpoint
-    server.on("/event", HTTP_POST, handleUpdate);
-
-    // Start the server
-    server.begin();
-    Serial.println("HTTP server started");
+    else
+    {
+        // Connection failed
+        Serial.println("\nFailed to connect to WiFi.");
+        Serial.println("Restarting...");
+        ESP.restart(); // Restart the ESP32 to attempt reconnection
+    }
 }
 
 void sendEmployeeData(String name, String uid, String time, float temperature, float humidity, String reminder, bool inOut)

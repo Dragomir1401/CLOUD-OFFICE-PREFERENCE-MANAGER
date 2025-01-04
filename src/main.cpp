@@ -280,6 +280,7 @@ void setup()
   pinMode(JOYSTICK_SW_PIN, INPUT);
 
   // Set the reminders and names for employees
+  Serial.println("Setting up users...");
   fillAllUsersDetails(users_db);
 }
 
@@ -288,7 +289,7 @@ void setup()
 void loop()
 {
   server.handleClient();
-  
+
   // Check if admin is logged in
   if (adminFlag)
   {

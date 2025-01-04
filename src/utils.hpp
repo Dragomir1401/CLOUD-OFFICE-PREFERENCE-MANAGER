@@ -12,6 +12,7 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <WebServer.h>
+#include <WiFiClientSecure.h>
 
 // Pin defines for ESP
 #define SCK_PIN 18
@@ -78,6 +79,7 @@ extern RtcDS1302<ThreeWire> Rtc;
 extern DHT dht;
 extern String lan_ip;
 extern WebServer server;
+extern WiFiClientSecure client;
 
 // Function declarations
 int daysInMonth(int month, int year);

@@ -11,3 +11,4 @@ RtcDS1302<ThreeWire> Rtc(myWire);
 DHT dht(DHTPIN, DHTTYPE);
 String lan_ip = "";
 WebServer server(80);
+WiFiClientSecure client;
