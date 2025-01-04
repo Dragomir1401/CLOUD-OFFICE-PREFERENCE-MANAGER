@@ -275,38 +275,64 @@ void fetchUserPreferences(String uid, float &temperature, float &humidity) {
     }
 }
 
-// Function to fetch employee names and reminders from the server
-void fillAllUsersDetails(user users_db[]) {
+void fillAllUsersDetails(user users_db[])
+{
     Serial.println("Fetching all users details from " + serverURLAllUsersDetails);
-    // Do a request to /get_all_users_details to get all the users details to fill the users_db array
-    // data comes as "users": [] json array
+
     if (WiFi.status() == WL_CONNECTED)
     {
-        HTTPClient http;
-        http.begin(serverURLAllUsersDetails); // Server URL
-        http.addHeader("Content-Type", "application/json");
+        WiFiClientSecure client;
+        client.setInsecure(); // For development only; use setCACert() in production.
 
-        int httpResponseCode = http.GET();
-        if (httpResponseCode > 0)
+        if (client.connect(ip.c_str(), port))
         {
-            Serial.println("Data received successfully!");
+            Serial.println("Connected to HTTPS server!");
 
-            // Create a buffer to hold the response
-            String payload = http.getString();
+            // Construct the HTTP GET request
+            String request = "GET /get_all_users_details HTTP/1.1\r\n";
+            request += "Host: " + String(ip) + "\r\n";
+            request += "Connection: close\r\n\r\n";
+            client.print(request);
 
-            // Parse the JSON response using ArduinoJson
-            StaticJsonDocument<1024> doc;
-            DeserializationError error = deserializeJson(doc, payload);
+            // Wait for the server response
+            while (client.connected() && !client.available())
+            {
+                delay(100); // Small delay to wait for response
+            }
+
+            // Read the HTTP headers
+            while (client.available())
+            {
+                String line = client.readStringUntil('\n');
+                if (line == "\r")
+                {
+                    // End of headers
+                    break;
+                }
+                Serial.println(line); // Log headers for debugging
+            }
+
+            // Read the body of the response
+            String response = "";
+            while (client.available())
+            {
+                response += client.readString(); // Read the response body
+            }
+            Serial.println("Response body:");
+            Serial.println(response);
+
+            // Parse the JSON response
+            StaticJsonDocument<2048> doc; // Adjust size as needed
+            DeserializationError error = deserializeJson(doc, response);
 
             if (error)
             {
                 Serial.print("JSON parsing failed: ");
                 Serial.println(error.f_str());
-                http.end();
                 return;
             }
 
-            // Parse the JSON array into names and reminders
+            // Parse the JSON array into users_db
             JsonArray users = doc["users"];
             int i = 0;
             for (JsonVariant user : users)
@@ -316,7 +342,7 @@ void fillAllUsersDetails(user users_db[]) {
                 const char *uid = user["id"];
                 bool access = user["access"];
 
-                // print user details
+                // Print user details
                 Serial.print("Received user details: ");
                 Serial.print("Name: ");
                 Serial.println(name);
@@ -326,7 +352,7 @@ void fillAllUsersDetails(user users_db[]) {
                 Serial.println(uid);
                 Serial.print("Access: ");
                 Serial.println(access);
-                
+
                 users_db[i].name = String(name);
                 users_db[i].reminder = String(reminder);
                 users_db[i].uid = String(uid);
@@ -338,14 +364,13 @@ void fillAllUsersDetails(user users_db[]) {
                 i++;
                 uidCount++;
             }
+
+            client.stop(); // Close the connection
         }
         else
         {
-            Serial.print("Error receiving data: ");
-            Serial.println(httpResponseCode);
+            Serial.println("Failed to connect to HTTPS server.");
         }
-
-        http.end(); // Close the HTTP connection
     }
     else
     {
