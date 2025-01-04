@@ -313,22 +313,22 @@ void loop()
         // If admin was not logged in, grant access
         if (!adminFlag)
         {
+          adminAccessMelody();
           Serial.println("Admin Access Granted");
           lcd.clear();
           lcd.print("Admin Access");
           lcd.setCursor(0, 1);
           lcd.print("Granted");
-          adminAccessMelody();
           adminFlag = true;
           delay(2000);
         }
         // If admin was logged in, exit
         else
         {
+          adminGoodbyeMelody();
           Serial.println("Admin Exited");
           lcd.clear();
           lcd.print("Admin Exited");
-          adminGoodbyeMelody();
           adminFlag = false;
           delay(2000);
         }
@@ -353,6 +353,7 @@ void loop()
         // Check if the user is logged in
         if (!users_db[index].logged)
         {
+          accessGrantedMelody();
           RtcDateTime now = Rtc.GetDateTime();
           String nowString = timeToString(now);
           float temperature = 0, humidity = 0;
@@ -375,7 +376,6 @@ void loop()
           lcd.print("Access Granted");
           lcd.setCursor(0, 1);
           lcd.print(nowString);
-          accessGrantedMelody();
           delay(1000);
 
           // Display the welcome message
@@ -403,6 +403,7 @@ void loop()
         }
         else
         {
+          goodbyeMelody();
           // Log the time of exit
           RtcDateTime now = Rtc.GetDateTime();
           String nowString = timeToString(now);
@@ -418,18 +419,17 @@ void loop()
           lcd.print("Log out at ");
           lcd.setCursor(0, 1);
           lcd.print(nowString);
-          goodbyeMelody();
           delay(2000);
           displayExitTime(now, index);
         }
       }
       else
       {
+        accessDeniedMelody();
         // Display the access denied message
         Serial.println("Access Denied");
         lcd.clear();
         lcd.print("Access Denied");
-        accessDeniedMelody();
       }
       // Turn off LEDs after access
       turnOffLEDs();

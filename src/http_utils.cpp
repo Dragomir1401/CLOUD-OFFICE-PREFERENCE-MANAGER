@@ -221,53 +221,86 @@ void sendEmployeeData(String name, String uid, String time, float temperature, f
     }
 }
 
-
-void fetchUserPreferences(String uid, float &temperature, float &humidity) {
-    // Call a POST to /get_user_preferences/ with the uid as the payload
-    // The response will be a JSON object with the user's preferences
+void fetchUserPreferences(String uid, float &temperature, float &humidity)
+{
     if (WiFi.status() == WL_CONNECTED)
     {
-        HTTPClient http;
-        http.begin(serverURLUserGetUserPreferences);
-        http.addHeader("Content-Type", "application/json");
+        WiFiClientSecure client;
+        client.setInsecure(); // For development only. Use setCACert() in production.
 
-        // Create a JSON payload
-        StaticJsonDocument<200> doc;
-        doc["id"] = uid;
-        String requestBody;
-        serializeJson(doc, requestBody);
-
-        // Send POST request
-        int httpResponseCode = http.POST(requestBody);
-
-        if (httpResponseCode > 0)
+        if (client.connect(ip.c_str(), port))
         {
-            Serial.println("Data received successfully!");
+            Serial.println("Connected to HTTPS server!");
 
-            // Get the response payload
-            String payload = http.getString();
-            StaticJsonDocument<1024> responseDoc;
-            DeserializationError error = deserializeJson(responseDoc, payload);
+            // Create the JSON payload
+            StaticJsonDocument<200> doc;
+            doc["id"] = uid;
+            String requestBody;
+            serializeJson(doc, requestBody);
+
+            // Construct the HTTP POST request
+            String request = "POST /get_user_preferences/ HTTP/1.1\r\n";
+            request += "Host: " + String(ip) + "\r\n";
+            request += "Content-Type: application/json\r\n";
+            request += "Content-Length: " + String(requestBody.length()) + "\r\n";
+            request += "Connection: close\r\n\r\n";
+            request += requestBody;
+
+            // Send the request
+            client.print(request);
+
+            // Wait for the server response
+            while (client.connected() && !client.available())
+            {
+                delay(100); // Small delay to wait for the response
+            }
+
+            // Read the HTTP headers
+            while (client.available())
+            {
+                String line = client.readStringUntil('\n');
+                if (line == "\r")
+                {
+                    // End of headers
+                    break;
+                }
+                Serial.println(line); // Log headers for debugging
+            }
+
+            // Read the body of the response
+            String response = "";
+            while (client.available())
+            {
+                response += client.readString(); // Read the response body
+            }
+            Serial.println("Response body:");
+            Serial.println(response);
+
+            // Parse the JSON response
+            StaticJsonDocument<1024> responseDoc; // Adjust size if needed
+            DeserializationError error = deserializeJson(responseDoc, response);
 
             if (error)
             {
                 Serial.print("JSON parsing failed: ");
                 Serial.println(error.f_str());
-                http.end();
                 return;
             }
 
-            // Parse the response for the preferences: temperature, humidity
+            // Parse the preferences: temperature and humidity
             temperature = responseDoc["preferences"]["temperature"];
             humidity = responseDoc["preferences"]["humidity"];
+            Serial.print("Parsed Preferences - Temperature: ");
+            Serial.println(temperature);
+            Serial.print("Parsed Preferences - Humidity: ");
+            Serial.println(humidity);
+
+            client.stop(); // Close the connection
         }
         else
         {
-            Serial.print("Error receiving data: ");
-            Serial.println(httpResponseCode);
+            Serial.println("Failed to connect to HTTPS server.");
         }
-
-        http.end();
     }
     else
     {
@@ -282,7 +315,7 @@ void fillAllUsersDetails(user users_db[])
     if (WiFi.status() == WL_CONNECTED)
     {
         WiFiClientSecure client;
-        client.setInsecure(); // For development only; use setCACert() in production.
+        client.setInsecure();
 
         if (client.connect(ip.c_str(), port))
         {
