@@ -22,7 +22,6 @@ int uidToIndex(String uid)
     {
         if (users_db[i].uid == uid)
         {
-            Serial.println("User with id: " + uid + " found at index: " + i);
             return i;
         }
     }
@@ -81,7 +80,8 @@ void addCardAccess()
         users_db[uidCount].uid = newUID;
         users_db[uidCount].logged = false;
         users_db[uidCount].hasAccess = true;
-        users_db[uidCount].lastLogTime = 0;
+        users_db[uidCount].lastLogTime = "";
+        users_db[uidCount].lastLogTimeInt = 0;
         users_db[uidCount].lastTimeSpent = 0;
         users_db[uidCount].name = get_user_name_by_id(newUID);
         users_db[uidCount].reminder = get_user_reminder_by_id(newUID);

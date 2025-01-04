@@ -363,7 +363,8 @@ void loop()
           // Log the time of access
           Serial.println(users_db[index].lastLogTime);
           users_db[index].logged = true;
-          users_db[index].lastLogTime = dateToInt(now);
+          users_db[index].lastLogTime = nowString;
+          users_db[index].lastLogTimeInt = dateToInt(now);
 
           // Display the access granted message
           Serial.println("Access Granted");

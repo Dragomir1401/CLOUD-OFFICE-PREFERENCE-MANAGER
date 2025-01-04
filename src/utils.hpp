@@ -59,7 +59,8 @@ struct user
     String uid;
     String reminder;
     String name;
-    int lastLogTime;
+    String lastLogTime;
+    int lastLogTimeInt;
     bool hasAccess;
     int lastTimeSpent;
     bool logged;
@@ -112,5 +113,6 @@ void fetchUserPreferences(String uid, float &temperature, float &humidity);
 void showSettingPreferences(float currentTemp, float currentHumid, float preferedTemp, float preferedHumid);
 void turnOffLedsAndBuzzer();
 void playMelody(int note, int duration, int delayP);
+String intToDate(int seconds);
 
 #endif // UTILS_HPP

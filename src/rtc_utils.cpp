@@ -100,6 +100,51 @@ String formatSpentTime(int totalSeconds)
     return String(timeString);
 }
 
+String intToDate(int seconds)
+{
+    // Calculate the number of days in each component
+    int days = seconds / (24 * 3600);
+    seconds = seconds % (24 * 3600);
+    int hours = seconds / 3600;
+    seconds = seconds % 3600;
+    int minutes = seconds / 60;
+    seconds = seconds % 60;
+
+    // Format the time string and return it
+    char timeString[20];
+    snprintf(timeString, sizeof(timeString), "%02dd:%02dh:%02dm:%02ds", days, hours, minutes, seconds);
+    return String(timeString);
+}
+
+int stringDateToInt(String date) {
+    // Split the date string
+    int year = date.substring(0, 4).toInt();
+    int month = date.substring(5, 7).toInt();
+    int day = date.substring(8, 10).toInt();
+    int hour = date.substring(11, 13).toInt();
+    int minute = date.substring(14, 16).toInt();
+    int second = date.substring(17, 19).toInt();
+
+    // Calculate the number of seconds
+    int seconds = 0;
+
+    // Calculate months
+    for (int i = 1; i < month; i++)
+    {
+        seconds += daysInMonth(i, year) * 24 * 3600;
+    }
+
+    // Calculate days
+    seconds += (day - 1) * 24 * 3600;
+
+    // Calculate hours, minutes, and seconds
+    seconds += hour * 3600;
+    seconds += minute * 60;
+    seconds += second;
+
+    return seconds;
+}
+
 // Function to read the time from the RTC
 RtcDateTime readQuartzTime()
 {
@@ -129,7 +174,7 @@ void displayExitTime(RtcDateTime now, int index)
 {
     // Get the current time
     int seconds = dateToInt(now);
-    int spentTime = seconds - users_db[index].lastLogTime;
+    int spentTime = seconds - users_db[index].lastLogTimeInt;
 
     // Convert the spent time to a string
     String spentTimeString = formatSpentTime(spentTime);

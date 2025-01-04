@@ -231,7 +231,8 @@ void fillAllUsersDetails(user users_db[]) {
                 users_db[i].hasAccess = access;
                 users_db[i].logged = false;
                 users_db[i].lastTimeSpent = 0;
-                users_db[i].lastLogTime = 0;
+                users_db[i].lastLogTime = "";
+                users_db[i].lastLogTimeInt = 0;
                 i++;
                 uidCount++;
             }
