@@ -100,7 +100,7 @@ def visualization_page():
     )
 
 
-@app.route('/login_employee', methods=['POST'])
+@app.route('/login_employee/', methods=['POST'])
 def log_employee():
     # Parse the JSON data sent by the ESP32
     data = request.get_json()
@@ -111,7 +111,7 @@ def log_employee():
 
     return jsonify({"status": "success"})
 
-@app.route('/logout_employee', methods=['POST'])
+@app.route('/logout_employee/', methods=['POST'])
 def logout_employee():
     # Parse the JSON data sent by the ESP32
     data = request.get_json()
@@ -291,4 +291,4 @@ def get_preferences():
     
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000, debug=True, ssl_context=("cert.pem", "key.pem"))
+    app.run(host="0.0.0.0", port=5001, debug=True, ssl_context=("cert.pem", "key.pem"))

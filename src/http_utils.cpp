@@ -1,6 +1,8 @@
 #include "utils.hpp"
 #include <ArduinoJson.h>
 #include <ESPmDNS.h>
+#include <FS.h>
+#include <SPIFFS.h>
 
 // Function to find the server's IP dynamically using mDNS
 String findServerIP(const char *hostname)
@@ -35,8 +37,31 @@ String findServerIP(const char *hostname)
     }
 }
 
+const char *cacert =
+    "-----BEGIN CERTIFICATE-----\n"
+    "MIIDjDCCAnSgAwIBAgIUCg+kiyL1pVzbDrs/CCuTtBi6q/0wDQYJKoZIhvcNAQEL\n"
+    "BQAwVTELMAkGA1UEBhMCUk8xDjAMBgNVBAgMBUJ1emF1MQ4wDAYDVQQHDAVCdXph\n"
+    "dTEOMAwGA1UECgwFUFJJb1QxFjAUBgNVBAMMDTE5Mi4xNjguMC4xMzQwHhcNMjUw\n"
+    "MTA0MjMxMDU1WhcNMjYwMTA0MjMxMDU1WjBVMQswCQYDVQQGEwJSTzEOMAwGA1UE\n"
+    "CAwFQnV6YXUxDjAMBgNVBAcMBUJ1emF1MQ4wDAYDVQQKDAVQUklvVDEWMBQGA1UE\n"
+    "AwwNMTkyLjE2OC4wLjEzNDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEB\n"
+    "ANLCHE/36uOTFxT/c9RPch6VbETf8Yhil6bNk9UJjZP474l7f4DX+3baPZvAjupg\n"
+    "kF6L98+IvmYeeDsab85D+PZqGHw9/SbxE1V8YEt0b8BsjvStKv45tu1w7AZgPWbU\n"
+    "I19jGFKVuu2SAvcN7G0iRFG9DIdgsGC3WqcElpDVALRP1k2jySsPMnPftBihiWCD\n"
+    "metc7kwMxDSdyS5BT6QcYNwoRDdmlbHfbaa83Wf40VISr9p/INxDfQ3IL6OaZWYe\n"
+    "Wqz4uY3dyJ04x7KokHpZVNjaCHcEHsuuadASSh+XIYRq0wcLjfs+Ag/gHb9Bp1al\n"
+    "7+P4OJn2gPdsngGkUmGNXrMCAwEAAaNUMFIwCwYDVR0PBAQDAgQwMBMGA1UdJQQM\n"
+    "MAoGCCsGAQUFBwMBMA8GA1UdEQQIMAaHBMCoAIYwHQYDVR0OBBYEFFJ5f/J7E2ZN\n"
+    "k0FOeBAHeuhPHZX7MA0GCSqGSIb3DQEBCwUAA4IBAQBjjzZrkaq+LKIGWoxYViLe\n"
+    "gujb90Q/g0NEg1WmSrEABqwz4bh+hKJrRLD77ZUqBb1wYa/gef8PSRdtJou6rFhb\n"
+    "5lvz93FMt6AY0JXkxjsHImDk4H7N+/D/bkBADdG/8VOIi4I4qstBvhHltU3aUKZc\n"
+    "YCbAO3cH5YAmEFQOZJTuNwK943ZvAupgR36X9GJHEgnHKJMzmv9qN3xwaJp94fEb\n"
+    "I0qjSWSWG1Y0sdB7pSqI3cmzTq1HS8pCDE72SUfxErZGrSb89mOmvUE8MjktEAMD\n"
+    "95euPzndy1SOJSOCYrf6Nzi/aHIZsvCGWOhs3TS9Zm+GdgUwuohySGq4sSV/9wT6\n"
+    "-----END CERTIFICATE-----\n";
+
 String ip = "192.168.0.134";
-const uint16_t port = 5000;
+const uint16_t port = 5001;
 const char *ssid = "ANDREI";
 const char *password = "gomoescu";
 String httpsIp = "https://" + ip;
@@ -146,8 +171,8 @@ void connectToWiFi()
         Serial.print("ESP32 IP Address: ");
         Serial.println(WiFi.localIP());
 
-        // Configure HTTPS client
-        client.setInsecure(); // Use setCACert for production
+        // client.setCACert(cacert);
+        client.setInsecure();
 
         // Test HTTPS connection
         if (client.connect(ip.c_str(), port))
@@ -179,41 +204,74 @@ void sendEmployeeData(String name, String uid, String time, float temperature, f
 {
     if (WiFi.status() == WL_CONNECTED)
     {
-        HTTPClient http;
-        if (!inOut) {
-            http.begin(serverURLLogInEmployees);
-        } else {
-            http.begin(serverURLLogOutEmployees);
-        }
-        http.addHeader("Content-Type", "application/json");
+        WiFiClientSecure client;
+        client.setInsecure();
+        // client.setCACert(cacert);
 
-        // Include the time field in the JSON payload
-        String jsonData = "{\"name\":\"" + name + "\","
-                                                          "\"uid\":\"" +
-                          uid + "\","
-                                "\"time\":\"" +
-                          time + "\","
-                                 "\"temperature\":" +
-                          String(temperature) + ","
-                                                "\"humidity\":" +
-                          String(humidity) + ","
-                                             "\"reminder\":\"" +
-                          reminder + "\"}";
+        // Determine the appropriate endpoint based on the inOut flag
+        String endpoint = inOut ? "/logout_employee/" : "/login_employee/";
 
-        int httpResponseCode = http.POST(jsonData);
-        if (httpResponseCode > 0)
+        if (client.connect(ip.c_str(), port))
         {
-            Serial.println("Data sent successfully!");
-            String response = http.getString();
+            Serial.println("Connected to HTTPS server!");
+
+            // Create the JSON payload
+            String jsonData = "{\"name\":\"" + name + "\","
+                                                      "\"uid\":\"" +
+                              uid + "\","
+                                    "\"time\":\"" +
+                              time + "\","
+                                     "\"temperature\":" +
+                              String(temperature) + ","
+                                                    "\"humidity\":" +
+                              String(humidity) + ","
+                                                 "\"reminder\":\"" +
+                              reminder + "\"}";
+
+            // Construct the HTTP POST request
+            String request = "POST " + endpoint + " HTTP/1.1\r\n";
+            request += "Host: " + String(ip) + "\r\n";
+            request += "Content-Type: application/json\r\n";
+            request += "Content-Length: " + String(jsonData.length()) + "\r\n";
+            request += "Connection: close\r\n\r\n";
+            request += jsonData;
+
+            // Send the request
+            client.print(request);
+
+            // Wait for the server response
+            while (client.connected() && !client.available())
+            {
+                delay(100); // Small delay to wait for the response
+            }
+
+            // Read the HTTP headers
+            while (client.available())
+            {
+                String line = client.readStringUntil('\n');
+                if (line == "\r")
+                {
+                    // End of headers
+                    break;
+                }
+                Serial.println(line); // Log headers for debugging
+            }
+
+            // Read the body of the response
+            String response = "";
+            while (client.available())
+            {
+                response += client.readString(); // Read the response body
+            }
+            Serial.println("Response body:");
             Serial.println(response);
+
+            client.stop(); // Close the connection
         }
         else
         {
-            Serial.print("Error sending data: ");
-            Serial.println(httpResponseCode);
+            Serial.println("Failed to connect to HTTPS server.");
         }
-
-        http.end();
     }
     else
     {
@@ -226,7 +284,8 @@ void fetchUserPreferences(String uid, float &temperature, float &humidity)
     if (WiFi.status() == WL_CONNECTED)
     {
         WiFiClientSecure client;
-        client.setInsecure(); // For development only. Use setCACert() in production.
+        client.setInsecure();
+        // client.setCACert(cacert);
 
         if (client.connect(ip.c_str(), port))
         {
@@ -316,6 +375,7 @@ void fillAllUsersDetails(user users_db[])
     {
         WiFiClientSecure client;
         client.setInsecure();
+        // client.setCACert(cacert);
 
         if (client.connect(ip.c_str(), port))
         {
