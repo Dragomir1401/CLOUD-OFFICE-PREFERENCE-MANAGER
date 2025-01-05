@@ -581,48 +581,59 @@ void set_access(String id, bool access)
 {
     if (WiFi.status() == WL_CONNECTED)
     {
-        HTTPClient http;
-        http.begin(serverURLUserSetAccess); // Server URL
-        http.addHeader("Content-Type", "application/json");
+        WiFiClientSecure client;
+        client.setInsecure();
 
-        // Create a JSON payload
-        StaticJsonDocument<200> doc;
-        doc["id"] = id;
-        doc["access"] = access;
-        String requestBody;
-        serializeJson(doc, requestBody);
-
-        // Send POST request
-        int httpResponseCode = http.POST(requestBody);
-
-        if (httpResponseCode > 0)
+        if (!client.connect(ip.c_str(), port))
         {
-            Serial.println("Data received successfully!");
+            Serial.println("Failed to connect to HTTPS server.");
+            return;
+        }
 
-            // Get the response payload
-            String payload = http.getString();
-            StaticJsonDocument<1024> responseDoc;
-            DeserializationError error = deserializeJson(responseDoc, payload);
+        // Construct the HTTP POST request
+        String url = "/set_access/";
+        String payload = "{\"id\":\"" + id + "\",\"access\":" + String(access ? "true" : "false") + "}";
+        client.println("POST " + url + " HTTP/1.1");
+        client.println("Host: " + ip);
+        client.println("Content-Type: application/json");
+        client.println("Content-Length: " + String(payload.length()));
+        client.println("Connection: close");
+        client.println();
+        client.println(payload);
 
-            if (error)
+        // Wait for the response
+        while (client.connected())
+        {
+            String line = client.readStringUntil('\n');
+            if (line == "\r")
             {
-                Serial.print("JSON parsing failed: ");
-                Serial.println(error.f_str());
-                http.end();
-                return;
+                // End of headers
+                break;
             }
-
-            // Parse the response for the reminder
-            const char *reminder = responseDoc["reminder"];
-            http.end(); // Close the connection
         }
-        else
+
+        // Read the response body
+        String responseBody = client.readString();
+        Serial.println("Response body:");
+        Serial.println(responseBody);
+
+        // Parse the JSON response
+        StaticJsonDocument<1024> responseDoc;
+        DeserializationError error = deserializeJson(responseDoc, responseBody);
+
+        if (error)
         {
-            Serial.print("Error receiving data for set access: ");
-            Serial.println(httpResponseCode);
+            Serial.print("JSON parsing failed: ");
+            Serial.println(error.f_str());
+            return;
         }
 
-        http.end(); // Close the connection
+        // Optionally process response if needed
+        const char *status = responseDoc["status"];
+        const char *message = responseDoc["message"];
+
+        Serial.println("Status: " + String(status));
+        Serial.println("Message: " + String(message));
     }
     else
     {
