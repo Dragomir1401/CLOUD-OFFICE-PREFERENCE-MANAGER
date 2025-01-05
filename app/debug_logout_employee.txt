@@ -1,0 +1,6 @@
+Raw request data:
+5I+TW5LJWkHtrv94WjyZEZOn5jCWBsPvd4fbwPYgXLQJRE1i7FvdJ4vTokhkwXfIi/IGTt6FIb+lvaz2TIiYUAqege8PltyvLJx7huOlxwPq8Xi3TfGxWrVUCKNHOQBHUwocfAcLreYOzmXUfbcEAyP9damVw9o5lKpvNUOOg9fkyJId3K92szvGnHyiUZFV
+Decrypted payload:
+{"name":"John Doe","uid":"E37A082F","time":"165/165/2165 37:165","temperature":24.50,"humidity":51.00,"reminder":"Updated reminder"}
+Parsed JSON:
+{'name': 'John Doe', 'uid': 'E37A082F', 'time': '165/165/2165 37:165', 'temperature': 24.5, 'humidity': 51.0, 'reminder': 'Updated reminder'}

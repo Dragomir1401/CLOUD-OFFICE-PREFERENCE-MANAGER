@@ -226,32 +226,52 @@ def logout_employee():
 
 @app.route('/update_preferences', methods=['POST'])
 def update_preferences():
-    data = request.get_json()
+    try:
+        # Read raw request data
+        raw_data = request.data.decode('utf-8')
+        print("Raw request data:", raw_data)
 
-    # Find the user by UID
-    user_id = data.get('id')
-    user = next((u for u in users if u['id'] == user_id), None)
-    
-    if user:
-        # Update the preferences if the user exists
-        user['preferences'] = data.get('preferences', user['preferences'])
-        user['access'] = data.get('access', user['access'])
-        user['reminder'] = data.get('reminder', user['reminder'])
-        
-        save_users()  # Save the changes to the file
-        
-        # send to esp an event signaling the update
-        payload = {"type": "update",
-                   "name": user['name'],
-                   "access": user['access'],
-                   "reminder": user['reminder'],
-                   "preferences": user['preferences']}
-        requests.post(f'http://{esp_ip_address}/event', json=encrypt_aes(json.dumps(payload)))
-            
-        
-        return jsonify({"status": "success", "message": "User preferences updated!"})
-    else:
-        return jsonify({"status": "failure", "message": "User not found!"}), 404
+        # Parse the raw JSON data
+        data = json.loads(raw_data)
+
+        # Find the user by UID
+        user_id = data.get('id')
+        user = next((u for u in users if u['id'] == user_id), None)
+
+        if user:
+            # Update the preferences if the user exists
+            user['preferences'] = data.get('preferences', user['preferences'])
+            user['access'] = data.get('access', user['access'])
+            user['reminder'] = data.get('reminder', user['reminder'])
+
+            save_users()  # Save the changes to the file
+
+            # Prepare and encrypt the payload to send back to the ESP32
+            payload = {
+                "type": "update",
+                "name": user['name'],
+                "uid": user['id'],
+                "access": user['access'],
+                "reminder": user['reminder'],
+                "preferences": user['preferences']
+            }
+            encrypted_payload = encrypt_aes(json.dumps(payload))
+
+            # Send encrypted payload to the ESP32
+            esp_response = requests.post(f'http://{esp_ip_address}/event', data=encrypted_payload, headers={"Content-Type": "text/plain"})
+            print("ESP Response:", esp_response.text)
+
+            # Return an encrypted acknowledgment to the client
+            return encrypt_aes(json.dumps({"status": "success", "message": "User preferences updated!"}))
+        else:
+            # User not found
+            error_message = {"status": "failure", "message": "User not found!"}
+            return encrypt_aes(json.dumps(error_message)), 404
+
+    except Exception as e:
+        print("Error occurred:", str(e))
+        error_message = {"status": "failure", "message": str(e)}
+        return encrypt_aes(json.dumps(error_message)), 400
 
 # New route for reminders
 @app.route('/set_reminder', methods=['POST'])

@@ -93,8 +93,10 @@ void handleUpdate()
     if (server.hasArg("plain"))
     {
         String payload = server.arg("plain");
+        Serial.println("Raw payload received: " + payload);
+
         payload = decryptAES(payload);
-        Serial.println("Received update: " + payload);
+        Serial.println("Decrypted payload: " + payload);
 
         // Parse the JSON payload
         StaticJsonDocument<256> doc;
@@ -104,13 +106,14 @@ void handleUpdate()
         {
             Serial.print("JSON parsing failed: ");
             Serial.println(error.f_str());
-            server.send(400, "text/plain", "Invalid JSON");
+            server.send(400, "text/plain", encryptAES("{\"status\": \"failure\", \"message\": \"Invalid JSON\"}"));
             return;
         }
 
         // Extract type and message
         const char *type = doc["type"];
         bool access = doc["access"];
+        const char *uid = doc["uid"];
         const char *name = doc["name"];
         const char *temp = doc["preferences"]["temperature"];
         const char *hum = doc["preferences"]["humidity"];
@@ -119,12 +122,16 @@ void handleUpdate()
         // Handle the update
         handleUpdateAction(access, String(temp), String(hum), String(reminder), String(name));
 
-        // Respond to the server
-        server.send(200, "text/plain", "Update received");
+        // Put the new access in the database
+        users_db[uidToIndex(String(uid))].hasAccess = access;
+        users_db[uidToIndex(String(uid))].reminder = String(reminder);
+
+        // Respond to the server with encrypted acknowledgment
+        server.send(200, "text/plain", encryptAES("{\"status\": \"success\", \"message\": \"Update received\"}"));
     }
     else
     {
-        server.send(400, "text/plain", "No payload received");
+        server.send(400, "text/plain", encryptAES("{\"status\": \"failure\", \"message\": \"No payload received\"}"));
     }
 }
 

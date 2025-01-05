@@ -3,12 +3,12 @@
         {
             "id": "E37A082F",
             "name": "John Doe",
-            "access": true,
+            "access": false,
             "preferences": {
-                "temperature": "21",
+                "temperature": "22",
                 "humidity": "34"
             },
-            "reminder": "Salut"
+            "reminder": "Test rem2"
         },
         {
             "id": "E3E40B2F",
