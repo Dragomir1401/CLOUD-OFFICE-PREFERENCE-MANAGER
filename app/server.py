@@ -290,19 +290,56 @@ def check_access():
     
 @app.route('/set_access/', methods=['POST'])
 def set_access():
-    data = request.get_json()
-    data = decrypt_aes(data)
-    user_id = data.get('id')
-    access = data.get('access')
-    
-    user = next((u for u in users if u['id'] == user_id), None)
-    if user:
-        user['access'] = access
-        save_users()
-        return jsonify({"status": "success", "message": "Access updated successfully!"})
-    else:
-        return jsonify({"status": "failure", "message": "User not found!"}), 404
-    
+    try:
+        # Read raw request data
+        raw_data = request.data.decode('utf-8')  # Decode the raw binary data to string
+        print("Raw request data:", raw_data)
+
+        # Save raw data to a file for debugging
+        with open("debug_payload.txt", "w") as f:
+            f.write("Raw request data:\n" + raw_data)
+
+        # Decrypt the raw payload
+        decrypted_data = decrypt_aes(raw_data)
+        print("Decrypted payload:", decrypted_data)
+
+        # Save decrypted data for debugging
+        with open("debug_payload.txt", "a") as f:
+            f.write("\nDecrypted payload:\n" + decrypted_data)
+
+        # Parse the decrypted JSON
+        json_data = json.loads(decrypted_data)
+        print("Parsed JSON:", json_data)
+
+        # Save parsed JSON for debugging
+        with open("debug_payload.txt", "a") as f:
+            f.write("\nParsed JSON:\n" + str(json_data))
+
+        # Extract necessary fields
+        user_id = json_data.get("id")
+        access = json_data.get("access")
+
+        # Validate fields
+        if user_id is None or access is None:
+            raise ValueError("Missing 'id' or 'access' in payload")
+
+        # Find the user and update access
+        user = next((u for u in users if u['id'] == user_id), None)
+        if user:
+            user['access'] = access
+            save_users()
+            return jsonify({"status": "success", "message": "Access updated successfully!"})
+        else:
+            return jsonify({"status": "failure", "message": "User not found!"}), 404
+
+    except Exception as e:
+        # Log error
+        print("Error occurred:", str(e))
+        with open("debug_payload.txt", "a") as f:
+            f.write("\nError occurred:\n" + str(e))
+
+        return jsonify({"status": "failure", "message": str(e)}), 400
+
 @app.route('/get_user_name/', methods=['POST'])
 def get_user_name():
     data = request.get_json()

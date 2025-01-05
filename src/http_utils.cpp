@@ -601,6 +601,9 @@ void set_access(String id, bool access)
         // Construct the HTTP POST request
         String url = "/set_access/";
         String payload = "{\"id\":\"" + id + "\",\"access\":" + String(access ? "true" : "false") + "}";
+        payload = encryptAES(payload);
+        Serial.println("Encrypted Payload:");
+        Serial.println(payload);
         client.println("POST " + url + " HTTP/1.1");
         client.println("Host: " + ip);
         client.println("Content-Type: application/json");
@@ -622,8 +625,7 @@ void set_access(String id, bool access)
 
         // Read the response body
         String responseBody = client.readString();
-        responseBody = decryptAES(responseBody);
-        Serial.println("Response body:");
+        Serial.println("Raw Response body:");
         Serial.println(responseBody);
 
         // Parse the JSON response

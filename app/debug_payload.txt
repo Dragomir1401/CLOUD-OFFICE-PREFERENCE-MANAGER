@@ -1,0 +1,6 @@
+Raw request data:
+wlx2DJFbICBPowp7v84JXbIyKFm9gnxeu/KriX+OG94=
+Decrypted payload:
+{"id":"E37A082F","access":true}
+Parsed JSON:
+{'id': 'E37A082F', 'access': True}
