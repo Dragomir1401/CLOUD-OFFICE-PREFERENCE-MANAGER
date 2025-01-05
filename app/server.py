@@ -143,27 +143,86 @@ def visualization_page():
 
 @app.route('/login_employee/', methods=['POST'])
 def log_employee():
-    # Parse the JSON data sent by the ESP32
-    data = request.get_json()
-    data = decrypt_aes(data)
-    data['type'] = 'login'
+    try:
+        # Read raw request data
+        raw_data = request.data.decode('utf-8')
+        print("Raw request data:", raw_data)
 
-    # Store the incoming log in the logs list
-    logs.append(data)
+        # Save raw data for debugging
+        with open("debug_login_employee.txt", "w") as f:
+            f.write("Raw request data:\n" + raw_data)
 
-    return jsonify({"status": "success"})
+        # Decrypt the raw payload
+        decrypted_data = decrypt_aes(raw_data)
+        print("Decrypted payload:", decrypted_data)
+
+        # Save decrypted data for debugging
+        with open("debug_login_employee.txt", "a") as f:
+            f.write("\nDecrypted payload:\n" + decrypted_data)
+
+        # Parse the decrypted JSON
+        json_data = json.loads(decrypted_data)
+        print("Parsed JSON:", json_data)
+
+        # Save parsed JSON for debugging
+        with open("debug_login_employee.txt", "a") as f:
+            f.write("\nParsed JSON:\n" + str(json_data))
+
+        # Add type field for login
+        json_data['type'] = 'login'
+
+        # Store the log
+        logs.append(json_data)
+
+        return jsonify({"status": "success"})
+
+    except Exception as e:
+        print("Error occurred:", str(e))
+        with open("debug_login_employee.txt", "a") as f:
+            f.write("\nError occurred:\n" + str(e))
+        return jsonify({"status": "failure", "message": str(e)}), 400
+
 
 @app.route('/logout_employee/', methods=['POST'])
 def logout_employee():
-    # Parse the JSON data sent by the ESP32
-    data = request.get_json()
-    data = decrypt_aes(data)
-    data['type'] = 'logout'
+    try:
+        # Read raw request data
+        raw_data = request.data.decode('utf-8')
+        print("Raw request data:", raw_data)
 
-    # Store the incoming log in the logs list
-    logs.append(data)
+        # Save raw data for debugging
+        with open("debug_logout_employee.txt", "w") as f:
+            f.write("Raw request data:\n" + raw_data)
 
-    return jsonify({"status": "success"})
+        # Decrypt the raw payload
+        decrypted_data = decrypt_aes(raw_data)
+        print("Decrypted payload:", decrypted_data)
+
+        # Save decrypted data for debugging
+        with open("debug_logout_employee.txt", "a") as f:
+            f.write("\nDecrypted payload:\n" + decrypted_data)
+
+        # Parse the decrypted JSON
+        json_data = json.loads(decrypted_data)
+        print("Parsed JSON:", json_data)
+
+        # Save parsed JSON for debugging
+        with open("debug_logout_employee.txt", "a") as f:
+            f.write("\nParsed JSON:\n" + str(json_data))
+
+        # Add type field for logout
+        json_data['type'] = 'logout'
+
+        # Store the log
+        logs.append(json_data)
+
+        return jsonify({"status": "success"})
+
+    except Exception as e:
+        print("Error occurred:", str(e))
+        with open("debug_logout_employee.txt", "a") as f:
+            f.write("\nError occurred:\n" + str(e))
+        return jsonify({"status": "failure", "message": str(e)}), 400
 
 @app.route('/update_preferences', methods=['POST'])
 def update_preferences():
@@ -342,39 +401,159 @@ def set_access():
 
 @app.route('/get_user_name/', methods=['POST'])
 def get_user_name():
-    data = request.get_json()
-    data = decrypt_aes(data)
-    user_id = data.get('id')
-    
-    user = next((u for u in users if u['id'] == user_id), None)
-    if user:
-        return jsonify({"name": user['name']})
-    else:
-        return jsonify({"status": "failure", "message": "User not found!"}), 404
+    try:
+        # Read raw request data
+        raw_data = request.data.decode('utf-8')
+        print("Raw request data:", raw_data)
+
+        # Save raw data for debugging
+        with open("debug_get_user_name.txt", "w") as f:
+            f.write("Raw request data:\n" + raw_data)
+
+        # Decrypt the raw payload
+        decrypted_data = decrypt_aes(raw_data)
+        print("Decrypted payload:", decrypted_data)
+
+        # Save decrypted data for debugging
+        with open("debug_get_user_name.txt", "a") as f:
+            f.write("\nDecrypted payload:\n" + decrypted_data)
+
+        # Parse the decrypted JSON
+        json_data = json.loads(decrypted_data)
+        print("Parsed JSON:", json_data)
+
+        # Save parsed JSON for debugging
+        with open("debug_get_user_name.txt", "a") as f:
+            f.write("\nParsed JSON:\n" + str(json_data))
+
+        # Extract the user ID
+        user_id = json_data.get("id")
+        if not user_id:
+            raise ValueError("Missing 'id' in payload")
+
+        # Find the user by ID
+        user = next((u for u in users if u['id'] == user_id), None)
+        if user:
+            return jsonify({"name": user['name']})
+        else:
+            return jsonify({"status": "failure", "message": "User not found!"}), 404
+
+    except Exception as e:
+        # Log error
+        print("Error occurred:", str(e))
+        with open("debug_get_user_name.txt", "a") as f:
+            f.write("\nError occurred:\n" + str(e))
+
+        return jsonify({"status": "failure", "message": str(e)}), 400
+
     
 @app.route('/get_user_reminder/', methods=['POST'])
 def get_reminder():
-    data = request.get_json()
-    data = decrypt_aes(data)
-    user_id = data.get('id')
-    
-    user = next((u for u in users if u['id'] == user_id), None)
-    if user:
-        return jsonify({"reminder": user['reminder']})
-    else:
-        return jsonify({"status": "failure", "message": "User not found!"}), 404
-    
+    try:
+        # Read raw request data
+        raw_data = request.data.decode('utf-8')
+        print("Raw request data:", raw_data)
+
+        # Save raw data for debugging
+        with open("debug_get_user_reminder.txt", "w") as f:
+            f.write("Raw request data:\n" + raw_data)
+
+        # Decrypt the raw payload
+        decrypted_data = decrypt_aes(raw_data)
+        print("Decrypted payload:", decrypted_data)
+
+        # Save decrypted data for debugging
+        with open("debug_get_user_reminder.txt", "a") as f:
+            f.write("\nDecrypted payload:\n" + decrypted_data)
+
+        # Parse the decrypted JSON
+        json_data = json.loads(decrypted_data)
+        print("Parsed JSON:", json_data)
+
+        # Save parsed JSON for debugging
+        with open("debug_get_user_reminder.txt", "a") as f:
+            f.write("\nParsed JSON:\n" + str(json_data))
+
+        # Extract the user ID
+        user_id = json_data.get("id")
+        if not user_id:
+            raise ValueError("Missing 'id' in payload")
+
+        # Find the user by ID
+        user = next((u for u in users if u['id'] == user_id), None)
+        if user:
+            return jsonify({"reminder": user['reminder']})
+        else:
+            return jsonify({"status": "failure", "message": "User not found!"}), 404
+
+    except Exception as e:
+        # Log error
+        print("Error occurred:", str(e))
+        with open("debug_get_user_reminder.txt", "a") as f:
+            f.write("\nError occurred:\n" + str(e))
+
+        return jsonify({"status": "failure", "message": str(e)}), 400
+
 @app.route('/get_user_preferences/', methods=['POST'])
 def get_preferences():
-    data = request.get_json()
-    data = decrypt_aes(data)
-    user_id = data.get('id')
-    
-    user = next((u for u in users if u['id'] == user_id), None)
-    if user:
-        return jsonify({"preferences": user['preferences']})
-    else:
-        return jsonify({"status": "failure", "message": "User not found!"}), 404
+    try:
+        # Read raw request data
+        raw_data = request.data.decode('utf-8').strip()
+        print("Raw request data:", raw_data)
+
+        # Save raw data for debugging
+        with open("debug_get_user_preferences.txt", "w") as f:
+            f.write("Raw request data:\n" + raw_data)
+
+        # Validate if raw data is a valid Base64 string
+        try:
+            decoded_data = b64decode(raw_data, validate=True)
+            print("Decoded Base64 data:", decoded_data)
+        except Exception as e:
+            raise ValueError(f"Invalid Base64 string: {str(e)}")
+
+        # Decrypt the raw payload
+        decrypted_data = decrypt_aes(raw_data)
+        print("Decrypted payload:", decrypted_data)
+
+        # Save decrypted data for debugging
+        with open("debug_get_user_preferences.txt", "a") as f:
+            f.write("\nDecrypted payload:\n" + decrypted_data)
+
+        # Parse the decrypted JSON
+        json_data = json.loads(decrypted_data)
+        print("Parsed JSON:", json_data)
+
+        # Save parsed JSON for debugging
+        with open("debug_get_user_preferences.txt", "a") as f:
+            f.write("\nParsed JSON:\n" + str(json_data))
+
+        # Extract the user ID
+        user_id = json_data.get("id")
+        if not user_id:
+            raise ValueError("Missing 'id' in payload")
+
+        # Find the user by ID
+        user = next((u for u in users if u['id'] == user_id), None)
+        if user:
+            # Encrypt the preferences and return
+            preferences_payload = json.dumps({"preferences": user['preferences']})
+            encrypted_preferences = encrypt_aes(preferences_payload)
+            return encrypted_preferences
+        else:
+            error_response = json.dumps({"status": "failure", "message": "User not found!"})
+            encrypted_error = encrypt_aes(error_response)
+            return encrypted_error, 404
+
+    except Exception as e:
+        # Log error
+        print("Error occurred:", str(e))
+        with open("debug_get_user_preferences.txt", "a") as f:
+            f.write("\nError occurred:\n" + str(e))
+
+        error_response = json.dumps({"status": "failure", "message": str(e)})
+        encrypted_error = encrypt_aes(error_response)
+        return encrypted_error, 400
     
 
 if __name__ == '__main__':

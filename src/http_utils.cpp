@@ -269,7 +269,6 @@ void fetchUserPreferences(String uid, float &temperature, float &humidity)
     {
         WiFiClientSecure client;
         client.setInsecure();
-        // client.setCACert(cacert);
 
         if (client.connect(ip.c_str(), port))
         {
@@ -281,13 +280,16 @@ void fetchUserPreferences(String uid, float &temperature, float &humidity)
             String requestBody;
             serializeJson(doc, requestBody);
 
+            // Encrypt the request body
+            String encryptedBody = encryptAES(requestBody);
+
             // Construct the HTTP POST request
             String request = "POST /get_user_preferences/ HTTP/1.1\r\n";
             request += "Host: " + String(ip) + "\r\n";
-            request += "Content-Type: application/json\r\n";
-            request += "Content-Length: " + String(requestBody.length()) + "\r\n";
+            request += "Content-Type: text/plain\r\n";
+            request += "Content-Length: " + String(encryptedBody.length()) + "\r\n";
             request += "Connection: close\r\n\r\n";
-            request += requestBody;
+            request += encryptedBody;
 
             // Send the request
             client.print(request);
@@ -295,7 +297,7 @@ void fetchUserPreferences(String uid, float &temperature, float &humidity)
             // Wait for the server response
             while (client.connected() && !client.available())
             {
-                delay(100); // Small delay to wait for the response
+                delay(100); // Small delay to wait for response
             }
 
             // Read the HTTP headers
@@ -316,12 +318,16 @@ void fetchUserPreferences(String uid, float &temperature, float &humidity)
             {
                 response += client.readString(); // Read the response body
             }
+            Serial.println("Raw Response body:");
+            Serial.println(response);
+
+            // Decrypt the response
             response = decryptAES(response);
-            Serial.println("Response body:");
+            Serial.println("Decrypted Response body:");
             Serial.println(response);
 
             // Parse the JSON response
-            StaticJsonDocument<1024> responseDoc; // Adjust size if needed
+            StaticJsonDocument<1024> responseDoc;
             DeserializationError error = deserializeJson(responseDoc, response);
 
             if (error)
@@ -475,6 +481,7 @@ String get_user_name_by_id(String id)
         // Construct the HTTP POST request
         String url = "/get_user_name/";
         String payload = "{\"id\":\"" + id + "\"}";
+        payload = encryptAES(payload);
         client.println("POST " + url + " HTTP/1.1");
         client.println("Host: " + ip);
         client.println("Content-Type: application/json");
@@ -496,7 +503,6 @@ String get_user_name_by_id(String id)
 
         // Read the response body
         String responseBody = client.readString();
-        responseBody = decryptAES(responseBody);
         Serial.println("Response body:");
         Serial.println(responseBody);
 
@@ -538,6 +544,7 @@ String get_user_reminder_by_id(String id)
         // Construct the HTTP POST request
         String url = "/get_user_reminder/";
         String payload = "{\"id\":\"" + id + "\"}";
+        payload = encryptAES(payload);
         client.println("POST " + url + " HTTP/1.1");
         client.println("Host: " + ip);
         client.println("Content-Type: application/json");
@@ -559,7 +566,6 @@ String get_user_reminder_by_id(String id)
 
         // Read the response body
         String responseBody = client.readString();
-        responseBody = decryptAES(responseBody);
         Serial.println("Response body:");
         Serial.println(responseBody);
 
