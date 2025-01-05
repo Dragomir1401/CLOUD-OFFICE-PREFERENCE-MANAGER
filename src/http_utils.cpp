@@ -459,7 +459,7 @@ String get_user_name_by_id(String id)
     {
         WiFiClientSecure client;
         client.setInsecure();
-        
+
         if (!client.connect(ip.c_str(), port))
         {
             Serial.println("Failed to connect to HTTPS server.");
@@ -515,60 +515,66 @@ String get_user_name_by_id(String id)
     }
 }
 
-// Function to get user reminder by ID using a POST request
 String get_user_reminder_by_id(String id)
 {
     if (WiFi.status() == WL_CONNECTED)
     {
-        HTTPClient http;
-        http.begin(serverURLUserGetReminderById); // Server URL
-        http.addHeader("Content-Type", "application/json");
+        WiFiClientSecure client;
+        client.setInsecure();
 
-        // Create a JSON payload
-        StaticJsonDocument<200> doc;
-        doc["id"] = id;
-        String requestBody;
-        serializeJson(doc, requestBody);
-
-        // Send POST request
-        int httpResponseCode = http.POST(requestBody);
-
-        if (httpResponseCode > 0)
+        if (!client.connect(ip.c_str(), port))
         {
-            Serial.println("Data received successfully!");
+            Serial.println("Failed to connect to HTTPS server.");
+            return "";
+        }
 
-            // Get the response payload
-            String payload = http.getString();
-            StaticJsonDocument<1024> responseDoc;
-            DeserializationError error = deserializeJson(responseDoc, payload);
+        // Construct the HTTP POST request
+        String url = "/get_user_reminder/";
+        String payload = "{\"id\":\"" + id + "\"}";
+        client.println("POST " + url + " HTTP/1.1");
+        client.println("Host: " + ip);
+        client.println("Content-Type: application/json");
+        client.println("Content-Length: " + String(payload.length()));
+        client.println("Connection: close");
+        client.println();
+        client.println(payload);
 
-            if (error)
+        // Wait for the response
+        while (client.connected())
+        {
+            String line = client.readStringUntil('\n');
+            if (line == "\r")
             {
-                Serial.print("JSON parsing failed: ");
-                Serial.println(error.f_str());
-                http.end();
-                return "";
+                // End of headers
+                break;
             }
-
-            // Parse the response for the reminder
-            const char *reminder = responseDoc["reminder"];
-            http.end(); // Close the connection
-            return String(reminder);
         }
-        else
+
+        // Read the response body
+        String responseBody = client.readString();
+        Serial.println("Response body:");
+        Serial.println(responseBody);
+
+        // Parse the JSON response
+        StaticJsonDocument<1024> responseDoc;
+        DeserializationError error = deserializeJson(responseDoc, responseBody);
+
+        if (error)
         {
-            Serial.print("Error receiving data for get user reminder: ");
-            Serial.println(httpResponseCode);
+            Serial.print("JSON parsing failed: ");
+            Serial.println(error.f_str());
+            return "";
         }
 
-        http.end(); // Close the connection
+        // Extract and return the "reminder" field
+        const char *reminder = responseDoc["reminder"];
+        return String(reminder);
     }
     else
     {
         Serial.println("WiFi not connected!");
+        return "";
     }
-
-    return "";
 }
 
 void set_access(String id, bool access)
