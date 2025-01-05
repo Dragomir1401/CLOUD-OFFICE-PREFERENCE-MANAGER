@@ -67,10 +67,13 @@ void addCardAccess()
                 if (index == target)
                 {
                     lcd.clear();
-                    lcd.print("User Already");
+                    lcd.print("Card exists");
                     lcd.setCursor(0, 1);
-                    lcd.print("Exists");
+                    lcd.print("Adding access..");
+                    users_db[index].hasAccess = true;
+                    set_access(newUID, true);
                     delay(2000);
+                    lcd.clear();
                     return;
                 }
             }

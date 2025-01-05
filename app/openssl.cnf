@@ -1,7 +1,7 @@
 [req]
 distinguished_name = req_distinguished_name
 req_extensions = v3_req
-x509_extensions = v3_req # Match this with your extensions section
+x509_extensions = v3_req
 prompt = no
 
 [req_distinguished_name]
@@ -12,7 +12,7 @@ O = PRIoT
 CN = 192.168.0.134
 
 [v3_req]
-keyUsage = keyEncipherment, dataEncipherment
+keyUsage = critical, digitalSignature, keyEncipherment
 extendedKeyUsage = serverAuth
 subjectAltName = @alt_names
 

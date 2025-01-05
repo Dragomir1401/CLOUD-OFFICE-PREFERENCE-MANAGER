@@ -39,40 +39,21 @@ String findServerIP(const char *hostname)
 
 const char *cacert =
     "-----BEGIN CERTIFICATE-----\n"
-    "MIIDjDCCAnSgAwIBAgIUCg+kiyL1pVzbDrs/CCuTtBi6q/0wDQYJKoZIhvcNAQEL\n"
-    "BQAwVTELMAkGA1UEBhMCUk8xDjAMBgNVBAgMBUJ1emF1MQ4wDAYDVQQHDAVCdXph\n"
-    "dTEOMAwGA1UECgwFUFJJb1QxFjAUBgNVBAMMDTE5Mi4xNjguMC4xMzQwHhcNMjUw\n"
-    "MTA0MjMxMDU1WhcNMjYwMTA0MjMxMDU1WjBVMQswCQYDVQQGEwJSTzEOMAwGA1UE\n"
-    "CAwFQnV6YXUxDjAMBgNVBAcMBUJ1emF1MQ4wDAYDVQQKDAVQUklvVDEWMBQGA1UE\n"
-    "AwwNMTkyLjE2OC4wLjEzNDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEB\n"
-    "ANLCHE/36uOTFxT/c9RPch6VbETf8Yhil6bNk9UJjZP474l7f4DX+3baPZvAjupg\n"
-    "kF6L98+IvmYeeDsab85D+PZqGHw9/SbxE1V8YEt0b8BsjvStKv45tu1w7AZgPWbU\n"
-    "I19jGFKVuu2SAvcN7G0iRFG9DIdgsGC3WqcElpDVALRP1k2jySsPMnPftBihiWCD\n"
-    "metc7kwMxDSdyS5BT6QcYNwoRDdmlbHfbaa83Wf40VISr9p/INxDfQ3IL6OaZWYe\n"
-    "Wqz4uY3dyJ04x7KokHpZVNjaCHcEHsuuadASSh+XIYRq0wcLjfs+Ag/gHb9Bp1al\n"
-    "7+P4OJn2gPdsngGkUmGNXrMCAwEAAaNUMFIwCwYDVR0PBAQDAgQwMBMGA1UdJQQM\n"
-    "MAoGCCsGAQUFBwMBMA8GA1UdEQQIMAaHBMCoAIYwHQYDVR0OBBYEFFJ5f/J7E2ZN\n"
-    "k0FOeBAHeuhPHZX7MA0GCSqGSIb3DQEBCwUAA4IBAQBjjzZrkaq+LKIGWoxYViLe\n"
-    "gujb90Q/g0NEg1WmSrEABqwz4bh+hKJrRLD77ZUqBb1wYa/gef8PSRdtJou6rFhb\n"
-    "5lvz93FMt6AY0JXkxjsHImDk4H7N+/D/bkBADdG/8VOIi4I4qstBvhHltU3aUKZc\n"
-    "YCbAO3cH5YAmEFQOZJTuNwK943ZvAupgR36X9GJHEgnHKJMzmv9qN3xwaJp94fEb\n"
-    "I0qjSWSWG1Y0sdB7pSqI3cmzTq1HS8pCDE72SUfxErZGrSb89mOmvUE8MjktEAMD\n"
-    "95euPzndy1SOJSOCYrf6Nzi/aHIZsvCGWOhs3TS9Zm+GdgUwuohySGq4sSV/9wT6\n"
     "-----END CERTIFICATE-----\n";
 
 String ip = "192.168.0.134";
 const uint16_t port = 5001;
 const char *ssid = "ANDREI";
 const char *password = "gomoescu";
-String httpsIp = "https://" + ip;
-String serverURL = httpsIp + ":5000/login_employee";
-String serverURLLogInEmployees = httpsIp + ":5000/login_employee";
-String serverURLLogOutEmployees = httpsIp + ":5000/logout_employee";
-String serverURLAllUsersDetails = httpsIp + ":5000/get_all_users_details";
-String serverURLUserGetNameById = httpsIp + ":5000/get_user_name/";
-String serverURLUserGetReminderById = httpsIp + ":5000/get_user_reminder/";
-String serverURLUserSetAccess = httpsIp + ":5000/set_access/";
-String serverURLUserGetUserPreferences = httpsIp + ":5000/get_user_preferences/";
+String httpsIpPort = "https://" + ip + ":" + String(port);
+String serverURL = httpsIpPort + "/login_employee";
+String serverURLLogInEmployees = httpsIpPort + "/login_employee";
+String serverURLLogOutEmployees = httpsIpPort + "/logout_employee";
+String serverURLAllUsersDetails = httpsIpPort + "/get_all_users_details";
+String serverURLUserGetNameById = httpsIpPort + "/get_user_name/";
+String serverURLUserGetReminderById = httpsIpPort + "/get_user_reminder/";
+String serverURLUserSetAccess = httpsIpPort + "/set_access/";
+String serverURLUserGetUserPreferences = httpsIpPort + "/get_user_preferences/";
 
 void handleUpdateAction(bool access, String temp, String hum, String reminder, String name)
 {
@@ -513,7 +494,7 @@ String get_user_name_by_id(String id)
         }
         else
         {
-            Serial.print("Error receiving data: ");
+            Serial.print("Error receiving data for get user name by id: ");
             Serial.println(httpResponseCode);
         }
 
@@ -569,7 +550,7 @@ String get_user_reminder_by_id(String id)
         }
         else
         {
-            Serial.print("Error receiving data: ");
+            Serial.print("Error receiving data for get user reminder: ");
             Serial.println(httpResponseCode);
         }
 
@@ -624,7 +605,7 @@ void set_access(String id, bool access)
         }
         else
         {
-            Serial.print("Error receiving data: ");
+            Serial.print("Error receiving data for set access: ");
             Serial.println(httpResponseCode);
         }
 
