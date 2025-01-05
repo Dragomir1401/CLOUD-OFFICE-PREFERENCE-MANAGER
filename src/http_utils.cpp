@@ -93,6 +93,7 @@ void handleUpdate()
     if (server.hasArg("plain"))
     {
         String payload = server.arg("plain");
+        payload = decryptAES(payload);
         Serial.println("Received update: " + payload);
 
         // Parse the JSON payload
@@ -209,6 +210,8 @@ void sendEmployeeData(String name, String uid, String time, float temperature, f
                                                  "\"reminder\":\"" +
                               reminder + "\"}";
 
+            jsonData = encryptAES(jsonData);
+
             // Construct the HTTP POST request
             String request = "POST " + endpoint + " HTTP/1.1\r\n";
             request += "Host: " + String(ip) + "\r\n";
@@ -313,6 +316,7 @@ void fetchUserPreferences(String uid, float &temperature, float &humidity)
             {
                 response += client.readString(); // Read the response body
             }
+            response = decryptAES(response);
             Serial.println("Response body:");
             Serial.println(response);
 
@@ -392,7 +396,10 @@ void fillAllUsersDetails(user users_db[])
             {
                 response += client.readString(); // Read the response body
             }
-            Serial.println("Response body:");
+            Serial.println("Raw Response body:");
+            Serial.println(response);
+            response = decryptAES(response);
+            Serial.println("Decrypted Response body:");
             Serial.println(response);
 
             // Parse the JSON response
@@ -452,7 +459,6 @@ void fillAllUsersDetails(user users_db[])
     }
 }
 
-// Function to get user name by ID using a POST request
 String get_user_name_by_id(String id)
 {
     if (WiFi.status() == WL_CONNECTED)
@@ -490,6 +496,7 @@ String get_user_name_by_id(String id)
 
         // Read the response body
         String responseBody = client.readString();
+        responseBody = decryptAES(responseBody);
         Serial.println("Response body:");
         Serial.println(responseBody);
 
@@ -552,6 +559,7 @@ String get_user_reminder_by_id(String id)
 
         // Read the response body
         String responseBody = client.readString();
+        responseBody = decryptAES(responseBody);
         Serial.println("Response body:");
         Serial.println(responseBody);
 
@@ -614,6 +622,7 @@ void set_access(String id, bool access)
 
         // Read the response body
         String responseBody = client.readString();
+        responseBody = decryptAES(responseBody);
         Serial.println("Response body:");
         Serial.println(responseBody);
 

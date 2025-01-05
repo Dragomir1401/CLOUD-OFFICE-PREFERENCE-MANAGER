@@ -7,6 +7,47 @@ import io
 import os
 import base64
 import requests
+from base64 import b64decode, b64encode
+from Cryptodome.Cipher import AES
+
+# AES key and IV
+aes_key = b'\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F\x10'
+iv = b'\x00' * 16
+
+def pad(data):
+    """Apply PKCS#7 padding."""
+    padding_len = 16 - (len(data) % 16)
+    return data + (chr(padding_len) * padding_len).encode('utf-8')
+
+def unpad(data):
+    """Remove PKCS#7 padding."""
+    padding_len = data[-1]
+    return data[:-padding_len]
+
+def encrypt_aes(plain_text):
+    """Encrypt plaintext using AES (CBC mode) and Base64-encode."""
+    # Convert plaintext to bytes and pad
+    plain_bytes = plain_text.encode('utf-8')
+    padded_text = pad(plain_bytes)
+    
+    # Create AES cipher
+    cipher = AES.new(aes_key, AES.MODE_CBC, iv)
+    
+    # Encrypt and encode to Base64
+    encrypted_bytes = cipher.encrypt(padded_text)
+    return b64encode(encrypted_bytes).decode('utf-8')
+
+def decrypt_aes(encrypted_text):
+    """Decrypt Base64-encoded ciphertext using AES (CBC mode)."""
+    # Decode Base64 input
+    encrypted_bytes = b64decode(encrypted_text)
+    
+    # Create AES cipher
+    cipher = AES.new(aes_key, AES.MODE_CBC, iv)
+    
+    # Decrypt and remove padding
+    decrypted_bytes = cipher.decrypt(encrypted_bytes)
+    return unpad(decrypted_bytes).decode('utf-8')
 
 esp_ip_address = '192.168.0.180'
 
@@ -104,6 +145,7 @@ def visualization_page():
 def log_employee():
     # Parse the JSON data sent by the ESP32
     data = request.get_json()
+    data = decrypt_aes(data)
     data['type'] = 'login'
 
     # Store the incoming log in the logs list
@@ -115,6 +157,7 @@ def log_employee():
 def logout_employee():
     # Parse the JSON data sent by the ESP32
     data = request.get_json()
+    data = decrypt_aes(data)
     data['type'] = 'logout'
 
     # Store the incoming log in the logs list
@@ -139,11 +182,12 @@ def update_preferences():
         save_users()  # Save the changes to the file
         
         # send to esp an event signaling the update
-        requests.post(f'http://{esp_ip_address}/event', json={"type": "update",
-                                                              "name": user['name'],
-                                                              "access": user['access'],
-                                                              "reminder": user['reminder'],
-                                                              "preferences": user['preferences']})
+        payload = {"type": "update",
+                   "name": user['name'],
+                   "access": user['access'],
+                   "reminder": user['reminder'],
+                   "preferences": user['preferences']}
+        requests.post(f'http://{esp_ip_address}/event', json=encrypt_aes(json.dumps(payload)))
             
         
         return jsonify({"status": "success", "message": "User preferences updated!"})
@@ -154,6 +198,7 @@ def update_preferences():
 @app.route('/set_reminder', methods=['POST'])
 def set_reminder():
     data = request.get_json()
+    data = decrypt_aes(data)
 
     # Find the user by UID
     user_id = data.get('id')
@@ -169,21 +214,18 @@ def set_reminder():
     else:
         return jsonify({"status": "failure", "message": "User not found!"}), 404
     
-@app.route('/get_users_names_reminders', methods=['GET'])
-def get_users_names_reminders():
-    # Return a list of dictionaries with the user's name and reminder
-    return jsonify([{"name": u['name'], "reminder": u['reminder']} for u in users])
-
 @app.route('/get_all_users_details', methods=['GET'])
 def get_all_users_details():
-    # Return a json with {"users" : users}
-    return jsonify({"users": users})
+    payload = json.dumps({"users": users})
+    encrypted_payload = encrypt_aes(payload)
+    return encrypted_payload, 200, {'Content-Type': 'text/plain'}
 
 @app.route('/get_user_details/<int:user_id>', methods=['GET'])
 def get_user_details(user_id):
     user = next((u for u in users if u['id'] == user_id), None)
+    user = json.dumps(user)
     if user:
-        return jsonify(user)
+        return encrypt_aes(user)
     else:
         return jsonify({"status": "failure", "message": "User not found!"}), 404
 
@@ -191,6 +233,7 @@ def get_user_details(user_id):
 def add_user():
     # Check if user already exists
     data = request.get_json()
+    data = decrypt_aes(data)
     user_id = data.get('id')
     
     # If user exists return 409 Conflict
@@ -206,6 +249,7 @@ def add_user():
 @app.route('/remove_access', methods=['POST'])
 def remove_access():
     data = request.get_json()
+    data = decrypt_aes(data)
     user_id = data.get('id')
     
     # Check if user exists
@@ -220,6 +264,7 @@ def remove_access():
 @app.route('/add_access', methods=['POST'])
 def add_access():
     data = request.get_json()
+    data = decrypt_aes(data)
     user_id = data.get('id')
     
     # Check if user exists
@@ -234,6 +279,7 @@ def add_access():
 @app.route('/check_access/', methods=['POST'])
 def check_access():
     data = request.get_json()
+    data = decrypt_aes(data)
     user_id = data.get('id')
     
     user = next((u for u in users if u['id'] == user_id), None)
@@ -245,6 +291,7 @@ def check_access():
 @app.route('/set_access/', methods=['POST'])
 def set_access():
     data = request.get_json()
+    data = decrypt_aes(data)
     user_id = data.get('id')
     access = data.get('access')
     
@@ -259,6 +306,7 @@ def set_access():
 @app.route('/get_user_name/', methods=['POST'])
 def get_user_name():
     data = request.get_json()
+    data = decrypt_aes(data)
     user_id = data.get('id')
     
     user = next((u for u in users if u['id'] == user_id), None)
@@ -270,6 +318,7 @@ def get_user_name():
 @app.route('/get_user_reminder/', methods=['POST'])
 def get_reminder():
     data = request.get_json()
+    data = decrypt_aes(data)
     user_id = data.get('id')
     
     user = next((u for u in users if u['id'] == user_id), None)
@@ -281,6 +330,7 @@ def get_reminder():
 @app.route('/get_user_preferences/', methods=['POST'])
 def get_preferences():
     data = request.get_json()
+    data = decrypt_aes(data)
     user_id = data.get('id')
     
     user = next((u for u in users if u['id'] == user_id), None)

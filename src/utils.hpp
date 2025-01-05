@@ -7,7 +7,7 @@
 #include <Wire.h>
 #include <RtcDS1302.h>
 #include <ThreeWire.h>
-#include<Adafruit_Sensor.h>
+#include <Adafruit_Sensor.h>
 #include <DHT.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
@@ -121,5 +121,7 @@ void playMelody(int note, int duration, int delayP);
 String intToDate(int seconds);
 void updateReceived();
 void turnLedWhite();
+String encryptAES(const String &plaintext);
+String decryptAES(const String &ciphertext);
 
 #endif // UTILS_HPP
