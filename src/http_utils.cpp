@@ -37,14 +37,10 @@ String findServerIP(const char *hostname)
     }
 }
 
-const char *cacert =
-    "-----BEGIN CERTIFICATE-----\n"
-    "-----END CERTIFICATE-----\n";
-
-String ip = "192.168.0.134";
+String ip = "192.168.0.165";
 const uint16_t port = 5001;
-const char *ssid = "ANDREI";
-const char *password = "gomoescu";
+const char *ssid = "Tenda_E21800";
+const char *password = "evenneed145";
 String httpsIpPort = "https://" + ip + ":" + String(port);
 String serverURL = httpsIpPort + "/login_employee";
 String serverURLLogInEmployees = httpsIpPort + "/login_employee";
@@ -664,3 +660,27 @@ void set_access(String id, bool access)
         Serial.println("WiFi not connected!");
     }
 }
+
+const char *cacert =
+    "-----BEGIN CERTIFICATE-----\n"
+    "MIIDjzCCAnegAwIBAgIUN3IcsFoxjDBTqcbxJ1txqaJ2Am4wDQYJKoZIhvcNAQEL\n"
+    "BQAwVTELMAkGA1UEBhMCUk8xDjAMBgNVBAgMBUJ1emF1MQ4wDAYDVQQHDAVCdXph\n"
+    "dTEOMAwGA1UECgwFUFJJb1QxFjAUBgNVBAMMDTE5Mi4xNjguMC4xMzQwHhcNMjUw\n"
+    "MTA1MTAzNDU3WhcNMjYwMTA1MTAzNDU3WjBVMQswCQYDVQQGEwJSTzEOMAwGA1UE\n"
+    "CAwFQnV6YXUxDjAMBgNVBAcMBUJ1emF1MQ4wDAYDVQQKDAVQUklvVDEWMBQGA1UE\n"
+    "AwwNMTkyLjE2OC4wLjEzNDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEB\n"
+    "AJ2WxpSaMLx+PkJGrIiUF365M1BonaaFk/wiiK2U5v2+KZoi3KKLTBHubWc4/PW2\n"
+    "mYvOMtNS36h2+m4y2QQC6hEwJf2GKcb0iIm9yqe/L72P2E6tep6vdTM4/CAw1VC3\n"
+    "2lUpb5Zps6qrFBQUeOVCmgjQnynqzKwosZn32vUfGwDUWkURcq7bbWAQjhzoukcJ\n"
+    "Yl09y9pywzadKH59RE1qBeiBRsCJf+T1l9jQhvVqwJENGgqFnku0NqR25stJD4+J\n"
+    "RWYhpYYM47ktGJyo9tJLmhyeyH1vFuwESjgFdzSjeBe46ABfeGOibuGpPgj+3Nhw\n"
+    "VTePwOzRBHQHIFewbX9kdpkCAwEAAaNXMFUwDgYDVR0PAQH/BAQDAgWgMBMGA1Ud\n"
+    "JQQMMAoGCCsGAQUFBwMBMA8GA1UdEQQIMAaHBMCoAIYwHQYDVR0OBBYEFFkFtqaQ\n"
+    "nF/Koks5TukliBANcRurMA0GCSqGSIb3DQEBCwUAA4IBAQApf6iiYP7ETu39puQT\n"
+    "WRLRQrgYeG2jJ3+Nhh0XUjzwzf/47+30qU5t2TClHZA0DGMg7kaQ6NTHI5146DSi\n"
+    "ZdBzOujL4638GYvHfPs0OYwFm/mZyYf3iDHvxwp7dGsyuty32SX5r/gbACZwin3A\n"
+    "+8gZNVOyZJVm07meuPKPnmxEApnp/WvE0GPpyFsA8vdeiBInAYAIRuIZ5+nxrPxh\n"
+    "isOJrXqn3/LV+BCSog1JCzXK3uBbf77kQjkuQ3Q8K6igY455nTbznFpTxGtwaO78\n"
+    "ilUkHTPsD+8ehSnSMQD09rI0R+vrOST3AIffzEevZjMbv59mj9scnMvh211dQuzk\n"
+    "vvJA\n"
+    "-----END CERTIFICATE-----";

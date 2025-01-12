@@ -90,7 +90,7 @@ The system uses an ESP32 microcontroller to interact with peripherals and commun
 
 \subsection{Hardware and Protocols}
 
-The PRIOT system is designed to integrate various hardware components with the ESP32 microcontroller, which serves as the central hub for communication and control. The following describes the key components and their connections:
+The system is designed to integrate various hardware components with the ESP32 microcontroller, which serves as the central hub for communication and control. The following describes the key components and their connections:
 
 \begin{itemize}
     \item \textbf{RFID Reader (SPI Protocol):} The RFID module communicates with the ESP32 using the high-speed SPI protocol. It is used for user authentication and access control. Admins and users interact with the system by scanning their RFID tags or cards.
@@ -213,6 +213,24 @@ The following peripherals are utilized:
     \end{itemize}
 \end{itemize}
 
+\section{Alerts and Notification System}
+
+The \textit{Alerts and Notification System} in this implementation is designed to ensure that users and administrators
+are promptly informed about important events and status updates within the platform. 
+
+\subsection{System Overview}
+The alerts and notification system monitors key events, such as unauthorized access attempts and changes in user preferences.
+Upon detecting such events, the system generates alerts that are sent to the ESP32 board.
+
+\subsection{Implementation on ESP32}
+The ESP32 firmware includes functions to trigger audible and visual alerts using LEDs and buzzers. For example:
+\begin{itemize}
+    \item \textbf{LED Notifications}: RGB LEDs are programmed to display specific colors based on event types (e.g., red for errors, green for successful operations, and blue for general notifications).
+    \item \textbf{Audible Alerts}: The buzzer emits predefined melodies or tones to indicate critical alerts, such as unauthorized card access or temperature anomalies.
+\end{itemize}
+
+Additionally, the ESP32 sends encrypted notification payloads to the Flask server for centralized logging and processing.
+
 \section{LCD Display Management}
 \begin{itemize}
     \item Displays messages and feedback on the LCD.
@@ -255,11 +273,58 @@ The visualization dashboard displays various graphs and statistics, accessible t
 
 The data is processed using Python's \texttt{Counter} and rendered dynamically using Chart.js.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{img/PreferencesGraph.png}
+    \caption{User Preferences Temperature \& Humidity}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{img/TempEvolution.png}
+    \caption{Temperature and Humidity Over Time}
+\end{figure}
+
+\newpage
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{img/AllHoursGraph.png}
+    \caption{All Hours Graph}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{img/TopVisitors.png}
+    \caption{Top Visitors}
+\end{figure}
+
+\newpage
+
 \section{Records Display}
 The \texttt{/records} route lists all employee activities in a tabular format:
 \begin{itemize}
     \item Name, UID, timestamp, temperature, humidity, reminder, and activity type (login/logout) are shown.
 \end{itemize}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{img/Records.png}
+    \caption{Records Display}
+\end{figure}
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{img/Users.png}
+    \caption{Registered Users Display}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{img/Update.png}
+    \caption{Preferences and Access Update Functionality}
+\end{figure}
 
 \section{Data Processing and Analysis}
 \subsubsection{Time-Based Sorting}
@@ -298,8 +363,7 @@ The preferences are stored in \texttt{users.json} and encrypted for secure commu
 
 The system implements an alert mechanism to notify users and employees of specific conditions:
 \begin{itemize}
-    \item Alerts can be set via the \texttt{/set\_reminder} route to remind users of critical tasks.
-    \item Environmental thresholds such as temperature or humidity exceeding user-defined limits trigger alerts, displayed on the ESP32 LCD and logged in the system.
+    \item Alerts consist on update for access or preferences for users which directly show up on ESP32 with a led and buzzer notification, as well as LCD display information.
     \item Alerts are communicated securely using encrypted messages to ensure data integrity and confidentiality.
 \end{itemize}
 
@@ -358,9 +422,6 @@ Properly handling edge cases, such as corrupted payloads, missing data fields, o
 
 \subsection{Secure Communication}
 AES-128 encryption was used to protect sensitive data during transmission. HTTPS was employed for secure communication, and extensive debugging ensured compatibility between the ESP32 and Flask server encryption implementations.
-
-\subsection{Optimized Resource Utilization}
-Efficient memory management techniques, such as dynamic JSON parsing and modular code design, reduced the load on the ESP32. Tasks were distributed across multiple modules for better resource allocation.
 
 \subsection{Data Synchronization}
 Retry mechanisms and encrypted acknowledgments were implemented to ensure data integrity during transmission. Logs and user data were periodically synced between the ESP32 and the Flask server.

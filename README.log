@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  8 JAN 2025 00:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  12 JAN 2025 19:43
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -216,7 +216,7 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.31 ...ntegration with Frontend}{13}{section.4.5}
+l.30 ...ine {4.3}Records Display}{16}{section.4.3}
                                                   % [1
 
 ])
@@ -232,7 +232,7 @@ Chapter 2.
 [4
 
 ] [5]
-<img/schema.png, id=273, 730.98094pt x 405.01312pt>
+<img/schema.png, id=283, 730.98094pt x 405.01312pt>
 File: img/schema.png Graphic file (type png)
 <use img/schema.png>
 Package pdftex.def Info: img/schema.png  used on input line 87.
@@ -271,51 +271,93 @@ Overfull \hbox (17.19955pt too wide) in paragraph at lines 212--213
 []\OT1/cmtt/m/n/12 void fetchUserPreferences(String uid, float &temperature,
  []
 
-
-Overfull \hbox (72.77458pt too wide) in paragraph at lines 222--223
+[11]
+Overfull \hbox (72.77458pt too wide) in paragraph at lines 240--241
 []\OT1/cmtt/m/n/12 void showSettingPreferences(float currentTemp, float currentHumid,
  []
 
-[11]
+[12]
 Chapter 4.
-[12
+[13
 
-] [13]
-Overfull \hbox (0.69273pt too wide) in paragraph at lines 295--296
+]
+<img/PreferencesGraph.png, id=322, 690.32906pt x 328.97906pt>
+File: img/PreferencesGraph.png Graphic file (type png)
+<use img/PreferencesGraph.png>
+Package pdftex.def Info: img/PreferencesGraph.png  used on input line 278.
+(pdftex.def)             Requested size: 390.0pt x 185.85844pt.
+<img/TempEvolution.png, id=323, 694.84593pt x 331.2375pt>
+File: img/TempEvolution.png Graphic file (type png)
+<use img/TempEvolution.png>
+Package pdftex.def Info: img/TempEvolution.png  used on input line 284.
+(pdftex.def)             Requested size: 390.0pt x 185.91122pt.
+ [14 <./img/PreferencesGraph.png> <./img/TempEvolution.png>]
+<img/AllHoursGraph.png, id=332, 685.8122pt x 317.68687pt>
+File: img/AllHoursGraph.png Graphic file (type png)
+<use img/AllHoursGraph.png>
+Package pdftex.def Info: img/AllHoursGraph.png  used on input line 292.
+(pdftex.def)             Requested size: 390.0pt x 180.66165pt.
+<img/TopVisitors.png, id=333, 680.5425pt x 284.56313pt>
+File: img/TopVisitors.png Graphic file (type png)
+<use img/TopVisitors.png>
+Package pdftex.def Info: img/TopVisitors.png  used on input line 298.
+(pdftex.def)             Requested size: 390.0pt x 163.07541pt.
+ [15 <./img/AllHoursGraph.png> <./img/TopVisitors.png>]
+<img/Records.png, id=342, 1190.19656pt x 640.64343pt>
+File: img/Records.png Graphic file (type png)
+<use img/Records.png>
+Package pdftex.def Info: img/Records.png  used on input line 312.
+(pdftex.def)             Requested size: 390.0pt x 209.91734pt.
+<img/Users.png, id=343, 1082.54437pt x 322.20375pt>
+File: img/Users.png Graphic file (type png)
+<use img/Users.png>
+Package pdftex.def Info: img/Users.png  used on input line 319.
+(pdftex.def)             Requested size: 390.0pt x 116.07683pt.
+<img/Update.png, id=344, 1054.6903pt x 455.45157pt>
+File: img/Update.png Graphic file (type png)
+<use img/Update.png>
+Package pdftex.def Info: img/Update.png  used on input line 325.
+(pdftex.def)             Requested size: 390.0pt x 168.41019pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[16 <./img/Records.png> <./img/Users.png>] [17 <./img/Update.png>]
+Overfull \hbox (0.69273pt too wide) in paragraph at lines 360--361
 \OT1/cmr/m/n/12 mu-ni-ca-tion with ESP32 de-vices. Up-dates are re-flected on the ESP32 firmware
  []
 
-[14]
+[18]
 Chapter 5.
 
-Overfull \hbox (10.13403pt too wide) in paragraph at lines 312--313
+Overfull \hbox (10.13403pt too wide) in paragraph at lines 376--377
 []\OT1/cmr/m/n/12 Each user is iden-ti-fied by a unique UID, stored se-curely in the \OT1/cmtt/m/n/12 users.json
  []
 
-[15
+[19
 
-] [16]
+] [20]
 Chapter 6.
-[17
+[21
 
-] [18]
+] [22]
 Chapter 7.
 
-Overfull \hbox (36.72176pt too wide) in paragraph at lines 376--377
+Overfull \hbox (36.72176pt too wide) in paragraph at lines 437--438
 []\OT1/cmr/m/n/12 Official ESP32 Doc-u-men-ta-tion: []$\OT1/cmtt/m/n/12 https : / / www . espressif . com / en / products /
  []
 
 
-Overfull \hbox (6.33293pt too wide) in paragraph at lines 378--379
+Overfull \hbox (6.33293pt too wide) in paragraph at lines 439--440
 []\OT1/cmr/m/n/12 Cryptography: AES in Python: []$\OT1/cmtt/m/n/12 https : / / pycryptodome . readthedocs .
  []
 
 
-Overfull \hbox (21.23633pt too wide) in paragraph at lines 379--380
+Overfull \hbox (21.23633pt too wide) in paragraph at lines 440--441
 []\OT1/cmr/m/n/12 Arduino Li-braries: []$\OT1/cmtt/m/n/12 https : / / www . arduino . cc / reference / en / libraries/$[] 
  []
 
-[19
+[23
 
 ] (README.aux)
  ***********
@@ -323,20 +365,20 @@ LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
 Package rerunfilecheck Info: File `README.out' has not changed.
-(rerunfilecheck)             Checksum: 51BFB5E2EA5D4BB303A2B8D684E63C1B;7344.
+(rerunfilecheck)             Checksum: 2A3CB03BAFE3395506427D6B49F4825F;7663.
  ) 
 Here is how much of TeX's memory you used:
- 8539 strings out of 474486
- 134662 string characters out of 5743754
+ 8605 strings out of 474486
+ 136064 string characters out of 5743754
  1935542 words of memory out of 5000000
- 30675 multiletter control sequences out of 15000+600000
- 563435 words of font info for 54 fonts, out of 8000000 for 9000
+ 30727 multiletter control sequences out of 15000+600000
+ 563782 words of font info for 55 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,6n,79p,417b,568s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on README.pdf (20 pages, 351349 bytes).
+ <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+Output written on README.pdf (24 pages, 815750 bytes).
 PDF statistics:
- 387 PDF objects out of 1000 (max. 8388607)
- 71 named destinations out of 1000 (max. 500000)
- 390 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 442 PDF objects out of 1000 (max. 8388607)
+ 84 named destinations out of 1000 (max. 500000)
+ 441 words of extra memory for PDF output out of 10000 (max. 10000000)
 
