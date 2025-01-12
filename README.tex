@@ -35,7 +35,7 @@
 % Chapters Start
 \chapter{Introduction}
 
-This documentation describes the implementation of an IoT system for managing employee access and monitoring the environment (temperature and humidity). The project combines a sensor network with an ESP32 hub that communicates with a central server to store and visualize data.
+This paper describes the implementation of an IoT system for managing employee access and monitoring the environment in the office (temperature and humidity). The project combines a sensor network with an ESP32 hub that communicates with a central server to store and visualize data.
 
 Employees receive alerts when the temperature or humidity is not optimal for their inputted preferences. The system also logs access events, allowing administrators to monitor employee activity: logins, logouts, access attempts, time spent in the office, etc.
 
@@ -66,7 +66,7 @@ The backend is implemented using Python and Flask. It serves as the central hub 
 \end{itemize}
 
 \subsection{ESP32 Firmware (C++)}
-The ESP32 firmware, written in C++, handles the hardware peripherals and communicates with the Flask server. It is organized into several files within the \texttt{src/} directory:
+The ESP32 firmware is written in written in C++. This firmware handles the hardware peripherals and communicates with the Flask server and is organized into several files within the \texttt{src/} directory:
 \begin{itemize} 
     \item \textbf{main.cpp}: The entry point for the ESP32 firmware, initializing all components and managing the main logic loop.
     \item \textbf{access\_utils.cpp}: Handles RFID-based access control and logs employee activities such as logins and logouts.
@@ -215,7 +215,7 @@ The following peripherals are utilized:
 
 \section{Alerts and Notification System}
 
-The \textit{Alerts and Notification System} in this implementation is designed to ensure that users and administrators
+The alerts in this implementation are designed to ensure that users and administrators
 are promptly informed about important events and status updates within the platform. 
 
 \subsection{System Overview}

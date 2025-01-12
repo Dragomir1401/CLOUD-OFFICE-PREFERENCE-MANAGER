@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  12 JAN 2025 19:43
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  13 JAN 2025 01:16
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -281,39 +281,39 @@ Chapter 4.
 [13
 
 ]
-<img/PreferencesGraph.png, id=322, 690.32906pt x 328.97906pt>
+<img/PreferencesGraph.png, id=321, 690.32906pt x 328.97906pt>
 File: img/PreferencesGraph.png Graphic file (type png)
 <use img/PreferencesGraph.png>
 Package pdftex.def Info: img/PreferencesGraph.png  used on input line 278.
 (pdftex.def)             Requested size: 390.0pt x 185.85844pt.
-<img/TempEvolution.png, id=323, 694.84593pt x 331.2375pt>
+<img/TempEvolution.png, id=322, 694.84593pt x 331.2375pt>
 File: img/TempEvolution.png Graphic file (type png)
 <use img/TempEvolution.png>
 Package pdftex.def Info: img/TempEvolution.png  used on input line 284.
 (pdftex.def)             Requested size: 390.0pt x 185.91122pt.
  [14 <./img/PreferencesGraph.png> <./img/TempEvolution.png>]
-<img/AllHoursGraph.png, id=332, 685.8122pt x 317.68687pt>
+<img/AllHoursGraph.png, id=331, 685.8122pt x 317.68687pt>
 File: img/AllHoursGraph.png Graphic file (type png)
 <use img/AllHoursGraph.png>
 Package pdftex.def Info: img/AllHoursGraph.png  used on input line 292.
 (pdftex.def)             Requested size: 390.0pt x 180.66165pt.
-<img/TopVisitors.png, id=333, 680.5425pt x 284.56313pt>
+<img/TopVisitors.png, id=332, 680.5425pt x 284.56313pt>
 File: img/TopVisitors.png Graphic file (type png)
 <use img/TopVisitors.png>
 Package pdftex.def Info: img/TopVisitors.png  used on input line 298.
 (pdftex.def)             Requested size: 390.0pt x 163.07541pt.
  [15 <./img/AllHoursGraph.png> <./img/TopVisitors.png>]
-<img/Records.png, id=342, 1190.19656pt x 640.64343pt>
+<img/Records.png, id=341, 1190.19656pt x 640.64343pt>
 File: img/Records.png Graphic file (type png)
 <use img/Records.png>
 Package pdftex.def Info: img/Records.png  used on input line 312.
 (pdftex.def)             Requested size: 390.0pt x 209.91734pt.
-<img/Users.png, id=343, 1082.54437pt x 322.20375pt>
+<img/Users.png, id=342, 1082.54437pt x 322.20375pt>
 File: img/Users.png Graphic file (type png)
 <use img/Users.png>
 Package pdftex.def Info: img/Users.png  used on input line 319.
 (pdftex.def)             Requested size: 390.0pt x 116.07683pt.
-<img/Update.png, id=344, 1054.6903pt x 455.45157pt>
+<img/Update.png, id=343, 1054.6903pt x 455.45157pt>
 File: img/Update.png Graphic file (type png)
 <use img/Update.png>
 Package pdftex.def Info: img/Update.png  used on input line 325.
@@ -368,17 +368,17 @@ Package rerunfilecheck Info: File `README.out' has not changed.
 (rerunfilecheck)             Checksum: 2A3CB03BAFE3395506427D6B49F4825F;7663.
  ) 
 Here is how much of TeX's memory you used:
- 8605 strings out of 474486
- 136064 string characters out of 5743754
+ 8603 strings out of 474486
+ 136043 string characters out of 5743754
  1935542 words of memory out of 5000000
- 30727 multiletter control sequences out of 15000+600000
- 563782 words of font info for 55 fonts, out of 8000000 for 9000
+ 30726 multiletter control sequences out of 15000+600000
+ 563435 words of font info for 54 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,6n,79p,417b,568s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on README.pdf (24 pages, 815750 bytes).
+ <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+Output written on README.pdf (24 pages, 803314 bytes).
 PDF statistics:
- 442 PDF objects out of 1000 (max. 8388607)
+ 437 PDF objects out of 1000 (max. 8388607)
  84 named destinations out of 1000 (max. 500000)
  441 words of extra memory for PDF output out of 10000 (max. 10000000)
 
