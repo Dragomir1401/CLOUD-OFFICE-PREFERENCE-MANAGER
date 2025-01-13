@@ -156,7 +156,7 @@ void connectToWiFi()
         Serial.print("ESP32 IP Address: ");
         Serial.println(WiFi.localIP());
 
-        client.setCACert(cacert);
+        client.setInsecure();
 
         // Test HTTPS connection
         if (client.connect(ip.c_str(), port))
@@ -189,7 +189,7 @@ void sendEmployeeData(String name, String uid, String time, float temperature, f
     if (WiFi.status() == WL_CONNECTED)
     {
         WiFiClientSecure client;
-        client.setCACert(cacert);
+        client.setInsecure();
 
         // Determine the appropriate endpoint based on the inOut flag
         String endpoint = inOut ? "/logout_employee/" : "/login_employee/";
@@ -269,7 +269,7 @@ void fetchUserPreferences(String uid, float &temperature, float &humidity)
     if (WiFi.status() == WL_CONNECTED)
     {
         WiFiClientSecure client;
-        client.setCACert(cacert);
+        client.setInsecure();
 
         if (client.connect(ip.c_str(), port))
         {
@@ -366,7 +366,7 @@ void fillAllUsersDetails(user users_db[])
     if (WiFi.status() == WL_CONNECTED)
     {
         WiFiClientSecure client;
-        client.setCACert(cacert);
+        client.setInsecure();
 
         if (client.connect(ip.c_str(), port))
         {
@@ -470,7 +470,7 @@ String get_user_name_by_id(String id)
     if (WiFi.status() == WL_CONNECTED)
     {
         WiFiClientSecure client;
-        client.setCACert(cacert);
+        client.setInsecure();
 
         if (!client.connect(ip.c_str(), port))
         {
@@ -533,7 +533,7 @@ String get_user_reminder_by_id(String id)
     if (WiFi.status() == WL_CONNECTED)
     {
         WiFiClientSecure client;
-        client.setCACert(cacert);
+        client.setInsecure();
 
         if (!client.connect(ip.c_str(), port))
         {
@@ -596,7 +596,7 @@ void set_access(String id, bool access)
     if (WiFi.status() == WL_CONNECTED)
     {
         WiFiClientSecure client;
-        client.setCACert(cacert);
+        client.setInsecure();
 
         if (!client.connect(ip.c_str(), port))
         {
