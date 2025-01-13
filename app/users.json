@@ -6,19 +6,19 @@
             "access": false,
             "preferences": {
                 "temperature": "22",
-                "humidity": "34"
+                "humidity": "38"
             },
-            "reminder": "Test rem2"
+            "reminder": "Update the documentation"
         },
         {
             "id": "E3E40B2F",
             "name": "Jane Smith",
             "access": true,
             "preferences": {
-                "temperature": 24,
-                "humidity": 35
+                "temperature": "25",
+                "humidity": "35"
             },
-            "reminder": "Reminder not set"
+            "reminder": "Alt reminder azi"
         },
         {
             "id": "50E5BF14",

@@ -49,7 +49,7 @@ def decrypt_aes(encrypted_text):
     decrypted_bytes = cipher.decrypt(encrypted_bytes)
     return unpad(decrypted_bytes).decode('utf-8')
 
-esp_ip_address = '192.168.0.180'
+esp_ip_address = '172.20.10.9'
 
 app = Flask(__name__)
 

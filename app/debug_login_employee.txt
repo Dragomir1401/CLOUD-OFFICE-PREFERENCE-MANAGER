@@ -1,6 +1,6 @@
 Raw request data:
-5I+TW5LJWkHtrv94WjyZEZOn5jCWBsPvd4fbwPYgXLRvEOAj7FdpFd7z42i8o3QyzfDBDmlVDd3MGLhaqpOtb9KMejC0/xle/9ZhmLiMWkq5SE6qyCmJb6UcjmRTjmRs5iPRBmK3D2ye1HX8FNdFxT+hKwFX+OKg1Eti8IFymrk=
+oeUV8puEbr0YLUaac+jKfOq6Qu/0N0wVwcEMoOe2HKCVnI4PWlHAqvsgVo2FeLpJb0RpfUHtgG65vWGCR1mFVJIkGf3XWAwqf30cZX+/Vw5vm9Jikg3zSuOP8HPXGNIhunNP4HILUgWXH3v5zviZr0OBGSmC6GKwwFNed+iJ7jMnIypBOnqqBN0YNBFuCHPG
 Decrypted payload:
-{"name":"John Doe","uid":"E37A082F","time":"01/05/2025 17:12:40","temperature":24.50,"humidity":51.00,"reminder":"Test rem"}
+{"name":"Mary Johnson","uid":"50E5BF14","time":"01/05/2025 17:13:35","temperature":22.60,"humidity":37.00,"reminder":"Reminder not set"}
 Parsed JSON:
-{'name': 'John Doe', 'uid': 'E37A082F', 'time': '01/05/2025 17:12:40', 'temperature': 24.5, 'humidity': 51.0, 'reminder': 'Test rem'}
+{'name': 'Mary Johnson', 'uid': '50E5BF14', 'time': '01/05/2025 17:13:35', 'temperature': 22.6, 'humidity': 37.0, 'reminder': 'Reminder not set'}

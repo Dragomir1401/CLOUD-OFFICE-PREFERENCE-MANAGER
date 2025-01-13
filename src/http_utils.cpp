@@ -37,10 +37,10 @@ String findServerIP(const char *hostname)
     }
 }
 
-String ip = "192.168.0.165";
+String ip = "172.20.10.10";
 const uint16_t port = 5001;
-const char *ssid = "Tenda_E21800";
-const char *password = "evenneed145";
+const char *ssid = "Dumitru Stefania";
+const char *password = "stefietare";
 String httpsIpPort = "https://" + ip + ":" + String(port);
 String serverURL = httpsIpPort + "/login_employee";
 String serverURLLogInEmployees = httpsIpPort + "/login_employee";
@@ -156,8 +156,7 @@ void connectToWiFi()
         Serial.print("ESP32 IP Address: ");
         Serial.println(WiFi.localIP());
 
-        // client.setCACert(cacert);
-        client.setInsecure();
+        client.setCACert(cacert);
 
         // Test HTTPS connection
         if (client.connect(ip.c_str(), port))
@@ -190,8 +189,7 @@ void sendEmployeeData(String name, String uid, String time, float temperature, f
     if (WiFi.status() == WL_CONNECTED)
     {
         WiFiClientSecure client;
-        client.setInsecure();
-        // client.setCACert(cacert);
+        client.setCACert(cacert);
 
         // Determine the appropriate endpoint based on the inOut flag
         String endpoint = inOut ? "/logout_employee/" : "/login_employee/";
@@ -271,7 +269,7 @@ void fetchUserPreferences(String uid, float &temperature, float &humidity)
     if (WiFi.status() == WL_CONNECTED)
     {
         WiFiClientSecure client;
-        client.setInsecure();
+        client.setCACert(cacert);
 
         if (client.connect(ip.c_str(), port))
         {
@@ -368,8 +366,7 @@ void fillAllUsersDetails(user users_db[])
     if (WiFi.status() == WL_CONNECTED)
     {
         WiFiClientSecure client;
-        client.setInsecure();
-        // client.setCACert(cacert);
+        client.setCACert(cacert);
 
         if (client.connect(ip.c_str(), port))
         {
@@ -473,7 +470,7 @@ String get_user_name_by_id(String id)
     if (WiFi.status() == WL_CONNECTED)
     {
         WiFiClientSecure client;
-        client.setInsecure();
+        client.setCACert(cacert);
 
         if (!client.connect(ip.c_str(), port))
         {
@@ -536,7 +533,7 @@ String get_user_reminder_by_id(String id)
     if (WiFi.status() == WL_CONNECTED)
     {
         WiFiClientSecure client;
-        client.setInsecure();
+        client.setCACert(cacert);
 
         if (!client.connect(ip.c_str(), port))
         {
@@ -599,7 +596,7 @@ void set_access(String id, bool access)
     if (WiFi.status() == WL_CONNECTED)
     {
         WiFiClientSecure client;
-        client.setInsecure();
+        client.setCACert(cacert);
 
         if (!client.connect(ip.c_str(), port))
         {

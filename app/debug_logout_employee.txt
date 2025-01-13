@@ -1,6 +1,6 @@
 Raw request data:
-5I+TW5LJWkHtrv94WjyZEZOn5jCWBsPvd4fbwPYgXLQJRE1i7FvdJ4vTokhkwXfIi/IGTt6FIb+lvaz2TIiYUAqege8PltyvLJx7huOlxwPq8Xi3TfGxWrVUCKNHOQBHUwocfAcLreYOzmXUfbcEAyP9damVw9o5lKpvNUOOg9fkyJId3K92szvGnHyiUZFV
+oeUV8puEbr0YLUaac+jKfOq6Qu/0N0wVwcEMoOe2HKCVnI4PWlHAqvsgVo2FeLpJb0RpfUHtgG65vWGCR1mFVCQ1F3GGJpcoClaat8lHZ0gx0ZEOIO66EcxHhhVBPGohjg2XG5FRl7GAgXO1yyz/oB0zEpk7/oDWU7e5RQOiAe4kxAqnI4SUR7p2VAvbS4pi
 Decrypted payload:
-{"name":"John Doe","uid":"E37A082F","time":"165/165/2165 37:165","temperature":24.50,"humidity":51.00,"reminder":"Updated reminder"}
+{"name":"Mary Johnson","uid":"50E5BF14","time":"01/05/2025 17:13:58","temperature":22.60,"humidity":37.00,"reminder":"Reminder not set"}
 Parsed JSON:
-{'name': 'John Doe', 'uid': 'E37A082F', 'time': '165/165/2165 37:165', 'temperature': 24.5, 'humidity': 51.0, 'reminder': 'Updated reminder'}
+{'name': 'Mary Johnson', 'uid': '50E5BF14', 'time': '01/05/2025 17:13:58', 'temperature': 22.6, 'humidity': 37.0, 'reminder': 'Reminder not set'}
